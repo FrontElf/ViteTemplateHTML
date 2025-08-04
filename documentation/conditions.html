@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Умови та умовні вирази в HTML-компонентах</title>
+      <link rel="stylesheet" href="files/style.css">
+   </head>
+
+   <body>
+
+      <div class="wrapper">
+
+         <header>
+            <h1>Умови та умовні вирази в HTML-компонентах</h1>
+            <p>
+               Цей документ описує використання в компонентах умов та умовних виразів в залежності від переданих параметрів.
+            </p>
+            <nav>
+               <a href="index.html">Головна</a>
+               <a href="tree.html">Структура</a>
+               <a href="posthtml.html">HTML-компоненти</a>
+               <a href="loop.html">Цикли та json</a>
+               <a href="settings.html">Налаштування</a>
+            </nav>
+         </header>
+
+         <section>
+            <h2>Використання умовного виразу</h2>
+            <p>*параметри які використовуються в умовівному виразі (тут isActive та title) мають передаватися обовязково, і повинен або мати значення або бути пустим!!!</p>
+            <p>Приклади використання в компоненті в який передаються параметри <code>title</code> та <code>isActive</code>.</p>
+            <div class="code-block">
+               <code>
+                  &lt;div class="item {{ isActive ? 'active' : 'hidden' }}"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;h2&gt;{{ title ? title : 'Заголовок відсутній' }}&lt;/h2&gt;<br>
+                  &lt;/div&gt;
+               </code>
+            </div>
+            <div class="code-block">
+               <code>
+                  &lt;div class="item {{ isActive ? 'active' : 'hidden' }}"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;{{title? &lt;h2&gt;{{title}}&lt;/h2&gt; : ''}}<br>
+                  &lt;/div&gt;
+               </code>
+            </div>
+         </section>
+
+         <section>
+            <h2>Використання if elseif та else:</h2>
+            <p>Приклад використання в компоненті в який передається параметр <code>title</code>.</p>
+            <div class="code-block">
+               <code>
+                  &lt;div class="item"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;h2&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;if condition="title === 'bar'"&gt;Заголовок: BAR&lt;/if&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;elseif condition="title === 'wow'"&gt;Заголовок: WOW&lt;/elseif&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;else&gt;{{title}}&lt;/else&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;/h2&gt;<br>
+                  &lt;/h2&gt;
+               </code>
+            </div>
+         </section>
+
+         <section>
+            <h2>Використання switch case</h2>
+            <p>Приклади використання в компоненті в який передаються параметри <code>contact</code> та <code>link</code>.</p>
+            <div class="code-block">
+               <code>
+                  &lt;a href="{{link}}"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;switch expression="contact"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;case n="'instagram'"&gt;'&lt;span&gt;Instagram history&lt;/span&gt;'&lt;/case&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;case n="'telegram'"&gt;'&lt;span&gt;Telegram page&lt;/span&gt;'&lt;/case&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;case n="'facebook'"&gt;'&lt;span&gt;Add on Facebook&lt;/span&gt;'&lt;/case&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;default&gt;{{contact}}&lt;/default&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;/switch&gt;<br>
+                  &lt;/a&gt;
+               </code>
+            </div>
+         </section>
+
+      </div>
+
+      <script src="files/script.js"></script>
+
+   </body>
+
+</html>

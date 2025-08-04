@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>HTML-компоненти</title>
+      <link rel="stylesheet" href="files/style.css">
+   </head>
+
+   <body>
+
+      <div class="wrapper">
+
+         <header>
+            <h1>Налаштування проекту</h1>
+            <p>
+               Цей документ описує підключення та використання TailwindCSS, налаштування оптимізації зображень та стилів.
+            </p>
+            <p>Файл налаштувань збірки <code>template.config.js</code> в корні проекту</p>
+            <nav>
+               <a href="index.html">Головна</a>
+               <a href="tree.html">Структура</a>
+               <a href="posthtml.html">HTML-компоненти</a>
+               <a href="conditions.html">Умови та умовні вирази</a>
+               <a href="loop.html">Цикли та json</a>
+            </nav>
+         </header>
+
+         <section>
+            <h2>Як вмикнути TailwindCSS в проекті:</h2>
+            <p>потрібно вказати <code>tailwindcss: true</code></p>
+            <div class="code-block">
+               <code color>
+                  export default {<br>
+                  <span style="color: #bcbcbc;">
+                     &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green; font-weight: 600;">tailwindcss: true,</span><br>
+                     &nbsp;&nbsp;&nbsp;&nbsp;cleanCss: true,<br>
+                     &nbsp;&nbsp;&nbsp;&nbsp;images: {<br>
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+                     &nbsp;&nbsp;&nbsp;&nbsp;},<br>
+                  </span>
+                  }
+               </code>
+            </div>
+            <p>В головному файлі стилів <code>src/scss/main.scss</code> в самому верху потрібно розкоментувати наступне</p>
+            <div class="code-block">
+               <code>
+                  @forward "tailwindcss";
+               </code>
+            </div>
+            <p>Файл <code>tailwindcss.scss</code> використовується для імпорту стилів TailwindCSS та написання стилів компонентів TailwindCSS</p>
+            <p>Файл <code>tailwind.config.js</code> що в корні проекту, використовується для налаштування TailwindCSS</p>
+         </section>
+
+         <section>
+            <h2>Очищення CSS в Build від не потрібних стилів:</h2>
+            <p>потрібно вказати <code>cleanCss: true</code></p>
+            <div class="code-block">
+               <code>
+                  export default {<br>
+                  <span style="color: #bcbcbc;">
+                     &nbsp;&nbsp;&nbsp;&nbsp;tailwindcss: true,<br>
+                     &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green; font-weight: 600;">cleanCss: true,</span><br>
+                     &nbsp;&nbsp;&nbsp;&nbsp;images: {<br>
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+                     &nbsp;&nbsp;&nbsp;&nbsp;},<br>
+                  </span>
+                  }
+               </code>
+            </div>
+         </section>
+
+         <section>
+            <h2>Оптимізація зображень в Build:</h2>
+            <p>Для оптимізації в оригінальному форматі вказати <code>imageMin: true</code>.</p>
+            <p>Для створення WebP потрібно вказати <code>imageMin: true</code> та <code>makeWebp: true</code>. В <code>ignore-webp</code> масивом вказуються класи для яких не створювати WebP.</p>
+            <p>Для автоматичного заповнення атрибутів <code>width</code> та <code>height</code> вказати <code>addImgSizes: true</code>.</p>
+            <p>Для налаштування якості зображень вказати в <code>imageQuality: { jpg: 80, png: [0.6, 0.8], webp: 80 }</code>.</p>
+            <div class="code-block">
+               <code>
+                  export default {<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;images: {<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imageMin: true,<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;makeWebp: true<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addImgSizes: true<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignoreWebpClasses: ['ignore-webp'],<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imageQuality: {<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jpg: 80,<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;png: [0.6, 0.8],<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;webp: 80<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;},<br>
+                  }
+               </code>
+            </div>
+         </section>
+
+      </div>
+
+      <script src="files/script.js"></script>
+
+   </body>
+
+</html>

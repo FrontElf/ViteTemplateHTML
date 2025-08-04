@@ -1,0 +1,76 @@
+<script>
+   document.documentElement.classList.add('loading')
+
+   const preloaderParams = {
+      cssAnimationDuration: 4300,
+      removePreloaderDelay: 500
+   }
+
+   let isAnimationEnded = false
+
+   // Запускаємо таймер анімації
+   setTimeout(() => {
+      isAnimationEnded = true
+   }, preloaderParams.cssAnimationDuration)
+
+   function removePreloader() {
+      const preloader = document.getElementById('page-preloader')
+      if (preloader) {
+         preloader.classList.add('preloader-close')
+         setTimeout(() => {
+            preloader.remove()
+         }, preloaderParams.removePreloaderDelay)
+      }
+      document.documentElement.classList.add('loaded')
+      document.documentElement.classList.remove('loading')
+   }
+
+   function isNonLazyImage(img) {
+      return !img.hasAttribute('loading') || img.getAttribute('loading') !== 'lazy'
+   }
+
+   function checkReady() {
+      if (isAnimationEnded) {
+         removePreloader()
+      } else {
+         setTimeout(checkReady, 100) // перевіряємо кожні 100 мс
+      }
+   }
+
+   function checkImages() {
+      const images = Array.from(document.images).filter(isNonLazyImage)
+
+      if (images.length === 0) {
+         checkReady()
+         return
+      }
+
+      let loadedCount = 0
+
+      function onImgLoaded() {
+         loadedCount++
+         if (loadedCount >= images.length) {
+            checkReady()
+         }
+      }
+
+      images.forEach(img => {
+         if (img.complete) {
+            loadedCount++
+         } else {
+            img.addEventListener('load', onImgLoaded)
+            img.addEventListener('error', onImgLoaded)
+         }
+      })
+
+      if (loadedCount >= images.length) {
+         checkReady()
+      }
+   }
+
+   if (document.readyState === 'complete') {
+      checkImages()
+   } else {
+      window.addEventListener('load', checkImages)
+   }
+</script>

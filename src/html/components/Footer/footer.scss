@@ -1,0 +1,328 @@
+.footer {
+   font-size: toRem(16);
+
+   &__top {
+      background: var(--c-text);
+      color: var(--c-white);
+      padding: toRem(36) 0 toRem(30) 0;
+   }
+
+   &__bottom {
+      padding: toRem(20) 0 toRem(25) 0;
+
+      @media (max-width:$mobile) {
+         padding: toRem(24) 0;
+      }
+
+      .footer__container {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         column-gap: toRem(24);
+         row-gap: toRem(18);
+         flex-wrap: wrap;
+      }
+   }
+
+   // .footer__copyright
+
+   &__copyright {}
+
+   // .footer__links
+
+   &__links {
+      display: flex;
+      align-items: center;
+      column-gap: toRem(18);
+
+      li {
+         &:not(:last-child) {
+            display: flex;
+            column-gap: toRem(18);
+
+            &::after {
+               content: "";
+               width: toRem(1);
+               margin-top: 0.1em;
+               height: 1em;
+               background-color: var(--c-light-grey);
+            }
+         }
+      }
+   }
+
+   // .footer__container
+
+   &__container {}
+
+   // .footer__columns
+
+   &__columns {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      align-items: start;
+      justify-content: space-between;
+      gap: toRem(43);
+
+      @media (max-width:$mobile) {
+         grid-template-columns: auto auto;
+         justify-content: start;
+      }
+
+      @media (max-width:$mobileSmall) {
+         grid-template-columns: 1fr;
+         row-gap: toRem(32);
+      }
+   }
+
+   // .footer__col
+
+   &__col {
+      display: flex;
+      flex-direction: column;
+      row-gap: toRem(24);
+      height: 100%;
+      align-items: start;
+
+      &--logo {}
+
+      &--contacts {}
+
+      &--app {
+         min-width: toRem(170);
+
+         @media (max-width:$mobile) and (min-width:$mobileSmall) {
+            grid-column: span 2;
+         }
+      }
+   }
+
+   // .footer__logo
+
+   &__logo {}
+
+   // .footer__social
+
+   &__social {
+      display: flex;
+      align-items: center;
+      gap: toRem(5);
+      margin-left: toRem(-5);
+      color: var(--c-turquoise);
+      font-size: toRem(18);
+
+      i {
+         position: relative;
+         z-index: 4;
+      }
+
+      a {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         width: toRem(30);
+         height: toRem(30);
+         flex: 0 0 toRem(30);
+         border-radius: toRem(5);
+         background: var(--c-teal);
+         transition: all 0.3s;
+
+         @media (any-hover: hover) {
+            &:hover {
+               box-shadow: 0 0 toRem(15) 0 rgba(64, 218, 203, 0.2);
+            }
+         }
+      }
+   }
+
+   // .footer__title
+
+   &__title {
+      font-weight: 700;
+      font-size: toRem(18);
+   }
+
+   // .footer__subtitle
+
+   &__subtitle {
+      max-width: toRem(505);
+      line-height: 1.4;
+   }
+}
+
+//========================================================================================================================================================
+
+.contacts-footer {
+   display: flex;
+   column-gap: toRem(43);
+   row-gap: toRem(24);
+   flex-wrap: wrap;
+
+   @media (max-width:$mobileSmall) {
+      flex-direction: column;
+   }
+
+   li {
+      a {
+         display: flex;
+         align-items: center;
+         gap: toRem(10);
+      }
+
+      i {
+         color: var(--c-turquoise);
+      }
+   }
+}
+
+.payments-footer {
+   flex: 1 1 auto;
+   display: flex;
+   flex-direction: column;
+   justify-content: end;
+
+   &__icon {
+      max-width: toRem(211);
+
+      img {
+         width: 100%;
+      }
+   }
+}
+
+.footer-app {
+   flex: 1 1 auto;
+   display: flex;
+   flex-direction: column;
+   justify-content: end;
+
+   // .footer-app__card
+
+   .store-buttons {
+      grid-template-columns: auto auto;
+      justify-content: start;
+
+      a {
+         height: toRem(35);
+      }
+   }
+}
+
+//========================================================================================================================================================
+
+.fixed-actions {
+   position: fixed;
+   z-index: 10;
+   bottom: toRem(15);
+   left: 0;
+   width: 100%;
+   pointer-events: none;
+
+
+
+   transition: all 0.3s;
+   opacity: 0;
+   visibility: hidden;
+
+   .scrolled & {
+      opacity: 1;
+      visibility: visible
+   }
+
+   .footer-visible & {
+      opacity: 0;
+      visibility: hidden;
+   }
+
+   &__container {
+      display: flex;
+      flex-direction: column;
+      row-gap: toRem(18);
+      align-items: center;
+
+      @media (min-width:$mobile) {
+         display: none !important;
+         visibility: hidden !important;
+      }
+
+      @media (min-width:$mobileSmall) {
+         max-width: calc(400px + 30px);
+      }
+
+      @media (max-width:$mobileSmall) {
+         max-width: calc(281px + 30px);
+      }
+   }
+
+   .pickup-button {
+      flex: 0 0 auto;
+      min-width: 0;
+      width: auto;
+      width: 100%;
+      margin: 0 auto;
+      pointer-events: all;
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+      // box-shadow: none;
+      // border: toRem(1) solid rgba(0, 0, 0, 0.1);
+      // box-shadow:
+      //    0 toRem(5) toRem(8) toRem(-6) rgba(64, 218, 203, 0.6),
+      //    0 toRem(2) toRem(5) toRem(-4) rgba(64, 218, 203, 0.6),
+      //    inset 0 toRem(1) toRem(2) toRem(0) rgba(256, 256, 256, 0.9);
+
+      box-shadow:
+         0 toRem(5) toRem(8) toRem(-6) rgba(0, 0, 0, 0.9),
+         inset toRem(1) toRem(1) toRem(4) toRem(0) rgba(256, 256, 256, 0.9);
+
+      &::before {
+         content: '';
+         position: absolute;
+         inset: toRem(0);
+         z-index: -1;
+         border-radius: inherit;
+         background: var(--g-main-v2);
+         // backdrop-filter: blur(2px);
+         // transition: all 0.3s;
+      }
+
+
+      i {
+         background: transparent;
+         border: toRem(1) solid currentColor;
+      }
+
+      @media (min-width:$mobile) {
+         display: none;
+      }
+   }
+
+   .store-buttons {
+      pointer-events: all;
+   }
+
+   .call-action {
+      position: fixed;
+      bottom: toRem(160);
+      right: toRem(15);
+      pointer-events: all;
+
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+
+      @media (max-width:$mobile) {
+         bottom: 40vh;
+      }
+
+      .scrolled & {
+         opacity: 1;
+         visibility: visible
+      }
+
+      .footer-visible & {
+         opacity: 0;
+         visibility: hidden;
+      }
+   }
+}

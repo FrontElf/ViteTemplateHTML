@@ -1,0 +1,48 @@
+@use "@s/inc" as *;
+@use "sass:math";
+
+html,
+body {
+  scroll-behavior: smooth;
+  overscroll-behavior-y: none;
+}
+
+html,
+body,
+.wrapper {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+body {
+  font-family: var(--font-main);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--text-base-line);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-style: normal;
+  min-width: 320px;
+
+  .lock & {
+    overflow: hidden;
+    touch-action: none;
+    overscroll-behavior: none;
+  }
+
+  .loaded & {}
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+
+  main {
+    flex: 1 1 auto;
+  }
+}
+
+//========================================================================================================================================================
+
+
+//========================================================================================================================================================

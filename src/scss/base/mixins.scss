@@ -1,0 +1,114 @@
+@use 'sass:math';
+@use "@s/settings/params" as *;
+
+@function percent($px, $from: 100) {
+  $result: math.div($px, $from) * 100%;
+  @return $result;
+}
+
+@function toRem($px, $current: 16) {
+  $result: math.div($px, $current) + rem;
+  @return $result;
+}
+
+@function toEm($px, $current: 16) {
+  $result: math.div($px, $current) + em;
+  @return $result;
+}
+
+@mixin gridCards($type: fit, $min: 280px, $max: 1fr, $gap: 30px) {
+  display: grid;
+  gap: $gap;
+  grid-template-columns: repeat(auto-#{$type}, minmax($min, $max));
+}
+
+@mixin adaptiveValue($property,
+  $startSize,
+  $minSize,
+  $keepSize: 0,
+  $widthFrom: $containerWidth,
+  $widthTo: $minWidth) {
+  @if ($startSize==0) {
+    $startSize: 0.000001;
+  }
+
+  @if ($minSize==0) {
+    $minSize: 0.000001;
+  }
+
+  $addSize: math.div($startSize - $minSize, 16);
+
+  @if ($widthFrom ==$containerWidth and $maxWidthContainer ==0) {
+    $widthFrom: $maxWidth;
+  }
+
+  $widthFromMedia: toEm($widthFrom);
+  $widthToMedia: toEm($widthTo);
+
+  $slope: math.div(($startSize - $minSize), ($widthFrom - $widthTo));
+  $yIntersection: -$widthTo * $slope + $minSize;
+
+  @if ($yIntersection==0) {
+    $yIntersection: 0.000001;
+  }
+
+  $flyValue: #{toRem($yIntersection)}' + '#{$slope * 100}vw;
+
+  $propertyValue: #{'clamp(' toRem($minSize) ',' $flyValue ',' toRem($startSize)
+ ')'
+}
+
+;
+
+@if ($minSize > $startSize) {
+  $propertyValue: #{'clamp('
+ toRem($startSize) ','
+    $flyValue ','
+    toRem($minSize) ')'
+}
+
+;
+}
+
+@if $keepSize !=1 and $keepSize !=3 {
+  @media (min-width: $widthFromMedia) {
+    #{$property}: toRem($startSize);
+  }
+}
+
+@media (min-width: $widthToMedia) and (max-width: $widthFromMedia) {
+  @supports (#{$property}: $propertyValue) {
+    #{$property}: $propertyValue;
+  }
+
+  @supports not (#{$property}: $propertyValue) {
+    #{$property}: calc(#{toRem($minSize)} + #{$addSize} * (100vw - #{toRem($widthTo)}) / #{math.div(
+ $widthFrom,
+      16) - math.div($widthTo, 16)
+  });
+}
+}
+
+@if $keepSize !=1 and $keepSize !=2 {
+  @media (max-width: $widthToMedia) {
+    #{$property}: toRem($minSize);
+  }
+}
+}
+
+//========================================================================================================================================================
+
+@mixin adaptiveSize($propertyCalc, $symbolCalc, $meaningCalc) {
+  #{$propertyCalc}: calc(calc(1vw + 1vh) #{$symbolCalc} #{$meaningCalc});
+}
+
+@mixin responseSize($prop, $min, $fluid, $max: 999rem) {
+  $fluidUnit: if(type-of($fluid)=='number', 'vw', unit($fluid));
+  $fluidValue: if(type-of($fluid)=='number', $fluid, strip-unit($fluid));
+
+  #{$prop}: clamp($min, $fluidValue * 1#{$fluidUnit}, $max);
+
+  @supports (#{$prop}: 1cqi) {
+    #{$prop}: clamp($min, $fluidValue * 1cqi, $max);
+  }
+}

@@ -1,0 +1,319 @@
+@use "sass:map";
+@use "sass:math";
+@use "@s/inc" as *;
+
+// ? --------------------------------------------------
+// ? ------------------ Документація ------------------
+// ? --------------------------------------------------
+
+// ? ------------------ Контейнер ------------------
+// .layout-container — адаптивний контейнер з внутрішніми відступами (padding-inline),
+// які змінюються згідно з брейкпоінтами. Центрує контент і задає max-width.
+
+// ? ------------------ Сітка (Grid Row) ------------------
+// .row — елемент-сітка на 12 колонок через grid-template-columns.
+// gap між колонками змінюється відповідно до брейкпоінтів.
+
+// ? ------------------ Колонки ------------------
+// .col-{1-12} — колонка, яка займає N колонок із 12 (grid-column: span N).
+// .offset-{1-12} — зсув колонки на N позицій (grid-column-start: N+1).
+// .col-auto — колонка з автоматичною шириною (grid-column: auto).
+
+// ? ------------------ Адаптивні колонки ------------------
+// .col-{bp}-{1-12} — адаптивна колонка: застосовується на певному брейкпоінті.
+// .offset-{bp}-{1-12} — адаптивний зсув колонки на брейкпоінті.
+// .col-{bp}-auto — адаптивна колонка з автоматичною шириною.
+
+// ? ------------------ Grid span / start / end ------------------
+// .col-span-{1-12} — вручну вказати span колонки (grid-column: span N).
+// .col-start-{1-12} — вказати з якого стовпця починати.
+// .col-end-{1-12} — вказати до якого стовпця тягнути.
+// .row-span-{1-12}, .row-start-{1-12}, .row-end-{1-12} — аналогічно, але для рядків.
+
+// ? ------------------ Grid шаблони ------------------
+// .grid-cols-{1-12} — створює шаблон колонок (grid-template-columns).
+// .grid-rows-{1-12} — створює шаблон рядків (grid-template-rows).
+
+// ? ------------------ Gap утиліти ------------------
+// .gap-{n} — загальний gap між елементами (px).
+// .gap-x-{n} — тільки між колонками (column-gap).
+// .gap-y-{n} — тільки між рядками (row-gap).
+
+// ? ------------------ Вирівнювання всього ------------------
+// .items-start / center / end — вирівнювання рядків по вертикалі (align-items).
+// .justify-start / center / end / stretch — вирівнювання колонок по горизонталі (justify-items).
+// .place-start / center / end / stretch — одночасне вирівнювання по вертикалі та горизонталі (place-items).
+
+// ? ------------------ Вирівнювання елементів ------------------
+// .self-start / center / end / stretch — позиціонування окремого елемента (justify-self).
+// .place-self-start / center / end / stretch — позиціонування елемента по двох осях (place-self).
+
+// ? ------------------ Auto-flow ------------------
+// .flow-row / col — напрямок заповнення сітки.
+// .flow-dense — автоматичне ущільнення елементів.
+// .flow-row-dense / col-dense — поєднання напрямку і ущільнення.
+
+// ? ------------------ Налаштування ------------------
+
+$grid-columns: 12;
+
+$gutter-widths: (
+   base: toRem(24),
+   sm: toRem(16),
+   md: toRem(24),
+   lg: toRem(32),
+   xl: toRem(40)
+);
+
+$breakpoints: (
+   base: toRem(320),
+   small: $mobileSmall,
+   mobile: $mobile,
+   tablet: $tablet,
+   desktop: $desktop
+);
+
+$gap-sizes: (
+   0,
+   4,
+   8,
+   16,
+   24,
+   32,
+   40
+);
+
+
+
+// ? ------------------ Міксини ------------------
+
+@mixin respond($breakpoint) {
+   @media (min-width: map.get($breakpoints, $breakpoint)) {
+      @content;
+   }
+}
+
+// ? ------------------ Контейнер ------------------
+
+.layout-container {
+   width: 100%;
+   margin-inline: auto;
+   padding-inline: map.get($gutter-widths, base);
+   max-width: 1200px;
+
+   @each $bp, $width in $gutter-widths {
+      @include respond($bp) {
+         padding-inline: $width;
+      }
+   }
+}
+
+// ? ------------------ Grid Row ------------------
+
+.row {
+   display: grid;
+   grid-template-columns: repeat($grid-columns, 1fr);
+   gap: map.get($gutter-widths, base);
+
+   @each $bp, $gutter in $gutter-widths {
+      @include respond($bp) {
+         gap: $gutter;
+      }
+   }
+}
+
+// ? ------------------ Колонки ------------------
+
+@for $i from 1 through $grid-columns {
+   .col-#{$i} {
+      grid-column: span $i;
+   }
+
+   .offset-#{$i} {
+      grid-column-start: $i + 1;
+   }
+}
+
+// ? ------------------ Колонки по брейкпоінтах ------------------
+
+@each $bp, $val in $breakpoints {
+   @include respond($bp) {
+      @for $i from 1 through $grid-columns {
+         .col-#{$bp}-#{$i} {
+            grid-column: span $i;
+         }
+
+         .offset-#{$bp}-#{$i} {
+            grid-column-start: $i + 1;
+         }
+      }
+
+      .col-#{$bp}-auto {
+         grid-column: auto;
+      }
+   }
+}
+
+// ? ------------------ Gap утиліти ------------------
+
+@each $size in $gap-sizes {
+   .gap-#{$size} {
+      gap: #{$size}px;
+   }
+
+   .gap-x-#{$size} {
+      column-gap: #{$size}px;
+   }
+
+   .gap-y-#{$size} {
+      row-gap: #{$size}px;
+   }
+}
+
+// ? ------------------ Grid-span, start, end ------------------
+
+@for $i from 1 through $grid-columns {
+   .col-span-#{$i} {
+      grid-column: span $i;
+   }
+
+   .col-start-#{$i} {
+      grid-column-start: $i;
+   }
+
+   .col-end-#{$i} {
+      grid-column-end: $i + 1;
+   }
+
+   .row-span-#{$i} {
+      grid-row: span $i;
+   }
+
+   .row-start-#{$i} {
+      grid-row-start: $i;
+   }
+
+   .row-end-#{$i} {
+      grid-row-end: $i + 1;
+   }
+}
+
+// ? ------------------ Grid templates ------------------
+
+@for $i from 1 through 12 {
+   .grid-cols-#{$i} {
+      grid-template-columns: repeat(#{$i}, 1fr);
+   }
+
+   .grid-rows-#{$i} {
+      grid-template-rows: repeat(#{$i}, 1fr);
+   }
+}
+
+// ? ------------------ Auto Width ------------------
+
+.col-auto {
+   grid-column: auto;
+}
+
+// ? ------------------ Вирівнювання всього ------------------
+
+.items-start {
+   align-items: start;
+}
+
+.items-center {
+   align-items: center;
+}
+
+.items-end {
+   align-items: end;
+}
+
+.justify-start {
+   justify-items: start;
+}
+
+.justify-center {
+   justify-items: center;
+}
+
+.justify-end {
+   justify-items: end;
+}
+
+.justify-stretch {
+   justify-items: stretch;
+}
+
+.place-start {
+   place-items: start;
+}
+
+.place-center {
+   place-items: center;
+}
+
+.place-end {
+   place-items: end;
+}
+
+.place-stretch {
+   place-items: stretch;
+}
+
+// ? ------------------ Вирівнювання елементів ------------------
+
+.self-start {
+   justify-self: start;
+}
+
+.self-center {
+   justify-self: center;
+}
+
+.self-end {
+   justify-self: end;
+}
+
+.self-stretch {
+   justify-self: stretch;
+}
+
+.place-self-start {
+   place-self: start;
+}
+
+.place-self-center {
+   place-self: center;
+}
+
+.place-self-end {
+   place-self: end;
+}
+
+.place-self-stretch {
+   place-self: stretch;
+}
+
+// ? ------------------ Auto-flow керування ------------------
+
+.flow-row {
+   grid-auto-flow: row;
+}
+
+.flow-col {
+   grid-auto-flow: column;
+}
+
+.flow-dense {
+   grid-auto-flow: dense;
+}
+
+.flow-row-dense {
+   grid-auto-flow: row dense;
+}
+
+.flow-col-dense {
+   grid-auto-flow: column dense;
+}

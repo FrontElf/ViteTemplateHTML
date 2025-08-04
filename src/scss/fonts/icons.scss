@@ -1,0 +1,39 @@
+%ic {
+  font-family: "icons" !important;
+  display: block;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class*="_icon-"] {
+  @extend %ic;
+} 
+
+
+:root {
+--_icon-E-mail: "\ea01";
+--_icon-Phone: "\ea02";
+--_icon-Region: "\ea03";
+--_icon-facebook: "\ea04";
+--_icon-instagram: "\ea05";
+--_icon-star: "\ea06";
+}
+._icon-E-mail::before { content: var(--_icon-E-mail); }
+._icon-Phone::before { content: var(--_icon-Phone); }
+._icon-Region::before { content: var(--_icon-Region); }
+._icon-facebook::before { content: var(--_icon-facebook); }
+._icon-instagram::before { content: var(--_icon-instagram); }
+._icon-star::before { content: var(--_icon-star); }
+
+
+$_icon-E-mail: '\ea01';
+$_icon-Phone: '\ea02';
+$_icon-Region: '\ea03';
+$_icon-facebook: '\ea04';
+$_icon-instagram: '\ea05';
+$_icon-star: '\ea06';

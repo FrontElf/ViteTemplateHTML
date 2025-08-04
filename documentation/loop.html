@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>HTML-компоненти</title>
+      <link rel="stylesheet" href="files/style.css">
+   </head>
+
+   <body>
+
+      <div class="wrapper">
+
+         <header>
+            <h1>Цикли з масивами та Json файлом</h1>
+            <p>
+               Цей документ описує підключення компонентів в циклах, ввивід контенту з json файлу.
+            </p>
+            <nav>
+               <a href="index.html">Головна</a>
+               <a href="tree.html">Структура</a>
+               <a href="posthtml.html">HTML-компоненти</a>
+               <a href="conditions.html">Умови та умовні вирази</a>
+               <a href="settings.html">Налаштування</a>
+            </nav>
+         </header>
+
+         <section>
+            <h2>Використання контенту з json:</h2>
+            <ul>
+               <li><strong>response</strong> - містить всього json файлу,</li>
+               <li><strong>post</strong> (можна вказати свою назву) - містить один елемент json файлу,</li>
+               <li><strong>post</strong> (можна вказати свою назву) - містить один елемент json файлу,</li>
+               <li><strong>index</strong> - індекс елемента (за потреби можна використовувати)</li>
+            </ul>
+
+            <h3>Підключення компонента циклом з json</h3>
+            <p>Приклад</p>
+            <div class="code-block">
+               <code>
+                  &lt;fetch url="@с/card/cards-data.json"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;each loop="post, index in response"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;include src="@с/card/_card.html"&lt;/include&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;/each&gt;<br>
+                  &lt;/fetch&gt;
+               </code>
+            </div>
+            <p>*при виклику компонента об'єкт <code>post</code> та <code>index</code> передаються автоматично, і доступні в компоненті так:</p>
+            <code>_card.html</code>
+            <div class="code-block">
+               <code>
+                  &lt;div&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;h2&gt;{{post.title}}&lt;/h2&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;{{post.text}}&lt;/p&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;span&gt;{{post.date}}&lt;/span&gt;<br>
+                  &lt;/div&gt;
+               </code>
+            </div>
+
+            <h3>Вивід контента одразу циклом з json</h3>
+            <p>Приклад</p>
+            <div class="code-block">
+               <code>
+                  &lt;fetch url="@с/card/cards-data.json"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;each loop="post, index in response"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="card"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h2&gt;{{post.title}}&lt;/h2&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;{{post.description}}&lt;/p&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;img src="{{post.img}}" alt="{{post.title}}"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;/each&gt;<br>
+                  &lt;/fetch&gt;
+               </code>
+            </div>
+         </section>
+
+         <section>
+            <h2>Використання циклу для масиву що передається в параметрі <code>list</code>.</h2>
+
+            <h3>Варіант 1.</h3>
+            <p>Приклад виклику</p>
+            <p>*В даному випадку параметри <code>item</code> nf <code>index</code> можна не передавати, так як вони вже передаються автоматично</p>
+            <div class="code-block">
+               <code>
+                  &lt;ul&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;each loop="item, index in ['facebook', 'telegram', 'facebook','twitter']"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;include src="@с/card/_list-item.html"&gt;&lt;/include&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;/each&gt;<br>
+                  &lt;/ul&gt;
+               </code>
+            </div>
+            <p>Приклад виводу в компоненті</p>
+            <div class="code-block">
+               <code>
+                  &lt;li&gt;&lt;span&gt;{{index}}&lt;/span&gt;&nbsp;{{item}}&lt;/li&gt;
+               </code>
+            </div>
+
+            <h3>Варіант 2.</h3>
+            <p>Приклад виклику</p>
+            <div class="code-block">
+               <code>
+                  &lt;include<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;src="@с/card/_list.html"<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;locals='{"list": ['facebook', 'telegram', 'facebook','twitter']}'&gt;<br>
+                  &lt;/include&gt;
+               </code>
+            </div>
+            <p>Приклад виводу в компоненті</p>
+            <div class="code-block">
+               <code>
+                  &lt;ul&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;each loop="item, index in list"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;{{ index }}: {{ item }}&lt;/li&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;/each&gt;<br>
+                  &lt;/ul&gt;
+               </code>
+            </div>
+         </section>
+
+      </div>
+
+      <script src="files/script.js"></script>
+
+   </body>
+
+</html>

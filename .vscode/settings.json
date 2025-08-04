@@ -1,0 +1,21 @@
+{
+  "path-autocomplete.pathMappings": {
+    "@h": "${folder}/src/html/",
+    "@o": "${folder}/src/html/other/",
+    "@c": "${folder}/src/html/components/",
+    "@ui": "${folder}/src/html/components/UI/",
+    "@p": "${folder}/src/pages/",
+    "@j": "${folder}/src/js/",
+    "@s": "${folder}/src/scss/",
+    "@st": "${folder}/src/css/",
+    "@i": "${folder}/src/assets/img/",
+    "@v": "${folder}/src/assets/video/",
+    "@f": "${folder}/src/assets/files/"
+  },
+  "viteHtmlComponentCreator.defaultImports": {
+    "html_imports": [
+      "<link rel='stylesheet' href='@c/{component}/{component}.css'/>"
+    ],
+    "scss_imports": []
+  }
+}

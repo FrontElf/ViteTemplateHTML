@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>HTML-компоненти</title>
+      <link rel="stylesheet" href="files/style.css">
+   </head>
+
+   <body>
+
+      <div class="wrapper">
+
+         <header>
+            <h1>HTML-компоненти</h1>
+            <p>
+               Цей документ описує підключення компонентів, передачу параметрів, вивід контенту з json файлу, цикли, умови та інших умовних виразів.
+            </p>
+            <nav>
+               <a href="index.html">Головна</a>
+               <a href="tree.html">Структура</a>
+               <a href="conditions.html">Умови та умовні вирази</a>
+               <a href="loop.html">Цикли та json</a>
+               <a href="settings.html">Налаштування</a>
+            </nav>
+         </header>
+
+         <section>
+            <h2>Просте підключення компонента:</h2>
+            <p>Приклад (з аліасом)</p>
+            <div class="code-block">
+               <code>
+                  &lt;include src="@c/header/_header.html"&gt;&lt;/include&gt;
+               </code>
+            </div>
+            <p>або (без аліасу)</p>
+            <div class="code-block">
+               <code>
+                  &lt;include src="./src/html/components/header/_header.html"&gt;&lt;/include&gt;
+               </code>
+            </div>
+         </section>
+
+         <section>
+            <h2>Підключення компонента з параметрами:</h2>
+            <p>Приклад (параметри передаються в атрибуті <code>locals='{}'</code> в об'єкті, при при цьому об'єкт має бути в одинарних лапках.)</p>
+            <div class="code-block">
+               <code>
+                  &lt;include<br>
+                  &nbsp;&nbsp;src="@c/card/_card.html"<br>
+                  &nbsp;&nbsp;locals='{"title": "Заголовок", "description": "Опис", "img": "@img/1/1.jpg"}'<br>
+                  &lt;/include&gt;
+               </code>
+            </div>
+            <p>можна відформатувати</p>
+            <div class="code-block">
+               <code id="code-output-02-format">
+                  &lt;include<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;src="@c/card/_card.html"<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;locals='{{<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"title": "Заголовок",<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"description": "Опис",<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"img": "src/assets/img/1/1.jpg"<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;}}'&gt;<br>
+                  &lt;/include&gt;
+               </code>
+            </div>
+         </section>
+
+         <section>
+            <h2>Використання параметрів що передаються через атрибут <code>locals</code> в компоненті.</h2>
+            <p>Приклад</p>
+            <div class="code-block">
+               <code>
+                  &lt;div class="block"&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;h2&gt;{{title}}&lt;/h2&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;{{description}}&lt;/p&gt;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;img src="{{img}}" alt="{{title}}"&gt;<br>
+                  &lt;/div&gt;
+               </code>
+            </div>
+         </section>
+
+      </div>
+
+      <script src="files/script.js"></script>
+
+   </body>
+
+</html>

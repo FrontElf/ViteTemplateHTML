@@ -1,0 +1,6 @@
+@use "gallery-inc.scss" as *;
+
+// Core
+@forward '_lg-fonts';
+@forward 'lg-theme-default';
+@forward 'lightgallery-core';

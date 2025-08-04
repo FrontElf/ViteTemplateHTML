@@ -1,0 +1,65 @@
+:root {
+  --font-icons: "icons";
+  --font-main: 'Montserrat', sans-serif;
+
+  //  Основні
+  --color-primary: #e24922;
+  //  Кнопки, акценти
+  --color-primary-dark: #c13c21;
+  --color-secondary: #00493f;
+  // Фонові блоки, підвал
+  --color-secondary-alt: #36655c;
+  --color-bg: #f2eeea;
+  // Загальний фон сайту
+  --color-bg-alt: #e1ded8;
+  // Світлий фон варіація 
+  --color-text: #0a0c07;
+  // Текст на темному, хедерні написи
+  --color-white: #ffffff;
+
+  // Оригінальні назви
+  --color-spyla-gorobyna-1: #e24922;
+  --color-spyla-gorobyna-2: #c13c21;
+  --color-smerekovi-pralisi-1: #36655c;
+  --color-smerekovi-pralisi-2: #00493f;
+  --color-yafiny-polonyni: #0a0c07;
+  --color-molochko-kulbaby-1: #f2eeea;
+  --color-molochko-kulbaby-2: #e1ded8;
+
+  // Title sizes
+  --title-xl: 48px;
+  --title-xl-line: 1.3;
+
+  --title-lg: 36px;
+  --title-lg-line: 1.3;
+
+  --title-md: 24px;
+  --title-md-line: 1.33;
+
+  --title-sm: 18px;
+  --title-sm-line: 1.44;
+
+  // Body sizes
+  --text-base: 16px;
+  --text-base-line: 1.5;
+
+  --text-sm: 14px;
+  --text-sm-line: 1.57;
+
+  --text-xs: 10px;
+  --text-xs-line: 1.6;
+
+  // Button
+  --button-font-size: 14px;
+  --button-line: 1.57;
+
+  // Transitions
+
+  --transition-main: 0.3s ease 0s;
+
+  // Font weights
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+}

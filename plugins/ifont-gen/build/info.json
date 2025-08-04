@@ -1,0 +1,38 @@
+{
+  "E-mail": {
+    "encodedCode": "\\ea01",
+    "prefix": "_icon",
+    "className": "_icon-E-mail",
+    "unicode": "&#59905;"
+  },
+  "Phone": {
+    "encodedCode": "\\ea02",
+    "prefix": "_icon",
+    "className": "_icon-Phone",
+    "unicode": "&#59906;"
+  },
+  "Region": {
+    "encodedCode": "\\ea03",
+    "prefix": "_icon",
+    "className": "_icon-Region",
+    "unicode": "&#59907;"
+  },
+  "facebook": {
+    "encodedCode": "\\ea04",
+    "prefix": "_icon",
+    "className": "_icon-facebook",
+    "unicode": "&#59908;"
+  },
+  "instagram": {
+    "encodedCode": "\\ea05",
+    "prefix": "_icon",
+    "className": "_icon-instagram",
+    "unicode": "&#59909;"
+  },
+  "star": {
+    "encodedCode": "\\ea06",
+    "prefix": "_icon",
+    "className": "_icon-star",
+    "unicode": "&#59910;"
+  }
+}

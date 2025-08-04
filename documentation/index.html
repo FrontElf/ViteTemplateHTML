@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Документація до збірки Vite</title>
+      <link rel="stylesheet" href="files/style.css">
+   </head>
+
+   <body>
+
+      <div class="wrapper">
+
+         <header>
+            <h1>Документація до збірки на основі Vite</h1>
+            <p>Цей документ описує налаштування та структуру збірки для проєкту, заснованого на Vite.</p>
+            <nav>
+               <a href="tree.html">Структура</a>
+               <a href="posthtml.html">HTML-компоненти</a>
+               <a href="conditions.html">Умови та умовні вирази</a>
+               <a href="loop.html">Цикли та json</a>
+               <a href="settings.html">Налаштування</a>
+            </nav>
+         </header>
+
+         <section>
+            <h2>Основні команди</h2>
+            <ul>
+               <li><span class="command">yarn d</span> — запуск сервера для розробки.</li>
+               <li><span class="command">yarn b</span> — білд проєкту.</li>
+               <li><span class="command">yarn p</span> — перегляд білду на сервері.</li>
+               <li><span class="command">yarn f</span> — генерація іконочного шрифту та конвертація шрифтів.</li>
+               <li><span class="command">yarn i</span> — генерація тільки іконочного шрифту.</li>
+            </ul>
+         </section>
+
+         <section>
+            <h2>Аліаси (скорочення) шляхів</h2>
+
+            <ul>
+               <li><code>@h/</code>: <code>./src/html/</code></li>
+               <li><code>@c/</code>: <code>./src/html/components/</code></li>
+               <li><code>@j/</code>: <code>/src/js/</code></li>
+               <li><code>@s/</code>: <code>/src/scss/</code></li>
+               <li><code>@i/</code>: <code>/src/assets/img/</code></li>
+               <li><code>@f/</code>: <code>/src/assets/files/</code></li>
+            </ul>
+         </section>
+
+         <section>
+            <h2>Основні плагіни для роботи з HTML-компонентами</h2>
+            <p>Збірка використовує <code>@vituum/vite-plugin-posthtml</code> з такими плагінами:</p>
+            <ul>
+               <li><strong>posthtml-fetch</strong> — дозволяє підключати HTML-фрагменти з інших файлів.</li>
+               <li><strong>posthtml-expressions</strong> — додає можливість працювати з умовними виразами та змінними в HTML.</li>
+               <li><strong>posthtml-beautify</strong> — автоматично форматуює HTML-файли.</li>
+               <li><strong>posthtml-webp</strong> — додає підтримку формату WebP для зображень.</li>
+               <li><strong>posthtml-replace</strong> — замінює певні шаблонні значення в HTML.</li>
+            </ul>
+         </section>
+
+         <section>
+            <h2>Розробка стилів</h2>
+            <p>Для написання стилів використовується SCSS. Основні плагіни:</p>
+            <ul>
+               <li><strong>vite-plugin-purgecss</strong> — видаляє зайві CSS-стилі під час білду для оптимізації.</li>
+               <li><strong>vite-plugin-sass-glob-import</strong> — забезпечує автоматичне підключення стилів компонентів з <code>src/html/components/</code>.</li>
+            </ul>
+         </section>
+
+         <section>
+            <h2>Оптимізація зображень</h2>
+            <p>Зображення стискаються та конвертуються в WebP за допомогою <code>vite-plugin-imagemin</code> з такими модулями:</p>
+            <ul>
+               <li><strong>imagemin-mozjpeg</strong> — стискання JPEG-зображень.</li>
+               <li><strong>imagemin-webp</strong> — конвертує зображення у формат WebP.</li>
+               <li><strong>imagemin-pngquant</strong> — оптимізує PNG-зображення.</li>
+            </ul>
+         </section>
+
+         <section>
+            <h2>Структура папок проєкту</h2>
+            <ul>
+               <li><strong>src/</strong> — основна директорія для розробки.</li>
+               <li><strong>src/assets/</strong> — зберігання файлів, зображень, шрифтів та відео.</li>
+               <li><strong>src/html/</strong> — шаблони HTML.</li>
+               <li><strong>src/pages/</strong> — сторінки сайту.</li>
+            </ul>
+         </section>
+
+         <section>
+            <h2>Системні файли</h2>
+            <ul>
+               <li><strong>snippets.json</strong> — містить рекомендовані сніпети для роботи з шаблоном.</li>
+               <li><strong>template.config.js</strong> — файл налаштувань шаблону.</li>
+            </ul>
+         </section>
+
+         <section>
+            <h2>Шрифти та іконки</h2>
+            <p>Для шрифтів та іконок використовується папка <code>fonts-convert/</code>:</p>
+            <ul>
+               <li>Шрифти у форматі <code>ttf</code> розміщуються в корені папки <code>fonts-convert/</code>.</li>
+               <li>SVG-іконки для генерації шрифту — у <code>fonts-convert/icons/</code>.</li>
+            </ul>
+            <p>Процес генерування шрифтів створює файли шрифтів у форматі <code>woff2</code> в папці <code>src/assets/fonts/</code>, а також генерує файли <code>fonts.scss</code> та <code>icons.scss</code> у <code>src/scss/fonts/</code> з класами для шрифтів та іконок. Додаткові матеріали для іконок (оптимізовані SVG, шпаргалка по іконках) — у <code>plugins/ifont-gen/dist/</code>.</p>
+            <p>Також в папці src/html/components/other/ створюється <code>_fonts.html</code> який підключений в <code>head</code>, це підключає шрифти в <code>head</code> з атрибутами <code>preload</code> та <code>crossorigin</code> для швидкого завантаження.</p>
+         </section>
+
+      </div>
+
+   </body>
+
+</html>

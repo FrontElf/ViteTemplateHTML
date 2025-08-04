@@ -1,0 +1,17 @@
+{% if nameAsUnicode %}.{{prefix}}{% else %}[class*="{{prefix}}-"]{% endif %} {
+  font-family: '{{fontname}}' !important;{{fontSize}}
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+{% if not nameAsUnicode %}
+{{ cssString }}
+{% for name, value in infoData %}
+${{prefix}}-{{ name }} = '{{ value.encodedCode }}'
+{%- endfor %}
+{% endif %}

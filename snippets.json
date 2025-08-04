@@ -1,0 +1,96 @@
+{
+  "Include mixins & parameters": {
+    "scope": "scss",
+    "prefix": "sas",
+    "body": ["@use \"@s/inc\" as *;"],
+    "description": "Вставляє підключення міксинів в scss"
+  },
+  "Include responseSize": {
+    "scope": "scss",
+    "prefix": "rs",
+    "body": [
+      "@include responseSize('font-size', ${1:min}, ${2:val}, ${3:max});"
+    ],
+    "description": "Адаптивна властивість в залежності від розміру контейнера."
+  },
+  "Include Component": {
+    "prefix": "include",
+    "body": ["<include src=\"@c${1:/component_path}\"></include>"],
+    "description": "Вставляє компонент header"
+  },
+  "Include Card Locals": {
+    "prefix": "includeLocals",
+    "body": [
+      "<include",
+      "  src=\"@c${1:/component_path}\"",
+      "  locals='{$2}'>",
+      "</include>"
+    ],
+    "description": "Вставка компонента card з можливістю передати змінні через locals"
+  },
+  "Ternary Expression": {
+    "prefix": "ternary",
+    "body": ["{{ ${1:condition} ? '${2:trueValue}' : '${3:falseValue}' }}"],
+    "description": "Тернарний вираз з умовою та двома можливими значеннями"
+  },
+  "Conditional Block": {
+    "prefix": "ifelse",
+    "body": [
+      "<if condition=\"${1:variable} === '${2:value}'\">${3:Lorem1}</if>",
+      "<elseif condition=\"${1:variable} === '${4:value2}'\">${5:Lorem2}</elseif>",
+      "<else>{{${1:variable}}}</else>"
+    ],
+    "description": "Умова з if, elseif та else"
+  },
+  "Tabs": {
+    "scope": "html",
+    "prefix": "tabs",
+    "body": [
+      "<div data-tabs class=\"${1:tabs}\">\n\t<nav data-tabs-titles class=\"${1:tabs}__navigation\">\n\t\t<button type=\"button\" class=\"${1:tabs}__title _tab-active\">Таб №1</button>\n\t\t<button type=\"button\" class=\"${1:tabs}__title\">Таб №2</button>\n\t\t<button type=\"button\" class=\"${1:tabs}__title\">Таб №3</button>\n\t</nav>\n\t<div data-tabs-body class=\"${1:tabs}__content\">\n\t\t<div class=\"${1:tabs}__body\">\n\t\t\tВміст першого таба\n\t\t</div>\n\t\t<div class=\"${1:tabs}__body\">\n\t\t\tВміст другого таба\n\t\t</div>\n\t\t<div class=\"${1:tabs}__body\">\n\t\t\tВміст третього таба\n\t\t</div>\n\t</div>\n</div>"
+    ],
+    "description": "Додає базовий HTML код табів"
+  },
+  "Switch Case": {
+    "prefix": "switch",
+    "body": [
+      "<switch expression=\"${1:variable}\">",
+      "  <case n=\"${2:1}\">${3:'<span>value1</span>'}</case>",
+      "  <case n=\"${4:2}\">${5:'<span>value2</span>'}</case>",
+      "  <case n=\"${6:3}\">${7:'<span>value3</span>'}</case>",
+      "  <default>{{${1:variable}}}</default>",
+      "</switch>"
+    ],
+    "description": "Switch case блок"
+  },
+  "Fetch with Each Loop and Custom Content": {
+    "prefix": "fetch-content",
+    "body": [
+      "<fetch url=\"@c${1:/json_path}\">",
+      "  <each loop=\"${2:post, index in response}\">",
+      "    $3",
+      "  </each>",
+      "</fetch>"
+    ],
+    "description": "Fetch block with each loop and custom content"
+  },
+  "Fetch with Each Loop and Include": {
+    "prefix": "fetch-include",
+    "body": [
+      "<fetch url=\"@c${1:/json_path}\">",
+      "  <each loop=\"${2:item, index in response}\">",
+      "    <include src=\"@c${3:/}\"></include>",
+      "  </each>",
+      "</fetch>"
+    ],
+    "description": "Fetch block with each loop and include component"
+  },
+  "Each Loop with Include Component": {
+    "prefix": "loop-include",
+    "body": [
+      "<each loop=\"${1:item, index in ['', '', '']}\">",
+      "  <include src=\"@c${2:/}\"></include>",
+      "</each>"
+    ],
+    "description": "Each loop with include component"
+  }
+}
