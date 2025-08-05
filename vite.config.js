@@ -20,6 +20,7 @@ const makeAliases = (aliases) => {
 const GLOBAL_HTML_VARIABLES = {
   IS_TAILWIND: templateCfg.isTailwind,
   IS_DEV: !isProduction,
+  IS_PRELOADER: templateCfg.isPreloader,
   ...templateCfg.HTMLVariables
 }
 
@@ -32,7 +33,6 @@ const ignoredFiles = ['package.json', 'yarn.lock', 'snippets.json', 'README.md']
 
 export default defineConfig({
   base: '',
-  // root: process.cwd(),
   plugins: [
     modules.vituum({
       pages: { normalizeBasePath: true, }

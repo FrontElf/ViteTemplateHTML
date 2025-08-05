@@ -7,6 +7,7 @@ export async function processEachNode(node, props, processNodes, evalExpression,
    const tagName = loopOpts.tagName ?? 'each'
    const dataDir = loopOpts.dataDir ?? 'src/data'
    const logger = options.logger ?? console
+   const isLogger = options.isLogger ?? true
 
    if (node.tag !== tagName || !node.attrs?.loop) return null
 
@@ -25,7 +26,7 @@ export async function processEachNode(node, props, processNodes, evalExpression,
             if (!res.ok) throw new Error(res.statusText)
             localProps.data = await res.json()
          } catch (e) {
-            logger.warn(`${pluginName} ⚠️ Не вдалось отримати data з ${dataValue}`)
+            if (isLogger) logger.warn(`${pluginName} ⚠️ Не вдалось отримати data з ${dataValue}`)
             localProps.data = []
          }
       } else {
@@ -34,7 +35,7 @@ export async function processEachNode(node, props, processNodes, evalExpression,
             const fileContent = await fs.readFile(filePath, 'utf8')
             localProps.data = JSON.parse(fileContent)
          } catch (e) {
-            logger.warn(`${pluginName} ⚠️ Не вдалось прочитати data файл: ${filePath}`)
+            if (isLogger) logger.warn(`${pluginName} ⚠️ Не вдалось прочитати data файл: ${filePath}`)
             localProps.data = []
          }
       }

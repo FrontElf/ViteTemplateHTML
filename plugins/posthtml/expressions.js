@@ -42,7 +42,7 @@ export default function expressionsPlugin(initProps = {}, options = {}) {
             `)
             defineProps = { ...defineProps, ...func() }
          } catch (e) {
-            logger.warn(`${pluginName} ❌ Не вдалося виконати <script define>`, e)
+            if (options.isLogger) logger.warn(`${pluginName} ❌ Не вдалося виконати <script define>`, e)
          }
       }
       return { defineProps, cleanNodes }
@@ -104,24 +104,41 @@ export default function expressionsPlugin(initProps = {}, options = {}) {
          if (node.tag === tagIf) {
             let handled = false
             let j = i
-            if (node.attrs?.condition && await evalExpression(node.attrs.condition, props)) {
-               if (node.content) result.push(...await processNodes(node.content, props))
-               handled = true
-            } else {
-               while (cleanNodes[j + 1]) {
+            // Збираємо всі elseif/else, які йдуть підряд після if, пропускаючи пробіли/переноси
+            const branches = []
+            branches.push(cleanNodes[j])
+            while (cleanNodes[j + 1]) {
+               const next = cleanNodes[j + 1]
+               // Пропускаємо текстові вузли (пробіли, переноси)
+               if (typeof next === 'string' && next.trim() === '') {
                   j++
-                  if (cleanNodes[j].tag === tagElseIf && cleanNodes[j].attrs?.condition && await evalExpression(cleanNodes[j].attrs.condition, props)) {
-                     if (cleanNodes[j].content) result.push(...await processNodes(cleanNodes[j].content, props))
-                     handled = true
-                     break
-                  } else if (cleanNodes[j].tag === tagElse && !handled) {
-                     if (cleanNodes[j].content) result.push(...await processNodes(cleanNodes[j].content, props))
+                  continue
+               }
+               if (next.tag === tagElseIf || next.tag === tagElse) {
+                  j++
+                  branches.push(next)
+                  continue
+               }
+               break
+            }
+            // Логування props тільки якщо isLogger: true
+            if (options.isLogger) {
+               logger.log('[expressions-plugin][DEBUG] props:', props)
+            }
+            for (const branch of branches) {
+               if (branch.tag === tagIf || branch.tag === tagElseIf) {
+                  if (branch.attrs?.condition && await evalExpression(branch.attrs.condition, props)) {
+                     if (branch.content) result.push(...await processNodes(branch.content, props))
                      handled = true
                      break
                   }
+               } else if (branch.tag === tagElse) {
+                  if (branch.content) result.push(...await processNodes(branch.content, props))
+                  handled = true
+                  break
                }
             }
-            while (cleanNodes[j + 1] && (cleanNodes[j + 1].tag === tagElseIf || cleanNodes[j + 1].tag === tagElse)) j++
+            // Пропускаємо всі elseif/else, які були частиною цієї конструкції
             i = j
             continue
          }

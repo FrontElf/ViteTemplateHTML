@@ -3,11 +3,12 @@
     "@h": "${folder}/src/html/",
     "@o": "${folder}/src/html/other/",
     "@c": "${folder}/src/html/components/",
+    "@tc": "${folder}/src/html/test_components/",
     "@ui": "${folder}/src/html/components/UI/",
     "@p": "${folder}/src/pages/",
     "@j": "${folder}/src/js/",
     "@s": "${folder}/src/scss/",
-    "@st": "${folder}/src/css/",
+    "@tw": "${folder}/src/tw_css/",
     "@i": "${folder}/src/assets/img/",
     "@v": "${folder}/src/assets/video/",
     "@f": "${folder}/src/assets/files/"

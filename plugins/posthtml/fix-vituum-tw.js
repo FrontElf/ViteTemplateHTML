@@ -7,7 +7,7 @@ const CONFIG = {
       indexHtml: 'index.html',
    },
    assets: {
-      styles: '@st/main.css',
+      styles: '@tw/main.css',
       scripts: '@j/main.js',
    },
    env: {

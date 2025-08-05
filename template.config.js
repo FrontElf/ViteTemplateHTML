@@ -1,5 +1,6 @@
 export default {
    isTailwind: true,
+   isPreloader: false,
    images: {
       makeWebp: true,
       optimizeNoWebp: false,
@@ -37,11 +38,12 @@ export default {
       '@h': '/src/html/',
       '@o': '/src/html/other/',
       '@c': '/src/html/components/',
+      '@tc': '/src/html/test_components/',
       '@ui': '/src/html/components/UI/',
       '@p': '/src/pages/',
       '@j': '/src/js/',
       '@s': '/src/scss/',
-      '@st': './src/css/',
+      '@tw': './src/tw_css/',
       '@i': '/src/assets/img/',
       '@v': '/src/assets/video/',
       '@f': '/src/assets/files/'

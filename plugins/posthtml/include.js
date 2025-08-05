@@ -11,6 +11,7 @@ export default function posthtmlComponentInclude(options = {}) {
    const defaultOptions = {
       componentPaths: ['src/html/'],
       cache: new Map(),
+      isLogger: false,
       logger: console,
       regex: {
          componentSelfClosing: /<([A-Z][A-Za-z0-9]*)(\s[^>]*)?\/>/g,
@@ -74,7 +75,7 @@ export default function posthtmlComponentInclude(options = {}) {
             const filePath = await findComponentFile(componentName)
 
             if (!filePath) {
-               config.logger.warn(`[posthtml-component-include] ❌ Компонент <${componentName}> не знайдено`)
+               if (config.isLogger) config.logger.warn(`[posthtml-component-include] ❌ Компонент <${componentName}> не знайдено`)
                nodes.splice(i, 1)
                i--
                continue

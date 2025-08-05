@@ -1,19 +1,24 @@
 <head>
   <meta charset="UTF-8" />
   <title>{{pageTitle}}</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="DipDap picks up, cleans, and delivers your laundry & dry clenaing.">
-  <Fonts />
+
+  <if condition="description">
+    <meta name="description" content="{{description}}">
+  </if>
 
   <if condition="IS_TAILWIND === true">
-    <link rel="stylesheet" href="@st/main.css" />
+    <link rel="stylesheet" href="@tw/main.css" />
   </if>
   <else>
     <link rel="stylesheet" href="@s/main.scss" />
   </else>
 
-  <!-- <meta name="theme-color" content="#FFD600"> -->
-  <!-- <PreloaderScript />
-  <PreloaderStyles /> -->
+  <if condition="IS_PRELOADER === true">
+    <PreloaderScript />
+    <PreloaderStyles />
+  </if>
 
+  <Fonts />
 </head>

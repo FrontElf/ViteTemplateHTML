@@ -2,13 +2,12 @@
    document.documentElement.classList.add('loading')
 
    const preloaderParams = {
-      cssAnimationDuration: 4300,
+      cssAnimationDuration: 500,
       removePreloaderDelay: 500
    }
 
    let isAnimationEnded = false
 
-   // Запускаємо таймер анімації
    setTimeout(() => {
       isAnimationEnded = true
    }, preloaderParams.cssAnimationDuration)
@@ -33,7 +32,7 @@
       if (isAnimationEnded) {
          removePreloader()
       } else {
-         setTimeout(checkReady, 100) // перевіряємо кожні 100 мс
+         setTimeout(checkReady, 100)
       }
    }
 
