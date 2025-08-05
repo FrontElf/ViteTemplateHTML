@@ -5,84 +5,112 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>HTML-компоненти</title>
-      <link rel="stylesheet" href="files/style.css">
+      <link rel="stylesheet" href="dist/css/style.css">
    </head>
 
    <body>
 
-      <div class="wrapper">
-
-         <header>
-            <h1>HTML-компоненти</h1>
-            <p>
-               Цей документ описує підключення компонентів, передачу параметрів, вивід контенту з json файлу, цикли, умови та інших умовних виразів.
-            </p>
-            <nav>
-               <a href="index.html">Головна</a>
-               <a href="tree.html">Структура</a>
-               <a href="conditions.html">Умови та умовні вирази</a>
-               <a href="loop.html">Цикли та json</a>
-               <a href="settings.html">Налаштування</a>
-            </nav>
-         </header>
-
-         <section>
-            <h2>Просте підключення компонента:</h2>
-            <p>Приклад (з аліасом)</p>
-            <div class="code-block">
-               <code>
-                  &lt;include src="@c/header/_header.html"&gt;&lt;/include&gt;
-               </code>
+      <header class="navbar bg-base-100 shadow-sm">
+         <div class="navbar-start">
+            <div class="dropdown">
+               <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+                  </svg>
+               </div>
+               <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                  <li><a href="index.html">Головна</a></li>
+                  <li><a href="tree.html">Структура</a></li>
+                  <li><a href="conditions.html">Умови та умовні вирази</a></li>
+                  <li><a href="loop.html">Цикли та json</a></li>
+                  <li><a href="constants.html">Змінні</a></li>
+                  <li><a href="settings.html">Налаштування</a></li>
+               </ul>
             </div>
-            <p>або (без аліасу)</p>
-            <div class="code-block">
-               <code>
-                  &lt;include src="./src/html/components/header/_header.html"&gt;&lt;/include&gt;
-               </code>
+            <a class="btn btn-ghost text-xl">FrontElf</a>
+         </div>
+         <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+               <li><a href="index.html">Головна</a></li>
+               <li><a href="tree.html">Структура</a></li>
+               <li><a href="conditions.html">Умови та умовні вирази</a></li>
+               <li><a href="loop.html">Цикли та json</a></li>
+               <li><a href="constants.html">Змінні</a></li>
+               <li><a href="settings.html">Налаштування</a></li>
+            </ul>
+         </div>
+         <div class="navbar-end"></div>
+      </header>
+
+      <main class="wrapper">
+
+         <div class="hero py-20 bg-base-200">
+            <div class="hero-content text-center">
+               <div class="max-w-xl">
+                  <h1 class="text-5xl font-bold">HTML-компоненти</h1>
+                  <p class="py-6">
+                     Цей документ описує підключення компонентів, передачу параметрів, вивід контенту.
+                  </p>
+               </div>
+            </div>
+         </div>
+
+         <section class="section py-10 ">
+            <div class="px-4 m-auto max-w-[1300px]">
+               <h2 class="text-2xl mb-6">Підключення компонента:</h2>
+               <h3 class="mb-4">Тег компонента є назвою html файлу компонента</h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>src/html/components/Header/Header.html</code></pre>
+                  <br>
+                  <pre><code>&lt;Header/&gt;</code></pre>
+               </div>
+
+               <h3 class="mb-4">Просте підключення (без передачі контента або параметрів):</h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;Header/&gt;</code></pre>
+               </div>
+
+               <h3 class="mb-4">Передавання пропсів (параметрів):</h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;Header title="Заголовок" isLogo="true"/&gt;</code></pre>
+               </div>
+
+               <h3 class="mb-4">Передавання контенту (будь що, текст, інші компоненти, html):</h3>
+               <h3 class="mb-4">Переданий контент буде доступний в компоненті під тегом <span class="badge badge-md badge-neutral">&lt;Content/&gt;</span></h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;Button type="link" isActive="true"&gt;Button&lt;/Button&gt;</code></pre>
+                  <br>
+                  <pre><code>&lt;Button type="link" isActive="true"&gt;</code></pre>
+                  <pre><code>   &lt;span&gt;Button text&lt;/span&gt;</code></pre>
+                  <pre><code>   &lt;i class="_icon-arrow-right"&gt;&lt;/i&gt;</code></pre>
+                  <pre><code>&lt;/Button&gt;</code></pre>
+                  <br>
+                  <pre><code>&lt;Header className="header"&gt;</code></pre>
+                  <pre><code>   &lt;NavMenu activeLink="1"/&gt;</code></pre>
+                  <pre><code>&lt;/Header&gt;</code></pre>
+               </div>
             </div>
          </section>
 
-         <section>
-            <h2>Підключення компонента з параметрами:</h2>
-            <p>Приклад (параметри передаються в атрибуті <code>locals='{}'</code> в об'єкті, при при цьому об'єкт має бути в одинарних лапках.)</p>
-            <div class="code-block">
-               <code>
-                  &lt;include<br>
-                  &nbsp;&nbsp;src="@c/card/_card.html"<br>
-                  &nbsp;&nbsp;locals='{"title": "Заголовок", "description": "Опис", "img": "@img/1/1.jpg"}'<br>
-                  &lt;/include&gt;
-               </code>
-            </div>
-            <p>можна відформатувати</p>
-            <div class="code-block">
-               <code id="code-output-02-format">
-                  &lt;include<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;src="@c/card/_card.html"<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;locals='{{<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"title": "Заголовок",<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"description": "Опис",<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"img": "src/assets/img/1/1.jpg"<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;}}'&gt;<br>
-                  &lt;/include&gt;
-               </code>
+         <section class="section py-10 ">
+            <div class="px-4 m-auto max-w-[1300px]">
+               <h2 class="text-2xl mb-6">Використання параметрів що передаються через пропси:</h2>
+
+               <div class="mockup-code w-full mb-4">
+                  <pre><code><span class="opacity-50">// src/html/components/Button/Button.html</span></code></pre>
+                  <br>
+                  <pre><code>&lt;button type="button" {{isActive != "true" ? "disabled" : ''}}&gt;</code></pre>
+                  <pre><code>   &lt;Content/&gt;</code></pre>
+                  <pre><code>&lt;/button&gt;</code></pre>
+                  <br>
+                  <pre><code>&lt;header class="{{className}}"&gt;</code></pre>
+                  <pre><code>   &lt;Content/&gt;</code></pre>
+                  <pre><code>&lt;/header&gt;</code></pre>
+               </div>
             </div>
          </section>
 
-         <section>
-            <h2>Використання параметрів що передаються через атрибут <code>locals</code> в компоненті.</h2>
-            <p>Приклад</p>
-            <div class="code-block">
-               <code>
-                  &lt;div class="block"&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;h2&gt;{{title}}&lt;/h2&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;{{description}}&lt;/p&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;img src="{{img}}" alt="{{title}}"&gt;<br>
-                  &lt;/div&gt;
-               </code>
-            </div>
-         </section>
-
-      </div>
+      </main>
 
       <script src="files/script.js"></script>
 

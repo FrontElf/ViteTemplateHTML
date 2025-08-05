@@ -5,83 +5,94 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Документація до збірки Vite</title>
-      <link rel="stylesheet" href="files/style.css">
+      <link rel="stylesheet" href="dist/css/style.css">
    </head>
 
    <body>
 
-      <div class="wrapper">
-         <header>
-            <h1>Структура проекту</h1>
-            <p>Цей документ описує основну структуру проекту.</p>
-            <nav>
-               <a href="index.html">Головна</a>
-               <a href="posthtml.html">HTML-компоненти</a>
-               <a href="conditions.html">Умови та умовні вирази</a>
-               <a href="loop.html">Цикли та json</a>
-               <a href="settings.html">Налаштування</a>
-            </nav>
-         </header>
+      <header class="navbar bg-base-100 shadow-sm">
+         <div class="navbar-start">
+            <div class="dropdown">
+               <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+                  </svg>
+               </div>
+               <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                  <li><a href="tree.html">Структура</a></li>
+                  <li><a href="posthtml.html">HTML-компоненти</a></li>
+                  <li><a href="conditions.html">Умови та умовні вирази</a></li>
+                  <li><a href="loop.html">Цикли та json</a></li>
+                  <li><a href="settings.html">Налаштування</a></li>
+               </ul>
+            </div>
+            <a class="btn btn-ghost text-xl">FrontElf</a>
+         </div>
+         <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+               <li><a href="index.html">Головна</a></li>
+               <li><a href="posthtml.html">HTML-компоненти</a></li>
+               <li><a href="conditions.html">Умови та умовні вирази</a></li>
+               <li><a href="loop.html">Цикли та json</a></li>
+               <li><a href="settings.html">Налаштування</a></li>
+            </ul>
+         </div>
+         <div class="navbar-end"></div>
+      </header>
 
-         <section>
-            <div class="tree">
-               <i>...</i> <br>
-               <i>|--| </i>dist/ <span>(Зібраний проект)</span><br>
-               <i>|--| </i>src/ <span>(папка з похідними файлами)</span> <br>
-               <i>|-----| </i>html/ <span>(Файли HTML)</span><br>
-               <i>|--------| </i>components/ <span>(Компоненти)</span><br>
-               <i>|-----------| </i>header/ <span></span><br>
-               <i>|--------------| </i>_header.html <span></span><br>
-               <i>|--------------| </i>header.scss <span></span><br>
-               <i>|-----------| </i>footer/ <br>
-               <i>|--------------| </i>_footer.html <br>
-               <i>|--------------| </i>footer.scss <br>
-               <i>|-----------| </i>card/ <br>
-               <i>|--------------| </i>_card.html <br>
-               <i>|--------------| </i>card.scss <br>
-               <i>|--------------| </i>cards.json <br>
-               <i>|--------| </i>sections/ <span>(Секції)</span><br>
-               <i>|-----------| </i>hero/ <br>
-               <i>|--------------| </i>_hero.html <br>
-               <i>|--------------| </i>hero.scss <br>
-               <i>|--------| </i>modals/ <span>(Попапи)</span><br>
-               <i>|-----------| </i>auth-modal/ <br>
-               <i>|--------------| </i>_auth-modal.html <br>
-               <i>|--------------| </i>auth-modal.scss <br>
-               <i>|--------| </i>ui/ <span>(UI елементи "кнопки, інпути, інше...")</span><br>
-               <i>|-----------| </i>button/ <br>
-               <i>|--------------| </i> _button.html <br>
-               <i>|--------------| </i>button.scss <br>
-               <i>|-----| </i>js/ <span>(Скрипти проекту)</span><br>
-               <i>|--------| </i>main.js/ <span>(Головний файл скриптів")</span><br>
-               <i>|--------| </i>custom.js/ <span>(Кастомні скрипти")</span><br>
-               <i>|-----| </i>scss/ <span>(Стилі)</span><br>
-               <i>|--------| </i>base/ <span>(Базові стилі")</span><br>
-               <i>|-----------| </i>base.scss <span>(Підключаються файли з папки)</span><br>
-               <i>|-----------| </i>mixins.scss <span>(Міксини)</span><br>
-               <i>|-----------| </i>reset.scss <span>(Обнулення)</span><br>
-               <i>|-----------| </i>variables.scss <span>(CSS змінні)</span><br>
-               <i>|--------| </i>base/ <br>
-               <i>|-----------| </i>fonts.scss <span>(Шрифти)</span><br>
-               <i>|-----------| </i>icons.scss <span>(Іконки іконочного шрифта)</span><br>
-               <i>|--------| </i>libs/ <span>(Стилі бібліотек "swiper, lightgallery і т.д.")</span><br>
-               <i>|--------| </i>settings/ <br>
-               <i>|-----------| </i>media.scss <span>(Розміри брекпоінтів)</span><br>
-               <i>|-----------| </i>params.scss <span>(Глобальні налаштування проекту "контейнер, полотно, шрифт і т.д.")</span><br>
-               <i>|--------| </i>connect.scss <span>Підключення всіх файлів для імпорту в main.scss</span> <br>
-               <i>|--------| </i>global.scss <span>Глобальні стилі</span> <br>
-               <i>|--------| </i>tailwindcss.scss <span>Імпорти та стилі для TailwindCSS</span> <br>
-               <i>|--------| </i>main.scss <span>Головний файл проекту</span> <br>
-               <i>|-----| </i>assets/ <span>(Файли проекту)</span><br>
-               <i>|--------| </i>files/ <span>(Різні файли "копіюються при білді")</span><br>
-               <i>|--------| </i>fonts/ <span>(Шрифти Woff2)</span><br>
-               <i>|--------| </i>img/ <span>(Зображення")</span><br>
-               <i>|--------| </i>video/ <span>(Відео")</span><br>
-               <i>...</i> <br>
+      <main class="wrapper">
+
+         <section class="section py-10 ">
+            <div class="px-4 m-auto max-w-[1300px]">
+               <h2 class="text-2xl mb-6">Структура проєкту</h2>
+               <div class="mockup-code w-full">
+                  <pre><code><i>|--|</i> dist/ <span class="opacity-50">- Зібраний проект</span></code></pre>
+                  <pre><code><i>|--|</i> src/ <span class="opacity-50">- папка з похідними файлами</span></code></pre>
+                  <pre><code><i>|-----|</i> data/ <span class="opacity-50">- Всі дані в json</span></code></pre>
+                  <pre><code><i>|--------|</i> products.json <span class="opacity-50">- json файл з даними</span></code></pre>
+                  <pre><code><i>|-----|</i> html/ <span class="opacity-50">- Файли HTML</span></code></pre>
+                  <pre><code><i>|--------|</i> components/ <span class="opacity-50">- Компоненти</span></code></pre>
+                  <pre><code><i>|-----------|</i> Header/</code></pre>
+                  <pre><code><i>|--------------|</i> Header.html</code></pre>
+                  <pre><code><i>|--------------|</i> header.scss</code></pre>
+                  <pre><code><i>|-----------|</i> Footer/</code></pre>
+                  <pre><code><i>|--------------|</i> Footer.html</code></pre>
+                  <pre><code><i>|--------------|</i> footer.scss</code></pre>
+                  <pre><code><i>|-----------|</i> Hero/</code></pre>
+                  <pre><code><i>|--------------|</i> Hero.html</code></pre>
+                  <pre><code><i>|--------------|</i> hero.scss</code></pre>
+                  <pre><code><i>|--------|</i> ui/ <span class="opacity-50">- UI елементи (кнопки, інпути...)</span></code></pre>
+                  <pre><code><i>|-----------|</i> Button/</code></pre>
+                  <pre><code><i>|--------------|</i> Button.html</code></pre>
+                  <pre><code><i>|--------------|</i> button.scss</code></pre>
+                  <pre><code><i>|-----|</i> js/ <span class="opacity-50">- Скрипти проекту</span></code></pre>
+                  <pre><code><i>|--------|</i> main.js <span class="opacity-50">- Головний файл скриптів</span></code></pre>
+                  <pre><code><i>|--------|</i> custom.js <span class="opacity-50">- Кастомні скрипти</span></code></pre>
+                  <pre><code><i>|-----|</i> scss/ <span class="opacity-50">- Стилі</span></code></pre>
+                  <pre><code><i>|--------|</i> base/ <span class="opacity-50">- Базові стилі</span></code></pre>
+                  <pre><code><i>|-----------|</i> base.scss <span class="opacity-50">- Підключаються файли з папки</span></code></pre>
+                  <pre><code><i>|-----------|</i> mixins.scss <span class="opacity-50">- Міксини</span></code></pre>
+                  <pre><code><i>|-----------|</i> reset.scss <span class="opacity-50">- Обнулення</span></code></pre>
+                  <pre><code><i>|-----------|</i> variables.scss <span class="opacity-50">- CSS змінні</span></code></pre>
+                  <pre><code><i>|--------|</i> base/</code></pre>
+                  <pre><code><i>|-----------|</i> fonts.scss <span class="opacity-50">- Шрифти</span></code></pre>
+                  <pre><code><i>|-----------|</i> icons.scss <span class="opacity-50">- Іконки іконочного шрифта</span></code></pre>
+                  <pre><code><i>|--------|</i> libs/ <span class="opacity-50">- Стилі бібліотек (swiper, lightgallery...)</span></code></pre>
+                  <pre><code><i>|--------|</i> settings/</code></pre>
+                  <pre><code><i>|-----------|</i> media.scss <span class="opacity-50">- Розміри брейкпоінтів</span></code></pre>
+                  <pre><code><i>|-----------|</i> params.scss <span class="opacity-50">- Глобальні налаштування проекту</span></code></pre>
+                  <pre><code><i>|--------|</i> inc.scss <span class="opacity-50">- Імпорт усіх файлів у main.scss</span></code></pre>
+                  <pre><code><i>|--------|</i> global.scss <span class="opacity-50">- Глобальні стилі</span></code></pre>
+                  <pre><code><i>|--------|</i> main.scss <span class="opacity-50">- Головний файл проекту</span></code></pre>
+                  <pre><code><i>|-----|</i> assets/ <span class="opacity-50">- Файли проекту</span></code></pre>
+                  <pre><code><i>|--------|</i> files/ <span class="opacity-50">- Копіюються при білді</span></code></pre>
+                  <pre><code><i>|--------|</i> fonts/ <span class="opacity-50">- Шрифти Woff2</span></code></pre>
+                  <pre><code><i>|--------|</i> img/ <span class="opacity-50">- Зображення</span></code></pre>
+                  <pre><code><i>|--------|</i> video/ <span class="opacity-50">- Відео</span></code></pre>
+               </div>
             </div>
          </section>
-
-      </div>
+      </main>
 
    </body>
 

@@ -5,101 +5,94 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>HTML-компоненти</title>
-      <link rel="stylesheet" href="files/style.css">
+      <link rel="stylesheet" href="dist/css/style.css">
    </head>
 
    <body>
 
-      <div class="wrapper">
-
-         <header>
-            <h1>Налаштування проекту</h1>
-            <p>
-               Цей документ описує підключення та використання TailwindCSS, налаштування оптимізації зображень та стилів.
-            </p>
-            <p>Файл налаштувань збірки <code>template.config.js</code> в корні проекту</p>
-            <nav>
-               <a href="index.html">Головна</a>
-               <a href="tree.html">Структура</a>
-               <a href="posthtml.html">HTML-компоненти</a>
-               <a href="conditions.html">Умови та умовні вирази</a>
-               <a href="loop.html">Цикли та json</a>
-            </nav>
-         </header>
-
-         <section>
-            <h2>Як вмикнути TailwindCSS в проекті:</h2>
-            <p>потрібно вказати <code>tailwindcss: true</code></p>
-            <div class="code-block">
-               <code color>
-                  export default {<br>
-                  <span style="color: #bcbcbc;">
-                     &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green; font-weight: 600;">tailwindcss: true,</span><br>
-                     &nbsp;&nbsp;&nbsp;&nbsp;cleanCss: true,<br>
-                     &nbsp;&nbsp;&nbsp;&nbsp;images: {<br>
-                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
-                     &nbsp;&nbsp;&nbsp;&nbsp;},<br>
-                  </span>
-                  }
-               </code>
+      <header class="navbar bg-base-100 shadow-sm">
+         <div class="navbar-start">
+            <div class="dropdown">
+               <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+                  </svg>
+               </div>
+               <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                  <li><a href="index.html">Головна</a></li>
+                  <li><a href="tree.html">Структура</a></li>
+                  <li><a href="posthtml.html">HTML-компоненти</a></li>
+                  <li><a href="conditions.html">Умови та умовні вирази</a></li>
+                  <li><a href="loop.html">Цикли та json</a></li>
+                  <li><a href="constants.html">Змінні</a></li>
+               </ul>
             </div>
-            <p>В головному файлі стилів <code>src/scss/main.scss</code> в самому верху потрібно розкоментувати наступне</p>
-            <div class="code-block">
-               <code>
-                  @forward "tailwindcss";
-               </code>
-            </div>
-            <p>Файл <code>tailwindcss.scss</code> використовується для імпорту стилів TailwindCSS та написання стилів компонентів TailwindCSS</p>
-            <p>Файл <code>tailwind.config.js</code> що в корні проекту, використовується для налаштування TailwindCSS</p>
-         </section>
+            <a class="btn btn-ghost text-xl">FrontElf</a>
+         </div>
+         <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+               <li><a href="index.html">Головна</a></li>
+               <li><a href="tree.html">Структура</a></li>
+               <li><a href="posthtml.html">HTML-компоненти</a></li>
+               <li><a href="conditions.html">Умови та умовні вирази</a></li>
+               <li><a href="loop.html">Цикли та json</a></li>
+               <li><a href="constants.html">Змінні</a></li>
+            </ul>
+         </div>
+         <div class="navbar-end"></div>
+      </header>
 
-         <section>
-            <h2>Очищення CSS в Build від не потрібних стилів:</h2>
-            <p>потрібно вказати <code>cleanCss: true</code></p>
-            <div class="code-block">
-               <code>
-                  export default {<br>
-                  <span style="color: #bcbcbc;">
-                     &nbsp;&nbsp;&nbsp;&nbsp;tailwindcss: true,<br>
-                     &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green; font-weight: 600;">cleanCss: true,</span><br>
-                     &nbsp;&nbsp;&nbsp;&nbsp;images: {<br>
-                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
-                     &nbsp;&nbsp;&nbsp;&nbsp;},<br>
-                  </span>
-                  }
-               </code>
-            </div>
-         </section>
+      <main class="wrapper">
 
-         <section>
-            <h2>Оптимізація зображень в Build:</h2>
-            <p>Для оптимізації в оригінальному форматі вказати <code>imageMin: true</code>.</p>
-            <p>Для створення WebP потрібно вказати <code>imageMin: true</code> та <code>makeWebp: true</code>. В <code>ignore-webp</code> масивом вказуються класи для яких не створювати WebP.</p>
-            <p>Для автоматичного заповнення атрибутів <code>width</code> та <code>height</code> вказати <code>addImgSizes: true</code>.</p>
-            <p>Для налаштування якості зображень вказати в <code>imageQuality: { jpg: 80, png: [0.6, 0.8], webp: 80 }</code>.</p>
-            <div class="code-block">
-               <code>
-                  export default {<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;...<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;images: {<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imageMin: true,<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;makeWebp: true<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addImgSizes: true<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignoreWebpClasses: ['ignore-webp'],<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imageQuality: {<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jpg: 80,<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;png: [0.6, 0.8],<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;webp: 80<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;},<br>
-                  }
-               </code>
+         <div class="hero py-20 bg-base-200">
+            <div class="hero-content text-center">
+               <div class="max-w-xl">
+                  <h1 class="text-5xl font-bold">Налаштування проекту</h1>
+                  <p class="py-6">
+                     Цей документ описує підключення та використання TailwindCSS, налаштування оптимізації зображень та стилів.
+                  </p>
+               </div>
+            </div>
+         </div>
+
+         <section class="section py-10 ">
+            <div class="px-4 m-auto max-w-[1300px]">
+               <h2 class="text-2xl mb-6">Налаштування:</h2>
+               <h3 class="mb-4">Налаштування збірки здійснються в файлі <span class="badge badge-md badge-neutral">template.config.js</span> в корені проекту.</h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code><span class="opacity-50">// template.config.js</span></code></pre>
+                  <br>
+                  <pre><code>export default {</code></pre>
+                  <pre><code><span class="opacity-50">   // Вмикнути чи вимкнути TailwindCSS</span></code></pre>
+                  <pre><code>   tailwindcss: false,</code></pre>
+                  <pre><code><span class="opacity-50">   // Чи створювати WebP зображення</span></code></pre>
+                  <pre><code>   optimizeNoWebp: false,</code></pre>
+                  <pre><code>   HTMLVariables {</code></pre>
+                  <pre><code><span class="opacity-50">      ...Глобальні HTML змінні</span></code></pre>
+                  <pre><code>   }</code></pre>
+                  <pre><code>   webpQuality {</code></pre>
+                  <pre><code><span class="opacity-50">      ...Налаштування оптимізації WebP</span></code></pre>
+                  <pre><code>   }</code></pre>
+                  <pre><code>   imgQuality {</code></pre>
+                  <pre><code><span class="opacity-50">      ...Налаштування оптимізації JPEG, PNG</span></code></pre>
+                  <pre><code>   }</code></pre>
+                  <pre><code><span class="opacity-50">   // Вмикнути чи вимкнути оптимізацію CSS та JS</span></code></pre>
+                  <pre><code>   isMinifyCssJs: true,</code></pre>
+                  <pre><code>   serverProxy {</code></pre>
+                  <pre><code><span class="opacity-50">      ...Налаштування PHP сервера</span></code></pre>
+                  <pre><code>   }</code></pre>
+                  <pre><code>   aliases {</code></pre>
+                  <pre><code><span class="opacity-50">      ...Налаштування псевдонімів (аліасів)</span></code></pre>
+                  <pre><code>   }</code></pre>
+                  <pre><code><span class="opacity-50">   // Вмикнути чи вимкнути відносні псевдоніми</span></code></pre>
+                  <pre><code>   aliasesIsRelative: false,</code></pre>
+                  <pre><code>}</code></pre>
+                  <br>
+               </div>
             </div>
          </section>
 
-      </div>
-
-      <script src="files/script.js"></script>
+         <script src="files/script.js"></script>
 
    </body>
 

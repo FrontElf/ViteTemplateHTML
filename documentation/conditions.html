@@ -5,81 +5,105 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Умови та умовні вирази в HTML-компонентах</title>
-      <link rel="stylesheet" href="files/style.css">
+      <link rel="stylesheet" href="dist/css/style.css">
    </head>
 
    <body>
 
-      <div class="wrapper">
-
-         <header>
-            <h1>Умови та умовні вирази в HTML-компонентах</h1>
-            <p>
-               Цей документ описує використання в компонентах умов та умовних виразів в залежності від переданих параметрів.
-            </p>
-            <nav>
-               <a href="index.html">Головна</a>
-               <a href="tree.html">Структура</a>
-               <a href="posthtml.html">HTML-компоненти</a>
-               <a href="loop.html">Цикли та json</a>
-               <a href="settings.html">Налаштування</a>
-            </nav>
-         </header>
-
-         <section>
-            <h2>Використання умовного виразу</h2>
-            <p>*параметри які використовуються в умовівному виразі (тут isActive та title) мають передаватися обовязково, і повинен або мати значення або бути пустим!!!</p>
-            <p>Приклади використання в компоненті в який передаються параметри <code>title</code> та <code>isActive</code>.</p>
-            <div class="code-block">
-               <code>
-                  &lt;div class="item {{ isActive ? 'active' : 'hidden' }}"&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;h2&gt;{{ title ? title : 'Заголовок відсутній' }}&lt;/h2&gt;<br>
-                  &lt;/div&gt;
-               </code>
+      <header class="navbar bg-base-100 shadow-sm">
+         <div class="navbar-start">
+            <div class="dropdown">
+               <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+                  </svg>
+               </div>
+               <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                  <li><a href="index.html">Головна</a></li>
+                  <li><a href="tree.html">Структура</a></li>
+                  <li><a href="posthtml.html">HTML-компоненти</a></li>
+                  <li><a href="loop.html">Цикли та json</a></li>
+                  <li><a href="constants.html">Змінні</a></li>
+                  <li><a href="settings.html">Налаштування</a></li>
+               </ul>
             </div>
-            <div class="code-block">
-               <code>
-                  &lt;div class="item {{ isActive ? 'active' : 'hidden' }}"&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;{{title? &lt;h2&gt;{{title}}&lt;/h2&gt; : ''}}<br>
-                  &lt;/div&gt;
-               </code>
+            <a class="btn btn-ghost text-xl">FrontElf</a>
+         </div>
+         <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+               <li><a href="index.html">Головна</a></li>
+               <li><a href="tree.html">Структура</a></li>
+               <li><a href="posthtml.html">HTML-компоненти</a></li>
+               <li><a href="loop.html">Цикли та json</a></li>
+               <li><a href="constants.html">Змінні</a></li>
+               <li><a href="settings.html">Налаштування</a></li>
+            </ul>
+         </div>
+         <div class="navbar-end"></div>
+      </header>
+
+      <main class="wrapper">
+
+         <div class="hero py-20 bg-base-200">
+            <div class="hero-content text-center">
+               <div class="max-w-xl">
+                  <h1 class="text-5xl font-bold">Умови та умовні вирази в HTML-компонентах</h1>
+                  <p class="py-6">
+                     Цей документ описує використання в компонентах умов та умовних виразів в залежності від переданих параметрів.
+                  </p>
+               </div>
+            </div>
+         </div>
+
+         <section class="section py-10 ">
+            <div class="px-4 m-auto max-w-[1300px]">
+               <h2 class="text-2xl mb-6">Використання умовного виразу:</h2>
+
+               <h3 class="mb-4">Використання тернарних операторів</h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;button type="button" {{isActive != "true" ? "disabled" : ''}}&gt;</code></pre>
+                  <pre><code>   &lt;Content/&gt;</code></pre>
+                  <pre><code>&lt;/button&gt;</code></pre>
+                  <br>
+                  <pre><code>&lt;header class="{{isActive ? 'active-class' : ''}}"&gt;</code></pre>
+                  <pre><code>   &lt;Content/&gt;</code></pre>
+                  <pre><code>&lt;/header&gt;</code></pre>
+               </div>
+
+               <h3 class="mb-4">Використання блоку <span class="badge badge-md badge-neutral">if / elseif / else</span></h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code><span class="opacity-50">// src/html/components/Button/Button.html</span></code></pre>
+                  <br>
+                  <pre><code>&lt;if condition="elementType == 'button'"&gt;</code></pre>
+                  <pre><code>   &lt;button type="button"&gt;</code></pre>
+                  <pre><code>      &lt;Content/&gt;</code></pre>
+                  <pre><code>   &lt;/button&gt;</code></pre>
+                  <pre><code>&lt;/if&gt;</code></pre>
+                  <pre><code>&lt;elseif condition="elementType == 'link'"&gt;</code></pre>
+                  <pre><code>   &lt;a href="{{url}}" target="_blank"&gt;</code></pre>
+                  <pre><code>      &lt;Content/&gt;</code></pre>
+                  <pre><code>   &lt;/a&gt;</code></pre>
+                  <pre><code>&lt;/elseif&gt;</code></pre>
+                  <pre><code>&lt;else condition="elementType == 'link'"&gt;</code></pre>
+                  <pre><code>   Не обовязковий блок, але можна використовувати</code></pre>
+                  <pre><code>&lt;/else&gt;</code></pre>
+                  <br>
+               </div>
+
+               <div class="mockup-code w-full mb-4">
+                  <pre><code><span class="opacity-50">// src/html/components/Hero/Hero.html</span></code></pre>
+                  <br>
+                  <pre><code>&lt;section class="hero"&gt;</code></pre>
+                  <pre><code>   &lt;if condition="titleText"&gt;</code></pre>
+                  <pre><code>      &lt;{{tagName}} class="hero__title"{{titleText}}&lt;/{{tagName}}&gt;</code></pre>
+                  <pre><code>   &lt;/if&gt;</code></pre>
+                  <pre><code>   &lt;Content/&gt;</code></pre>
+                  <pre><code>&lt;/section&gt;</code></pre>
+               </div>
             </div>
          </section>
 
-         <section>
-            <h2>Використання if elseif та else:</h2>
-            <p>Приклад використання в компоненті в який передається параметр <code>title</code>.</p>
-            <div class="code-block">
-               <code>
-                  &lt;div class="item"&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;h2&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;if condition="title === 'bar'"&gt;Заголовок: BAR&lt;/if&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;elseif condition="title === 'wow'"&gt;Заголовок: WOW&lt;/elseif&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;else&gt;{{title}}&lt;/else&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;/h2&gt;<br>
-                  &lt;/h2&gt;
-               </code>
-            </div>
-         </section>
-
-         <section>
-            <h2>Використання switch case</h2>
-            <p>Приклади використання в компоненті в який передаються параметри <code>contact</code> та <code>link</code>.</p>
-            <div class="code-block">
-               <code>
-                  &lt;a href="{{link}}"&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;switch expression="contact"&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;case n="'instagram'"&gt;'&lt;span&gt;Instagram history&lt;/span&gt;'&lt;/case&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;case n="'telegram'"&gt;'&lt;span&gt;Telegram page&lt;/span&gt;'&lt;/case&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;case n="'facebook'"&gt;'&lt;span&gt;Add on Facebook&lt;/span&gt;'&lt;/case&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;default&gt;{{contact}}&lt;/default&gt;<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;/switch&gt;<br>
-                  &lt;/a&gt;
-               </code>
-            </div>
-         </section>
-
-      </div>
+      </main>
 
       <script src="files/script.js"></script>
 
