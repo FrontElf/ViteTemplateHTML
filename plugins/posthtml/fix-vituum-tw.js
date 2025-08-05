@@ -15,7 +15,6 @@ const CONFIG = {
    },
 }
 
-// HTML-шаблон
 const HTML_TEMPLATE = `
 <html lang="en">
   <head>

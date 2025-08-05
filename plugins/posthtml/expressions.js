@@ -121,7 +121,6 @@ export default function expressionsPlugin(initProps = {}, options = {}) {
                }
                break
             }
-            // Логування props тільки якщо isLogger: true
             if (options.isLogger) {
                logger.log('[expressions-plugin][DEBUG] props:', props)
             }
@@ -138,7 +137,6 @@ export default function expressionsPlugin(initProps = {}, options = {}) {
                   break
                }
             }
-            // Пропускаємо всі elseif/else, які були частиною цієї конструкції
             i = j
             continue
          }
