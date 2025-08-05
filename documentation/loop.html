@@ -55,15 +55,11 @@
             </div>
          </div>
 
-         <each data="services-data.json" loop="slide, index in data">
-            <ServicesSlide slide="{{slide}}" />
-         </each>
-
          <section class="section py-10 ">
             <div class="px-4 m-auto max-w-[1300px]">
                <h2 class="text-2xl mb-6">Використання контенту з json:</h2>
 
-               <h3 class="mb-4">Файли json з данними розміщуються у папці <span class="badge badge-md badge-neutral">src/json/*.json</span>, в циклі вказується лише назва файлу.</h3>
+               <h3 class="mb-4">Файли json з данними розміщуються у папці <span class="badge badge-md badge-neutral">src/data/*.json</span>, в циклі вказується лише назва файлу.</h3>
                <h3 class="mb-4">Данні елемента доступні в ключі який йде першим в <span class="badge badge-md badge-neutral">loop="ключ_елемента, index in data"</span>.</h3>
                <h3 class="mb-4">Також доступні для використання параметри <span class="badge badge-md badge-neutral">index</span> та <span class="badge badge-md badge-neutral">length</span>.</h3>
                <div class="mockup-code w-full mb-6">
