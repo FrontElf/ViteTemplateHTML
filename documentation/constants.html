@@ -66,6 +66,7 @@
             <div class="px-4 m-auto max-w-[1300px]">
                <h2 class="text-2xl mb-6">Глобальні змінні:</h2>
                <h3 class="mb-4">Глобальні змінні вказуються в файлі <span class="badge badge-md badge-neutral">template.config.js</span> в корені проекту, в обєкті <span class="badge badge-md badge-neutral">HTMLVariables: {}</span>:</h3>
+               <h3 class="mb-4">Також в файлі <span class="badge badge-md badge-neutral">vite.config.js</span> вказуються глобальні змінні такі як <span class="badge badge-md badge-neutral">IS_TAILWIND</span> та <span class="badge badge-md badge-neutral">IS_DEV</span> які можна доповнювати та використовувати в HTML-компонентах:</h3>
                <div class="mockup-code w-full mb-4">
                   <pre><code><span class="opacity-50">// template.config.js</span></code></pre>
                   <br>
@@ -75,6 +76,7 @@
                   <pre><code>      VERSION: '1.0.0',</code></pre>
                   <pre><code>      DESCRIPTION: 'Template Project Name',</code></pre>
                   <pre><code>      HEAD_TITLE: 'My Awesome Site'</code></pre>
+                  <pre><code>      API_URL: 'https://jsonplaceholder.typicode.com/users'</code></pre>
                   <pre><code>   }</code></pre>
                   <pre><code>   ...</code></pre>
                   <pre><code>}</code></pre>
@@ -85,6 +87,15 @@
                   <pre><code>   &lt;title&gt;{{HEAD_TITLE}}&lt;/title&gt;</code></pre>
                   <pre><code>   &lt;meta name="description" content="{{DESCRIPTION}}"/&gt;</code></pre>
                   <pre><code>&lt;/head&gt;</code></pre>
+                  <br>
+                  <pre><code>&lt;each data="{{API_URL}}" loop="user, index in data"&gt;</code></pre>
+                  <pre><code>   &lt;div class="user-card"&gt;</code></pre>
+                  <pre><code>      &lt;h2&gt;{{user.name}}&lt;/h2&gt;</code></pre>
+                  <pre><code>      &lt;p&gt;{{user.username}}&lt;/p&gt;</code></pre>
+                  <pre><code>      &lt;p&gt;{{user.address.street}}&lt;/p&gt;</code></pre>
+                  <pre><code>      &lt;p&gt;{{user.email}}&lt;/p&gt;</code></pre>
+                  <pre><code>   &lt;/div&gt;</code></pre>
+                  <pre><code>&lt;/each&gt;</code></pre>
                </div>
             </div>
          </section>
@@ -99,7 +110,7 @@
                   <br>
                   <pre><code>&lt;script define&gt;</code></pre>
                   <pre><code>    const title = 'The Smartest Way to Do Laundry'</code></pre>
-                  <pre><code>    const logo = '@img/logo.svg'</code></pre>
+                  <pre><code>    const logo = '@i/logo.svg'</code></pre>
                   <pre><code>    const subTitle = 'DipDap picks up, cleans, and delivers your laundry &amp; dry cleaning.'</code></pre>
                   <pre><code>    const contacts = {</code></pre>
                   <pre><code>       phone: '(800) 555-1212',</code></pre>
