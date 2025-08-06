@@ -1,8 +1,10 @@
 import fs from 'fs'
 import path from 'path'
 import templateConfig from '../template.config.js'
+import logger from './logger.js'
 
 function generateConfigFiles() {
+   const pluginName = '[generate-aliases-plugin]'
    const aliases = templateConfig.aliases
    const componentsImports = templateConfig.componentsImports || { html: [], scss: [] }
 
@@ -23,7 +25,7 @@ function generateConfigFiles() {
 
    fs.writeFileSync(path.resolve('.vscode/settings.json'), JSON.stringify(vscodeSettings, null, 2))
 
-   console.log('Config files have been generated!')
+   logger(`${pluginName} Config files have been generated!`, 'success')
 }
 
 generateConfigFiles()

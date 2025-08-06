@@ -73,7 +73,7 @@ async function optimizeImages(imageDir, options = {}) {
       }
    }
 
-   logger(`${pluginName} Image optimization completed. Processed ${imageFiles.length} files.`, 'success')
+   logger(`${pluginName} Image optimization completed. Processed ${imageFiles.length} files.`, 'star')
    return generatedWebPFiles
 }
 

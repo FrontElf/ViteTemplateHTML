@@ -7,7 +7,10 @@ const savePath = path.resolve(process.cwd(), './src/assets')
 const packageJson = JSON.parse(await fs.readFile(path.resolve(process.cwd(), 'package.json'), 'utf8'))
 const { version, name } = packageJson
 
+
 async function generateHtmlIcons() {
+   const pluginName = '[generate-html-icons-plugin]'
+
    try {
       const [fontData, jsonData] = await Promise.all([
          fs.readFile(path.join(filesPath, 'icons.woff2')),
@@ -25,9 +28,9 @@ async function generateHtmlIcons() {
 
       const htmlContent = generateHtmlContent(name, version, style, listItems)
       await fs.writeFile(path.join(savePath, 'icons.html'), htmlContent, 'utf8')
-      logger('icons.html successfully created!', 'success')
+      logger(`${pluginName} icons.html successfully created!`, 'success')
    } catch (error) {
-      logger(`Error while creating icons.html: ${error.message}`, 'error')
+      logger(`${pluginName} Error while creating icons.html: ${error.message}`, 'error')
    }
 }
 

@@ -2,6 +2,7 @@ import { promises as fs } from 'fs'
 import logger from './logger.js'
 
 export const generateFontsStyle = async () => {
+  const pluginName = '[fonts-style-plugin]'
   const fontsFile = `./src/scss/fonts/fonts.scss`
   const headFile = `./src/html/other/Fonts.html`
 
@@ -83,9 +84,9 @@ export const generateFontsStyle = async () => {
       }
       await fs.writeFile(fontsFile, fileContent)
       await fs.writeFile(headFile, headFileContent)
-      logger('FONTS.SCSS & _FONTS.HTML files successfully updated!', 'rocket')
+      logger(`${pluginName} FONTS.SCSS & _FONTS.HTML files successfully updated!`, 'rocket')
     }
   } catch (err) {
-    logger(`Error when creating a styles for fonts: ${err}`, 'error')
+    logger(`${pluginName} Error when creating a styles for fonts: ${err}`, 'error')
   }
 }

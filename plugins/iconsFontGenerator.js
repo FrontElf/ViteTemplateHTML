@@ -5,6 +5,7 @@ import fs from 'fs/promises'
 import path from 'path'
 import logger from './logger.js'
 import generateHtmlIcons from './generateHtmlIcons.js'
+const pluginName = '[icons-font-generator-plugin]'
 
 // Configuration
 const paths = {
@@ -41,9 +42,9 @@ const convertAndOptimizeSvg = async (file, srcDir, distDir) => {
       plugins: getSvgOptimizationPlugins(),
     })
     await fs.writeFile(outputFilePath, optimizedSvg.data, 'utf8')
-    logger(`Optimized ${file}`, 'success')
+    logger(`${pluginName} Optimized ${file}`, 'success')
   } catch (error) {
-    logger(`Error processing file ${file}: ${error.message}`, 'error')
+    logger(`${pluginName} Error processing file ${file}: ${error.message}`, 'error')
   }
 }
 
@@ -70,9 +71,9 @@ const copyFiles = async (filePairs) => {
     await Promise.all(
       filePairs.map(({ src, dest }) => fs.copyFile(src, dest))
     )
-    logger(`Copied ${filePairs.length} files`, 'rocket')
+    logger(`${pluginName} Copied ${filePairs.length} files`, 'rocket')
   } catch (error) {
-    logger(`Error copying files: ${error.message}`, 'error')
+    logger(`${pluginName} Error copying files: ${error.message}`, 'error')
   }
 }
 
@@ -98,7 +99,7 @@ const generateFont = async () => {
         normalize: true,
       },
     })
-    logger('Font generation completed!', 'success')
+    logger('Font generation completed!', 'star')
 
     await copyGeneratedFiles()
   } catch (error) {
@@ -135,10 +136,10 @@ const clearOptimizedIconsFolder = async () => {
           fs.rm(path.join(paths.optimizedDist, file), { recursive: true, force: true })
         )
       )
-      logger('Cleared optimized icons folder', 'success')
+      logger(`${pluginName} Cleared optimized icons folder`, 'info')
     }
   } catch (error) {
-    logger(`Error clearing optimized icons folder: ${error.message}`, 'error')
+    logger(`${pluginName} Error clearing optimized icons folder: ${error.message}`, 'error')
   }
 }
 
@@ -151,7 +152,7 @@ const main = async () => {
       (file) => path.extname(file) === '.svg'
     )
     if (svgFiles.length === 0) {
-      logger('No SVG files found in source directory', 'error')
+      logger(`${pluginName} No SVG files found in source directory`, 'error')
       return
     }
 
@@ -160,13 +161,13 @@ const main = async () => {
         convertAndOptimizeSvg(file, paths.src, paths.optimizedDist)
       )
     )
-    logger(`Optimized ${svgFiles.length} SVG files`, 'success')
+    logger(`${pluginName} Optimized ${svgFiles.length} SVG files`, 'star')
 
     await generateFont()
     await clearOptimizedIconsFolder()
     await generateHtmlIcons()
   } catch (error) {
-    logger(`Error during execution: ${error.message}`, 'error')
+    logger(`${pluginName} Error during execution: ${error.message}`, 'error')
   }
 }
 

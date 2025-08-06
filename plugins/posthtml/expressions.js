@@ -96,7 +96,7 @@ export default function expressionsPlugin(initProps = {}, options = {}) {
          const val = Function(...Object.keys(props), `return (${expr})`)(...Object.values(props))
          return val === false || val === null || typeof val === 'undefined' ? '' : val
       } catch (e) {
-         logger(`${pluginName} Failed to evaluate expression "${expr}" "${e.message}"`, 'error')
+         logger(`${pluginName} Failed to evaluate expression "${expr}" "${e.message}"`, 'question')
          return ''
       }
    }
