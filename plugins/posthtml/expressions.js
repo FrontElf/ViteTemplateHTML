@@ -1,8 +1,15 @@
 import { processEachNode } from './each-plugin.js'
+import logger from '../logger.js'
 
+/**
+ * PostHTML plugin for processing expressions and conditional tags
+ * @param {Object} initProps - Initial properties for expressions
+ * @param {Object} options - Plugin configuration
+ * @param {Object} options.expressions - Expression settings (e.g., tag names, scriptsDefine)
+ * @returns {Function} - Function to process the PostHTML tree
+ */
 export default function expressionsPlugin(initProps = {}, options = {}) {
    const pluginName = '[expressions-plugin]'
-   const logger = options.logger ?? console
    const expressionsOpts = {
       scriptsDefine: true,
       tagNames: {
@@ -17,6 +24,7 @@ export default function expressionsPlugin(initProps = {}, options = {}) {
    const tagElseIf = expressionsOpts.tagNames.elseif
    const tagElse = expressionsOpts.tagNames.else
 
+   // Extract variables defined in <script define> tags
    function extractDefineVars(nodes) {
       let defineProps = {}
       let cleanNodes = []
@@ -32,47 +40,68 @@ export default function expressionsPlugin(initProps = {}, options = {}) {
          }
 
          const code = Array.isArray(node.content)
-            ? node.content.filter(x => typeof x === 'string').join('\n')
+            ? node.content.filter((x) => typeof x === 'string').join('\n')
             : ''
 
          try {
             const func = new Function(`
-               ${code}
-               return {${getDefinedVars(code).join(',')}}
-            `)
+          ${code}
+          return {${getDefinedVars(code).join(',')}}
+        `)
             defineProps = { ...defineProps, ...func() }
+            logger(`${pluginName} Extracted variables from <script define> "${Object.keys(defineProps).join(', ')}"`, 'info')
          } catch (e) {
-            if (options.isLogger) logger.warn(`${pluginName} ❌ Не вдалося виконати <script define>`, e)
+            logger(`${pluginName} Failed to execute <script define> "${e.message}"`, 'error')
          }
       }
       return { defineProps, cleanNodes }
    }
 
+   // Get variable names defined in code
    function getDefinedVars(code) {
       const matches = Array.from(code.matchAll(/\b(?:var|let|const)\s+([a-zA-Z0-9_$]+)\s*=/g))
-      return matches.map(m => m[1])
+      return matches.map((m) => m[1])
    }
 
+   // Evaluate an expression with given properties
    async function evalExpression(expr, props) {
       if (expr in props) {
          let val = props[expr]
          if (typeof val === 'string' && val.trim().startsWith('[')) {
-            try { return (new Function(`return (${val})`))() } catch (e) { try { return JSON.parse(val) } catch { } }
+            try {
+               return (new Function(`return (${val})`))()
+            } catch {
+               try {
+                  return JSON.parse(val)
+               } catch {
+                  return ''
+               }
+            }
          }
          if (typeof val === 'string' && val.trim().startsWith('{')) {
-            try { return (new Function(`return (${val})`))() } catch (e) { try { return JSON.parse(val) } catch { } }
+            try {
+               return (new Function(`return (${val})`))()
+            } catch {
+               try {
+                  return JSON.parse(val)
+               } catch {
+                  return ''
+               }
+            }
          }
          return val ?? ''
       }
 
       try {
          const val = Function(...Object.keys(props), `return (${expr})`)(...Object.values(props))
-         return (val === false || val === null || typeof val === 'undefined') ? '' : val
+         return val === false || val === null || typeof val === 'undefined' ? '' : val
       } catch (e) {
+         logger(`${pluginName} Failed to evaluate expression "${expr}" "${e.message}"`, 'error')
          return ''
       }
    }
 
+   // Process nodes, handling expressions, conditionals, and loops
    async function processNodes(nodes, props = initProps) {
       const { defineProps, cleanNodes } = extractDefineVars(nodes)
       props = { ...props, ...defineProps }
@@ -86,7 +115,7 @@ export default function expressionsPlugin(initProps = {}, options = {}) {
             let str = node
             const matches = Array.from(str.matchAll(/\{\{\s*(.+?)\s*\}\}/g))
             if (matches.length) {
-               const replacements = await Promise.all(matches.map(m => evalExpression(m[1], props)))
+               const replacements = await Promise.all(matches.map((m) => evalExpression(m[1], props)))
                matches.forEach((match, idx) => {
                   str = str.replace(match[0], replacements[idx])
                })
@@ -98,18 +127,16 @@ export default function expressionsPlugin(initProps = {}, options = {}) {
          const eachNodes = await processEachNode(node, props, processNodes, evalExpression, options)
          if (eachNodes !== null) {
             result.push(...eachNodes)
+            logger(`${pluginName} Processed <each> node`, 'info')
             continue
          }
 
          if (node.tag === tagIf) {
             let handled = false
             let j = i
-            // Збираємо всі elseif/else, які йдуть підряд після if, пропускаючи пробіли/переноси
-            const branches = []
-            branches.push(cleanNodes[j])
+            const branches = [cleanNodes[j]]
             while (cleanNodes[j + 1]) {
                const next = cleanNodes[j + 1]
-               // Пропускаємо текстові вузли (пробіли, переноси)
                if (typeof next === 'string' && next.trim() === '') {
                   j++
                   continue
@@ -121,19 +148,21 @@ export default function expressionsPlugin(initProps = {}, options = {}) {
                }
                break
             }
-            if (options.isLogger) {
-               logger.log('[expressions-plugin][DEBUG] props:', props)
-            }
+
             for (const branch of branches) {
                if (branch.tag === tagIf || branch.tag === tagElseIf) {
-                  if (branch.attrs?.condition && await evalExpression(branch.attrs.condition, props)) {
-                     if (branch.content) result.push(...await processNodes(branch.content, props))
+                  if (branch.attrs?.condition && (await evalExpression(branch.attrs.condition, props))) {
+                     if (branch.content) result.push(...(await processNodes(branch.content, props)))
                      handled = true
+                     logger(`${pluginName} Processed <${branch.tag}> condition "${branch.attrs.condition}"`, 'info')
+
                      break
                   }
                } else if (branch.tag === tagElse) {
-                  if (branch.content) result.push(...await processNodes(branch.content, props))
+                  if (branch.content) result.push(...(await processNodes(branch.content, props)))
                   handled = true
+                  logger(`${pluginName} Processed <else> condition`, 'info')
+
                   break
                }
             }
@@ -153,12 +182,14 @@ export default function expressionsPlugin(initProps = {}, options = {}) {
                      const matches = Array.from(val.matchAll(/\{\{\s*(.+?)\s*\}\}/g))
                      let replaced = val
                      if (matches.length) {
-                        const replacements = await Promise.all(matches.map(m => evalExpression(m[1], props)))
+                        const replacements = await Promise.all(
+                           matches.map((m) => evalExpression(m[1], props))
+                        )
                         matches.forEach((match, idx) => {
                            replaced = replaced.replace(match[0], replacements[idx])
                         })
+                        node.attrs[key] = replaced
                      }
-                     node.attrs[key] = replaced
                   }
                }
             }

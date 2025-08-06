@@ -50,6 +50,7 @@ export default {
    },
 
    aliasesIsRelative: true,
+   isLogger: false,
 
    componentsImports: {
       html: ["<link rel='stylesheet' href='@c/{component}/{component}.css'/>"],

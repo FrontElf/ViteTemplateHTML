@@ -8,7 +8,6 @@ function generateConfigFiles() {
 
    const vscodeSettings = {
       'path-autocomplete.pathMappings': Object.entries(aliases).reduce((acc, [key, value]) => {
-         // Перевірка, якщо шлях починається з http:// або https://, залишаємо його без змін
          if (/^https?:\/\//.test(value)) {
             acc[key] = value
          } else {

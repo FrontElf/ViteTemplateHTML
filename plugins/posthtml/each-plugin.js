@@ -1,23 +1,46 @@
 import fs from 'fs/promises'
 import path from 'path'
+import logger from '../logger.js'
 
+/**
+ * Processes <each> nodes in PostHTML tree for looping over data
+ * @param {Object} node - PostHTML node to process
+ * @param {Object} props - Properties for evaluating expressions
+ * @param {Function} processNodes - Function to process child nodes
+ * @param {Function} evalExpression - Function to evaluate expressions
+ * @param {Object} options - Plugin configuration
+ * @param {Object} options.loop - Loop settings (e.g., tagName, dataDir)
+ * @returns {Promise<Array|null>} - Processed nodes or null if not an <each> node
+ */
 export async function processEachNode(node, props, processNodes, evalExpression, options = {}) {
    const pluginName = '[each-plugin]'
    const loopOpts = options.loop ?? {}
    const tagName = loopOpts.tagName ?? 'each'
    const dataDir = loopOpts.dataDir ?? 'src/data'
-   const logger = options.logger ?? console
-   const isLogger = options.isLogger ?? true
 
    if (node.tag !== tagName || !node.attrs?.loop) return null
 
+   // Validate loop attribute format
+   const loopMatch = node.attrs.loop.match(/^\s*([a-zA-Z_$][\w$]*)(?:\s*,\s*([a-zA-Z_$][\w$]*))?\s+in\s+(.+)$/) || []
+   const [, itemName, keyName, arrExpr] = loopMatch
+   if (!loopMatch) {
+      logger(`${pluginName} Invalid loop attribute "${node.attrs.loop}"`, 'error')
+      return []
+   }
+
    let localProps = { ...props }
 
+   // Handle data attribute (URL or file)
    if (node.attrs.data) {
       let dataValue = node.attrs.data
       const mustacheMatch = dataValue.match(/^\s*\{\{\s*(.+?)\s*\}\}\s*$/)
       if (mustacheMatch) {
-         dataValue = await evalExpression(mustacheMatch[1], localProps)
+         try {
+            dataValue = await evalExpression(mustacheMatch[1], localProps)
+         } catch (e) {
+            logger(`${pluginName} Failed to evaluate data expression "${mustacheMatch[1]}" "${e.message}"`, 'error')
+            localProps.data = []
+         }
       }
 
       if (/^https?:\/\//.test(dataValue)) {
@@ -25,8 +48,9 @@ export async function processEachNode(node, props, processNodes, evalExpression,
             const res = await fetch(dataValue)
             if (!res.ok) throw new Error(res.statusText)
             localProps.data = await res.json()
+            logger(`${pluginName} Processed <each> loop "${dataValue}"`, 'info')
          } catch (e) {
-            if (isLogger) logger.warn(`${pluginName} ⚠️ Не вдалось отримати data з ${dataValue}`)
+            logger(`${pluginName} Failed to fetch data "${dataValue}" "${e.message}"`, 'error')
             localProps.data = []
          }
       } else {
@@ -34,20 +58,26 @@ export async function processEachNode(node, props, processNodes, evalExpression,
          try {
             const fileContent = await fs.readFile(filePath, 'utf8')
             localProps.data = JSON.parse(fileContent)
+            logger(`${pluginName} Processed <each> loop "${dataValue}"`, 'info')
          } catch (e) {
-            if (isLogger) logger.warn(`${pluginName} ⚠️ Не вдалось прочитати data файл: ${filePath}`)
+            logger(`${pluginName} Failed to read data file "${filePath}" "${e.message}"`, 'error')
             localProps.data = []
          }
       }
    }
 
-   const loopMatch = node.attrs.loop.match(/^\s*([a-zA-Z_$][\w$]*)(?:\s*,\s*([a-zA-Z_$][\w$]*))?\s+in\s+(.+)$/)
-   if (!loopMatch) return []
+   // Evaluate array expression
+   let arr
+   try {
+      arr = await evalExpression(arrExpr, localProps)
+   } catch (e) {
+      logger(`${pluginName} Failed to evaluate loop expression "${arrExpr}" "${e.message}"`, 'error')
+      return []
+   }
 
-   const [, itemName, keyName, arrExpr] = loopMatch
-   let arr = await evalExpression(arrExpr, localProps)
    const promises = []
 
+   // Process object or array
    if (arr && typeof arr === 'object' && !Array.isArray(arr)) {
       const entries = Object.entries(arr)
       for (const [key, value] of entries) {
@@ -55,11 +85,12 @@ export async function processEachNode(node, props, processNodes, evalExpression,
             ...localProps,
             [itemName]: value,
             ...(keyName ? { [keyName]: key } : {}),
-            length: entries.length
+            length: entries.length,
          }
 
-         const children = node.content?.map(child =>
-            typeof child === 'string' ? child : JSON.parse(JSON.stringify(child))
+         // Avoid deep cloning if possible
+         const children = node.content?.map((child) =>
+            typeof child === 'string' ? child : { ...child }
          )
          if (children) promises.push(processNodes(children, loopProps))
       }
@@ -69,14 +100,18 @@ export async function processEachNode(node, props, processNodes, evalExpression,
             ...localProps,
             [itemName]: arr[idx],
             ...(keyName ? { [keyName]: idx } : {}),
-            length: arr.length
+            length: arr.length,
          }
 
-         const children = node.content?.map(child =>
-            typeof child === 'string' ? child : JSON.parse(JSON.stringify(child))
+         // Avoid deep cloning if possible
+         const children = node.content?.map((child) =>
+            typeof child === 'string' ? child : { ...child }
          )
          if (children) promises.push(processNodes(children, loopProps))
       }
+   } else {
+      logger(`${pluginName} Invalid loop data for "${arrExpr}"`, 'error')
+      return []
    }
 
    return (await Promise.all(promises)).flat()

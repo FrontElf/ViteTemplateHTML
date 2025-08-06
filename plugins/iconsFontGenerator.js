@@ -3,25 +3,26 @@ import svgtofont from 'svgtofont'
 import { optimize } from 'svgo'
 import fs from 'fs/promises'
 import path from 'path'
-const pkg = JSON.parse(await fs.readFile('./package.json', 'utf8'))
 import logger from './logger.js'
 import generateHtmlIcons from './generateHtmlIcons.js'
 
-// Configuration parameters
+// Configuration
 const paths = {
-  src: path.resolve(process.cwd(), `./fonts-convert/icons`),
-  optimizedDist: path.resolve(process.cwd(), `./plugins/ifont-gen/optimized-icons`),
-  buildDist: path.resolve(process.cwd(), `./plugins/ifont-gen/build`),
-  templates: path.resolve(process.cwd(), `./plugins/ifont-gen/templates/styles`),
+  src: path.resolve(process.cwd(), './fonts-convert/icons'),
+  optimizedDist: path.resolve(process.cwd(), './plugins/ifont-gen/optimized-icons'),
+  buildDist: path.resolve(process.cwd(), './plugins/ifont-gen/build'),
+  templates: path.resolve(process.cwd(), './plugins/ifont-gen/templates/styles'),
   fonts: path.resolve(process.cwd(), './src/assets/fonts'),
   assets: path.resolve(process.cwd(), './src/assets'),
-  scss: path.resolve(process.cwd(), `src/scss/fonts`),
+  scss: path.resolve(process.cwd(), 'src/scss/fonts'),
 }
 
 const fontParams = {
   fontName: 'icons',
   classNamePrefix: '_icon',
 }
+
+const packageJson = JSON.parse(await fs.readFile('./package.json', 'utf8'))
 
 // Create a directory if it doesn't exist
 const createDirectoryIfNotExists = async (dirPath) => {
@@ -33,15 +34,16 @@ const convertAndOptimizeSvg = async (file, srcDir, distDir) => {
   const filePath = path.join(srcDir, file)
   const outputFilePath = path.join(distDir, file)
   try {
-    let svgContent = await fs.readFile(filePath, 'utf8')
+    const svgContent = await fs.readFile(filePath, 'utf8')
     const outlinedSvg = outlineSvg(svgContent)
     const optimizedSvg = optimize(outlinedSvg, {
       path: outputFilePath,
       plugins: getSvgOptimizationPlugins(),
     })
     await fs.writeFile(outputFilePath, optimizedSvg.data, 'utf8')
+    logger(`Optimized ${file}`, 'success')
   } catch (error) {
-    console.error(`Error processing file ${file}:`, error)
+    logger(`Error processing file ${file}: ${error.message}`, 'error')
   }
 }
 
@@ -61,6 +63,18 @@ const getSvgOptimizationPlugins = () => [
   { name: 'convertStyleToAttrs', active: true },
   { name: 'convertPathData', active: true },
 ]
+
+// Copy multiple files concurrently
+const copyFiles = async (filePairs) => {
+  try {
+    await Promise.all(
+      filePairs.map(({ src, dest }) => fs.copyFile(src, dest))
+    )
+    logger(`Copied ${filePairs.length} files`, 'rocket')
+  } catch (error) {
+    logger(`Error copying files: ${error.message}`, 'error')
+  }
+}
 
 // Generate font from SVGs
 const generateFont = async () => {
@@ -84,66 +98,77 @@ const generateFont = async () => {
         normalize: true,
       },
     })
-    logger('Font generation is completed!', 'success')
+    logger('Font generation completed!', 'success')
 
     await copyGeneratedFiles()
   } catch (error) {
-    logger(`Error generating font: ${error}`, 'error')
+    logger(`Error generating font: ${error.message}`, 'error')
   }
 }
 
 // Copy generated font and style files
 const copyGeneratedFiles = async () => {
-  try {
-    const spriteSourcePath = path.join(paths.buildDist, 'icons.symbol.svg')
-    const spriteDestPath = path.join(paths.assets, 'sprite.svg')
-    await fs.copyFile(spriteSourcePath, spriteDestPath)
-
-    const ttfSourcePath = path.join(paths.buildDist, `${fontParams.fontName}.woff2`)
-    const ttfDestPath = path.join(paths.fonts, `${fontParams.fontName}.woff2`)
-    await fs.copyFile(ttfSourcePath, ttfDestPath)
-
-    const scssSourcePath = path.join(paths.buildDist, `${fontParams.fontName}.scss`)
-    const scssDestPath = path.join(paths.scss, `${fontParams.fontName}.scss`)
-    await fs.copyFile(scssSourcePath, scssDestPath)
-    logger(`Copied ${fontParams.fontName}.scss, ${fontParams.fontName}.woff2, sprite.svg to src directory`, 'rocket')
-  } catch (error) {
-    logger(`Error copying files: ${error}`, 'error')
-  }
+  const filePairs = [
+    {
+      src: path.join(paths.buildDist, 'icons.symbol.svg'),
+      dest: path.join(paths.assets, 'sprite.svg'),
+    },
+    {
+      src: path.join(paths.buildDist, `${fontParams.fontName}.woff2`),
+      dest: path.join(paths.fonts, `${fontParams.fontName}.woff2`),
+    },
+    {
+      src: path.join(paths.buildDist, `${fontParams.fontName}.scss`),
+      dest: path.join(paths.scss, `${fontParams.fontName}.scss`),
+    },
+  ]
+  await copyFiles(filePairs)
 }
 
+// Clear optimized icons folder
 const clearOptimizedIconsFolder = async () => {
   try {
     const files = await fs.readdir(paths.optimizedDist)
     if (files.length > 0) {
       await Promise.all(
-        files.map((file) => fs.rm(path.join(paths.optimizedDist, file), { recursive: true, force: true }))
+        files.map((file) =>
+          fs.rm(path.join(paths.optimizedDist, file), { recursive: true, force: true })
+        )
       )
+      logger('Cleared optimized icons folder', 'success')
     }
   } catch (error) {
-    logger(`Error clearing optimized icons folder: ${error}`, 'error')
+    logger(`Error clearing optimized icons folder: ${error.message}`, 'error')
   }
 }
 
-(async () => {
+// Main execution function
+const main = async () => {
   try {
     await createDirectoryIfNotExists(paths.optimizedDist)
 
     const svgFiles = (await fs.readdir(paths.src)).filter(
       (file) => path.extname(file) === '.svg'
     )
+    if (svgFiles.length === 0) {
+      logger('No SVG files found in source directory', 'error')
+      return
+    }
+
     await Promise.all(
       svgFiles.map((file) =>
         convertAndOptimizeSvg(file, paths.src, paths.optimizedDist)
       )
     )
+    logger(`Optimized ${svgFiles.length} SVG files`, 'success')
 
-    logger('SVG optimization done', 'success')
     await generateFont()
     await clearOptimizedIconsFolder()
-
     await generateHtmlIcons()
   } catch (error) {
-    logger(`Error while performing: ${error}`, 'error')
+    logger(`Error during execution: ${error.message}`, 'error')
   }
-})()
+}
+
+// Execute the main function
+main()

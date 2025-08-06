@@ -4,6 +4,8 @@ import path from "path"
 import { promises as fsPromises } from "fs"
 import { load } from "cheerio"
 import postcss from "postcss"
+import logger from './logger.js'
+// import co
 
 function walkDir(dir, callback) {
    const files = fs.readdirSync(dir, { withFileTypes: true })
@@ -18,6 +20,7 @@ function walkDir(dir, callback) {
 }
 
 async function optimizeImages(imageDir, options = {}) {
+   const pluginName = '[imageOptimizer-plugin]'
    const {
       generateWebP = true,
       webpOptions = { lossless: false, quality: 75 },
@@ -28,7 +31,7 @@ async function optimizeImages(imageDir, options = {}) {
    const generatedWebPFiles = new Set()
 
    if (!fs.existsSync(imageDir)) {
-      console.log(`Директорія ${imageDir} не існує, пропускаємо оптимізацію зображень.`)
+      logger(`${pluginName} The directory ${imageDir} does not exist, skipping image optimization.`, 'info')
       return generatedWebPFiles
    }
 
@@ -66,11 +69,11 @@ async function optimizeImages(imageDir, options = {}) {
             generatedWebPFiles.add(outputFilePathWebP)
          }
       } catch (error) {
-         console.error(`Помилка при обробці файлу ${inputFilePath}:`, error)
+         logger(`${pluginName} Error while processing the file ${inputFilePath}: ${error.message}`, 'error')
       }
    }
 
-   console.log(`Оптимізація зображень завершена. Оброблено ${imageFiles.length} файлів.`)
+   logger(`${pluginName} Image optimization completed. Processed ${imageFiles.length} files.`, 'success')
    return generatedWebPFiles
 }
 
@@ -131,12 +134,12 @@ async function updateHtmlFiles(outputDir, generatedWebPFiles, options = {}) {
          const updatedHtml = $.html()
          await fsPromises.writeFile(htmlFile, updatedHtml, "utf-8")
       } catch (error) {
-         console.error(`Помилка при оновленні HTML-файлу ${htmlFile}:`, error)
+         logger(`${pluginName} Error while updating the HTML file ${htmlFile}: ${error.message}`, 'error')
       }
    }
 }
 
-async function updateCssFiles(outputDir) { 
+async function updateCssFiles(outputDir) {
    const cssFiles = []
    walkDir(outputDir, (filePath) => {
       if (/\.css$/i.test(filePath)) {
@@ -165,7 +168,7 @@ async function updateCssFiles(outputDir) {
          ]).process(cssContent, { from: cssFile, to: cssFile })
          await fsPromises.writeFile(cssFile, result.css, "utf-8")
       } catch (error) {
-         console.error(`Помилка при оновленні CSS-файлу ${cssFile}:`, error)
+         logger(`${pluginName} Error while updating the CSS file ${cssFile}: ${error.message}`, 'error')
       }
    }
 }
