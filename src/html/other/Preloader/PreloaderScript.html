@@ -3,7 +3,7 @@
 
    const preloaderParams = {
       cssAnimationDuration: 500,
-      removePreloaderDelay: 500
+      removePreloaderDelay: 500,
    }
 
    let isAnimationEnded = false
@@ -25,7 +25,9 @@
    }
 
    function isNonLazyImage(img) {
-      return !img.hasAttribute('loading') || img.getAttribute('loading') !== 'lazy'
+      return (
+         !img.hasAttribute('loading') || img.getAttribute('loading') !== 'lazy'
+      )
    }
 
    function checkReady() {
@@ -53,7 +55,7 @@
          }
       }
 
-      images.forEach(img => {
+      images.forEach((img) => {
          if (img.complete) {
             loadedCount++
          } else {

@@ -19,13 +19,16 @@ TF.menuInit()
 // import './scripts/watcher.js'
 
 // ? ===============================================
-
 /* Dynamic adaptive */
 // Documentation of the plugin:
 
 // import "./scripts/dynamic_adapt.js"
 
-import "./scripts/get-element-height.js"
+// ? ===============================================
+/* Get element height */
+// Creates CSS variables with the height of the required elements
+
+// import "./scripts/get-element-height.js"
 
 // ? ===============================================
 /* Function to add and remove classes to the root element when scrolling down or up*/
@@ -61,8 +64,6 @@ import "./scripts/get-element-height.js"
 
 // import "./libs/modal.js"
 
-// import "./scripts/wrap.js"
-
 // ? ===============================================
 
 /* Spoiler functionality */
@@ -84,8 +85,13 @@ import "./scripts/get-element-height.js"
 
 // import './scripts/cookie.js'
 
-import './scripts/video-resize.js'
+// ? ===============================================
+/* Video resize. */
+// Documentation inside the module file
 
+// import './scripts/video-resize.js'
+
+// ? ===============================================
 // ? Custom scripts ================================
 
 import './custom.js'

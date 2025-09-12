@@ -1,3 +1,16 @@
+/**
+ * Selects all video elements with the given selector and adds a source switching
+ * logic. The logic is as follows:
+ * 1. It finds all the source elements inside the video element
+ * 2. It checks which source element has a media query that matches the current
+ *    window size
+ * 3. If it found a matching source, it sets the src attribute of the video
+ *    element to the src attribute of the matching source
+ * 4. It adds an event listener to window's resize event to update the video
+ *    source whenever the window size changes
+ *
+ * @param {string} selector - The selector to select the video elements
+ */
 function addResponsiveSourceSwitcher(selector) {
    document.querySelectorAll(selector).forEach((videoElement) => {
       const sources = Array.from(videoElement.querySelectorAll('source'))

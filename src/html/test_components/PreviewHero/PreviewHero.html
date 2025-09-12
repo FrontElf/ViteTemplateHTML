@@ -1,19 +1,22 @@
+<!-- === Component local variables === -->
+<script define>
+   const title = 'Сучасний шаблон для веб-розробки на основі <span class="text-indigo-500">VITE & PostHTML</span>'
+   const subtitle = 'Комфортна розробка статичних сторінок з використанням HTML компонентів. Підтримка TailwindCSS.Оптимізація зображень, генерація іконкового шрифта та SVG спрайтів, конвертація шрифтів в WOFF2.'
+   const buttonText = 'Документація'
+   const buttonUrl = 'https://vite-template-docs.frontelf.com/'
+</script>
+
+<!-- === Component template === -->
 <section class="pt-8 lg:pt-32 bg-center min-h-screen flex items-center">
    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative text-center">
-
       <h1 class="max-w-3xl mx-auto text-center font-manrope font-bold text-3xl text-gray-100 mb-5 md:text-5xl leading-[50px]">
-         Сучасний шаблон для веб-розробки на основі
-         <span class="text-indigo-500">VITE & PostHTML</span>
+         {{title}}
       </h1>
-
       <p class="max-w-2xl mx-auto text-center text-base font-normal leading-7 text-gray-300 mb-9">
-         Комфортна розробка статичних сторінок з використанням HTML компонентів. Підтримка TailwindCSS.
-         Оптимізація зображень, генерація іконкового шрифта та SVG спрайтів, конвертація шрифтів в WOFF2.
+         {{subtitle}}
       </p>
-
-      <Button variant="link" url="https://vite-template-docs.frontelf.com/">
-         Документація
+      <Button variant="link" url="{{buttonUrl}}">
+         {{buttonText}}
       </Button>
-
    </div>
 </section>
