@@ -4,7 +4,7 @@ import path from "path"
 import { promises as fsPromises } from "fs"
 import { load } from "cheerio"
 import postcss from "postcss"
-import logger from './logger.js'
+import { logger } from './html-composer/utils/logger.js'
 // import co
 
 function walkDir(dir, callback) {
@@ -22,6 +22,7 @@ function walkDir(dir, callback) {
 async function optimizeImages(imageDir, options = {}) {
    const pluginName = '[imageOptimizer-plugin]'
    const {
+      optimizeJpeg = true,
       generateWebP = true,
       webpOptions = { lossless: false, quality: 75 },
       jpegOptions = { quality: 80, progressive: true, mozjpeg: true },
@@ -31,7 +32,7 @@ async function optimizeImages(imageDir, options = {}) {
    const generatedWebPFiles = new Set()
 
    if (!fs.existsSync(imageDir)) {
-      logger(`${pluginName} The directory ${imageDir} does not exist, skipping image optimization.`, 'info')
+      logger(pluginName, `The directory ${imageDir} does not exist, skipping image optimization.`, 'info')
       return generatedWebPFiles
    }
 
@@ -49,17 +50,19 @@ async function optimizeImages(imageDir, options = {}) {
       const tempFilePath = path.join(outputDir, `${fileNameWithoutExt}_temp${ext}`)
 
       try {
-         if (ext === ".jpg" || ext === ".jpeg") {
+         if ((ext === ".jpg" || ext === ".jpeg") && optimizeJpeg) {
             await sharp(inputFilePath)
                .jpeg(jpegOptions)
                .toFile(tempFilePath)
+
+            await fsPromises.rename(tempFilePath, inputFilePath)
          } else if (ext === ".png") {
             await sharp(inputFilePath)
                .png(pngOptions)
                .toFile(tempFilePath)
-         }
 
-         await fsPromises.rename(tempFilePath, inputFilePath)
+            await fsPromises.rename(tempFilePath, inputFilePath)
+         }
 
          if (generateWebP) {
             const outputFilePathWebP = path.join(outputDir, `${fileNameWithoutExt}.webp`)
@@ -69,11 +72,12 @@ async function optimizeImages(imageDir, options = {}) {
             generatedWebPFiles.add(outputFilePathWebP)
          }
       } catch (error) {
-         logger(`${pluginName} Error while processing the file ${inputFilePath}: ${error.message}`, 'error')
+         logger(pluginName, `Error while processing the file ${inputFilePath}: ${error.message}`, 'error')
       }
    }
 
-   logger(`${pluginName} Image optimization completed. Processed ${imageFiles.length} files.`, 'star')
+
+   logger(pluginName, `Image optimization completed. Processed ${imageFiles.length} files.`, 'star')
    return generatedWebPFiles
 }
 
@@ -173,7 +177,6 @@ async function updateCssFiles(outputDir) {
    }
 }
 
-// Плагін для Vite
 export function vitePluginImageOptimizer(options = {}) {
    const {
       imageDir = "dist/assets/img",

@@ -21,7 +21,6 @@ $mail->Password = 'uontlhvsonreobdd';
 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
 $mail->Port = 465;
 
-
 //Від кого лист
 $mail->setFrom('grafvishna4@gmail.com', 'Юзер');
 //Кому відправити

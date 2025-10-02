@@ -10,37 +10,37 @@ TF.menuInit()
 /* Go To Block */
 // Documentation inside the module file scroll.js
 
-// import './scripts/pageNavigation.js'
+// import './libs/pageNavigation.js'
 
 // ? ===============================================
 /* Watcher */
 // Documentation inside the module file
 
-// import './scripts/watcher.js'
+// import './libs/watcher.js'
 
 // ? ===============================================
 /* Dynamic adaptive */
 // Documentation of the plugin:
 
-// import "./scripts/dynamic_adapt.js"
+// import "./libs/dynamic_adapt.js"
 
 // ? ===============================================
 /* Get element height */
 // Creates CSS variables with the height of the required elements
 
-// import "./scripts/get-element-height.js"
+// import "./libs/get-element-height.js"
 
 // ? ===============================================
 /* Function to add and remove classes to the root element when scrolling down or up*/
 // Documentation inside the module file:
 
-// import "./scripts/header-class-scroll.js"
+// import "./libs/header-class-scroll.js"
 
 // ? ===============================================
 /* Swiper Slider */
 // Documentation of the plugin: https://swiperjs.com/
 
-// import "./libs/swiper.js"
+// import "./scripts/swiper.js"
 
 // ? ===============================================
 /* Marquee */
@@ -51,18 +51,18 @@ TF.menuInit()
 /* Go To Block */
 // Documentation inside the module file
 
-// import "./libs/gallery.js"
+// import "./scripts/gallery.js"
 
 // ? ===============================================  
 /* Tabs */
 
-// import "./scripts/tabs.js"
+// import "./libs/tabs.js"
 
 // ? ===============================================
 /* Modals Popups */
 // Documentation: https://micromodal.vercel.app/
 
-// import "./libs/modal.js"
+// import "./scripts/modal.js"
 
 // ? ===============================================
 
@@ -89,7 +89,7 @@ TF.menuInit()
 /* Video resize. */
 // Documentation inside the module file
 
-// import './scripts/video-resize.js'
+// import './libs/video-resize.js'
 
 // ? ===============================================
 // ? Custom scripts ================================

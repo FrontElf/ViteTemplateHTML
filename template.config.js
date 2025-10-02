@@ -1,59 +1,42 @@
 export default {
    isTailwind: true,
-   isPreloader: false,
-   images: {
-      makeWebp: true,
-      optimizeNoWebp: false,
-      webpQuality: {
-         generateWebP: true,
-         webpOptions: { lossless: false, quality: 75 },
-         jpegOptions: { quality: 80, progressive: true, mozjpeg: true },
-         pngOptions: { compressionLevel: 9, progressive: true },
-      },
-      imgQuality: {
-         generateWebP: false,
-         jpegOptions: { quality: 80, progressive: true, mozjpeg: true },
-         pngOptions: { compressionLevel: 9, progressive: true },
-      },
-      ignoreWebpClasses: ['ignore-webp'],
-      ignoreOptimizeClasses: ['ignore-optimize'],
+   isPHPMailer: false,
+   isDevNavigation: true,
+
+   imgQuality: {
+      optimizeJpeg: false,
+      generateWebP: false,
+      webpOptions: { lossless: false, quality: 70 },
+      jpegOptions: { quality: 70, progressive: true, mozjpeg: true },
+      pngOptions: { compressionLevel: 7 },
    },
 
    HTMLVariables: {
-      VERSION: '1.0.0',
-      NAME: 'Template Project Name',
+      IS_PRELOADER: false,
+      SITE_NAME: 'My Site',
+      SITE_URL: 'https://www.mysite.com',
       API_URL: 'https://jsonplaceholder.typicode.com/users',
-      headTitle: 'My Awesome Site',
+      CURRENT_YEAR: new Date().getFullYear(),
    },
 
-   serverProxy: {
-      target: '/api',
+   aliases: {
+      '@h': '/html/',
+      '@o': '/html/other/',
+      '@c': '/html/components/',
+      '@ui': '/html/components/UI/',
+      '@p': '/pages/',
+      '@j': '/js/',
+      '@s': '/scss/',
+      '@tw': '/css/',
+      '@i': '/assets/img/',
+      '@v': '/assets/video/',
+      '@f': '/assets/fonts/'
+   },
+
+   PHPserver: {
       domain: 'localhost',
       port: 8000
    },
 
-   isMinifyCssJs: true,
-
-   aliases: {
-      '@h': '/src/html/',
-      '@o': '/src/html/other/',
-      '@c': '/src/html/components/',
-      '@tc': '/src/html/test_components/',
-      '@ui': '/src/html/components/UI/',
-      '@p': '/src/pages/',
-      '@j': '/src/js/',
-      '@s': '/src/scss/',
-      '@tw': './src/tw_css/',
-      '@i': '/src/assets/img/',
-      '@v': '/src/assets/video/',
-      '@f': '/src/assets/files/'
-   },
-
-   aliasesIsRelative: true,
-   isLogger: false,
-
-   componentsImports: {
-      html: ["<link rel='stylesheet' href='@c/{component}/{component}.css'/>"],
-      scss: []
-   }
+   isLogger: true,
 }

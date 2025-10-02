@@ -1,32 +1,32 @@
 {
-  "E-mail": {
+  "email": {
     "encodedCode": "\\ea01",
     "prefix": "_icon",
-    "className": "_icon-E-mail",
+    "className": "_icon-email",
     "unicode": "&#59905;"
   },
-  "Phone": {
+  "facebook": {
     "encodedCode": "\\ea02",
     "prefix": "_icon",
-    "className": "_icon-Phone",
+    "className": "_icon-facebook",
     "unicode": "&#59906;"
   },
-  "Region": {
+  "instagram": {
     "encodedCode": "\\ea03",
     "prefix": "_icon",
-    "className": "_icon-Region",
+    "className": "_icon-instagram",
     "unicode": "&#59907;"
   },
-  "facebook": {
+  "phone": {
     "encodedCode": "\\ea04",
     "prefix": "_icon",
-    "className": "_icon-facebook",
+    "className": "_icon-phone",
     "unicode": "&#59908;"
   },
-  "instagram": {
+  "region": {
     "encodedCode": "\\ea05",
     "prefix": "_icon",
-    "className": "_icon-instagram",
+    "className": "_icon-region",
     "unicode": "&#59909;"
   },
   "star": {

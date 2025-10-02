@@ -1,0 +1,29 @@
+
+[class*="_icon-"] {
+  font-family: "icons" !important;
+  display: block;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+} 
+
+
+:root {
+--_icon-email: "\ea01";
+--_icon-facebook: "\ea02";
+--_icon-instagram: "\ea03";
+--_icon-phone: "\ea04";
+--_icon-region: "\ea05";
+--_icon-star: "\ea06";
+}
+._icon-email::before { content: var(--_icon-email); }
+._icon-facebook::before { content: var(--_icon-facebook); }
+._icon-instagram::before { content: var(--_icon-instagram); }
+._icon-phone::before { content: var(--_icon-phone); }
+._icon-region::before { content: var(--_icon-region); }
+._icon-star::before { content: var(--_icon-star); }
+

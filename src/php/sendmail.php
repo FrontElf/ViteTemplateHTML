@@ -1,6 +1,6 @@
 <?php
 
-require 'mailer-config.php';
+require_once 'mailer-config.php';
 
 
 $mail->Body = '<ul>';

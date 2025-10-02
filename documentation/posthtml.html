@@ -76,7 +76,7 @@
                </div>
 
                <h3 class="mb-4">Передавання контенту (будь що, текст, інші компоненти, html):</h3>
-               <h3 class="mb-4">Переданий контент буде доступний в компоненті під тегом <span class="badge badge-md badge-neutral">&lt;Content/&gt;</span></h3>
+               <h3 class="mb-4">Переданий контент буде доступний в компоненті в змінній <span class="badge badge-md badge-neutral">{{children}}</span></h3>
                <div class="mockup-code w-full mb-4">
                   <pre><code>&lt;Button type="link" isActive="true"&gt;Button&lt;/Button&gt;</code></pre>
                   <br>
@@ -100,11 +100,11 @@
                   <pre><code><span class="opacity-50">// src/html/components/Button/Button.html</span></code></pre>
                   <br>
                   <pre><code>&lt;button type="button" {{isActive != "true" ? "disabled" : ''}}&gt;</code></pre>
-                  <pre><code>   &lt;Content/&gt;</code></pre>
+                  <pre><code>  {{children}}</code></pre>
                   <pre><code>&lt;/button&gt;</code></pre>
                   <br>
                   <pre><code>&lt;header class="{{className}}"&gt;</code></pre>
-                  <pre><code>   &lt;Content/&gt;</code></pre>
+                  <pre><code>  {{children}}</code></pre>
                   <pre><code>&lt;/header&gt;</code></pre>
                </div>
             </div>

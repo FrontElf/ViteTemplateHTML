@@ -1,12 +1,17 @@
+// export const logger = (prefix = '', message, level = 'log') => {
+//    console[level](`${prefix ? prefix + ': ' : ''} ${message}`)
+// }
+
+
 import chalk from 'chalk'
-import templateCfg from '../template.config.js'
+import templateCfg from '../../template.config.js'
 
 const logSymbols = {
   success: '✅',
-  info: '🚩',
-  rocket: '🚀',
-  warning: '❗',
   error: '❌',
+  info: '🚩',
+  warning: '❗',
+  rocket: '🚀',
   clock: '⌛',
   question: '👀',
   alarm: '🚨',
@@ -31,32 +36,26 @@ const logColors = {
  * @param {string} [type='info'] - The type of log (success, info, rocket, warning, error, clock, question, alarm, star)
  * @param {Object} [extra] - Additional data to log (e.g., error stack or JSON object)
  */
-const logger = (message, type = 'info', extra = null) => {
-  const icon = logSymbols[type] || logSymbols.info // Default to info if type is invalid
-  const color = logColors[type] || logColors.info // Default to info color
+export const logger = (prefix = '', message, type = 'info', extra = null) => {
+  const icon = logSymbols[type] || logSymbols.info
+  const color = logColors[type] || logColors.info
   const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false })
   const isLogger = templateCfg.isLogger || false
 
   // Format the main message
-  const formattedMessage = `[${timestamp}] ${icon} ${message}`
-  if (isLogger) {
-    console.log(color ? color(formattedMessage) : formattedMessage)
-  } else {
-    if (type === 'error') {
-      console.log(color ? color(formattedMessage) : formattedMessage)
-    }
+  const colorMessage = color ? color(message) : message
+  const contrastPrefix = logColors.rocket(prefix)
+  const colorTime = logColors.rocket(timestamp)
+
+
+  if (isLogger || type === 'error') {
+    console.log(colorTime, icon, contrastPrefix, colorMessage)
   }
 
   // Log extra data if provided
   if (extra) {
-    if (isLogger) {
+    if (isLogger || type === 'error') {
       console.log(color ? color(JSON.stringify(extra, null, 2)) : JSON.stringify(extra, null, 2))
-    } else {
-      if (type === 'error') {
-        console.log(color ? color(JSON.stringify(extra, null, 2)) : JSON.stringify(extra, null, 2))
-      }
     }
   }
 }
-
-export default logger

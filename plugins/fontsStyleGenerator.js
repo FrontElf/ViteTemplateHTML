@@ -1,14 +1,15 @@
 import { promises as fs } from 'fs'
-import logger from './logger.js'
+import { logger } from './html-composer/utils/logger.js'
+import templateConfig from '../template.config.js'
 
 export const generateFontsStyle = async () => {
   const pluginName = '[fonts-style-plugin]'
   const fontsFile = `./src/scss/fonts/fonts.scss`
+  const fontsFileTailwind = `./src/css/fonts/fonts.css`
   const headFile = `./src/html/other/Fonts.html`
 
   try {
     const fontsFiles = await fs.readdir('./src/assets/fonts/')
-    const fontsFilesScss = '/src/assets/fonts/'
 
     if (fontsFiles) {
       let fileContent = ''
@@ -22,7 +23,6 @@ export const generateFontsStyle = async () => {
           let fontStyle = fontFileName.includes('Italic') ? 'italic' : 'normal'
 
           let fontWeight = 400
-          // Determine the font weight
           if (
             fontFileName.includes('Thin') ||
             fontFileName.includes('Hairline')
@@ -72,21 +72,22 @@ export const generateFontsStyle = async () => {
 @font-face {
    font-family: '${fontName}';
    font-display: swap;
-   src: url("${fontsFilesScss}${fontFileName}.woff2") format("woff2");
+   src: url("@f/${fontFileName}.woff2") format("woff2");
    font-weight: ${fontWeight};
    font-style: ${fontStyle};
 }
                     `
           headFileContent += `
-<link rel="preload" href="${fontsFilesScss}${fontFileName}.woff2" as="font" type="font/woff2" crossorigin="anonymous" />`
+<link rel="preload" href="@f/${fontFileName}.woff2" as="font" type="font/woff2" crossorigin="anonymous" />`
           newFileOnly = fontFileName
         }
       }
-      await fs.writeFile(fontsFile, fileContent)
       await fs.writeFile(headFile, headFileContent)
-      logger(`${pluginName} FONTS.SCSS & _FONTS.HTML files successfully updated!`, 'rocket')
+      await fs.writeFile(fontsFileTailwind, fileContent)
+      await fs.writeFile(fontsFile, fileContent)
+      logger(pluginName, `FONTS.SCSS, FONTS.CSS, Fonts.HTML files successfully updated!`, 'rocket')
     }
   } catch (err) {
-    logger(`${pluginName} Error when creating a styles for fonts: ${err}`, 'error')
+    logger(pluginName, `Error when creating a styles for fonts: ${err}`, 'error')
   }
 }

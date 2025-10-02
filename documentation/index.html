@@ -82,9 +82,9 @@
                   <pre><code>@j/ <span class="opacity-50">  - /src/js/</span></code></pre>
                   <pre><code>@s/ <span class="opacity-50">  - /src/scss/</span></code></pre>
                   <pre><code>@i/ <span class="opacity-50">  - /src/assets/img/</span></code></pre>
-                  <pre><code>@f/ <span class="opacity-50">  - /src/assets/files/</span></code></pre>
+                  <pre><code>@f/ <span class="opacity-50">  - /src/assets/fonts/</span></code></pre>
                   <pre><code>@v/ <span class="opacity-50">  - ./src/assets/video/</span></code></pre>
-                  <pre><code>@tw/ <span class="opacity-50"> - ./src/tw_css/</span></code></pre>
+                  <pre><code>@tw/ <span class="opacity-50"> - ./src/css/</span></code></pre>
                </div>
             </div>
          </section>
@@ -93,12 +93,14 @@
             <div class="px-4 m-auto max-w-[1300px]">
                <h2 class="text-2xl mb-6">Основні папки проєкту</h2>
                <div class="mockup-code w-full">
-                  <pre><code>public/ <span class="opacity-50">       - папка для розміщення статичних файлів.</span></code></pre>
-                  <pre><code>src/ <span class="opacity-50">          - основна директорія для розробки.</span></code></pre>
-                  <pre><code>src/data <span class="opacity-50">      - json файли з данними для компонента.</span></code></pre>
-                  <pre><code>src/assets/ <span class="opacity-50">   - зберігання файлів, зображень, шрифтів та відео.</span></code></pre>
-                  <pre><code>src/html/ <span class="opacity-50">     - шаблони HTML.</span></code></pre>
-                  <pre><code>src/pages/ <span class="opacity-50">    - сторінки сайту.</span></code></pre>
+                  <pre><code>public/ <span class="opacity-50">          - папка для розміщення статичних файлів.</span></code></pre>
+                  <pre><code>src/ <span class="opacity-50">             - основна директорія для розробки.</span></code></pre>
+                  <pre><code>src/data <span class="opacity-50">         - json файли з данними для компонента.</span></code></pre>
+                  <pre><code>src/assets/ <span class="opacity-50">      - зберігання файлів, зображень, шрифтів та відео.</span></code></pre>
+                  <pre><code>src/scss/ <span class="opacity-50">        - файли стилів scss без використання tailwind.</span></code></pre>
+                  <pre><code>src/css/ <span class="opacity-50">         - файли стилів css при використанні tailwind.</span></code></pre>
+                  <pre><code>src/html/ <span class="opacity-50">        - шаблони HTML.</span></code></pre>
+                  <pre><code>src/index.html/ <span class="opacity-50">  - сторінки сайту розміщуються в корені директорії src/</span></code></pre>
                </div>
             </div>
          </section>
@@ -118,10 +120,10 @@
                <h2 class="text-2xl mb-6">Шрифти та іконки</h2>
 
                <div class="">
-                  <p>Для шрифтів та іконок використовується папка <span class="badge badge-md badge-neutral">fonts-convert/</span>:</p>
+                  <p>Для шрифтів та іконок використовується папка <span class="badge badge-md badge-neutral">fonts-converter/</span>:</p>
                   <ul>
-                     <li>Шрифти у форматі <span class="badge badge-md badge-neutral">ttf</span> розміщуються в корені папки <span class="badge badge-md badge-neutral">fonts-convert/</span>.</li>
-                     <li>SVG-іконки для генерації шрифту — у <span class="badge badge-md badge-neutral">fonts-convert/icons/</span>.</li>
+                     <li>Шрифти у форматі <span class="badge badge-md badge-neutral">ttf</span> розміщуються в корені папки <span class="badge badge-md badge-neutral">fonts-converter/</span>.</li>
+                     <li>SVG-іконки для генерації шрифту — у <span class="badge badge-md badge-neutral">fonts-converter/icons/</span>.</li>
                   </ul>
                   <p>Процес генерування шрифтів створює файли шрифтів у форматі <span>woff2</span> в папці <span class="badge badge-md badge-neutral">src/assets/fonts/</span>, а також генерує файли <span class="badge badge-md badge-neutral">fonts.scss</span> та <span class="badge badge-md badge-neutral">icons.scss</span> у <span class="badge badge-md badge-neutral">src/scss/fonts/</span> з класами
                      для шрифтів та іконок. Додаткові

@@ -1,85 +1,44 @@
 import { defineConfig } from 'vite'
 import path from 'path'
-import templateCfg from './template.config.js'
 import modules from './imports.js'
+import templateCfg from './template.config.js'
+import htmlComposer from './plugins/html-composer/htmlComposer.js'
+import templateConfig from './template.config.js'
+import { getHtmlEntryFiles, devNavigationPlugin } from './plugins/getHtmlEntryFiles.js'
+import copyAssetsPlugin from './plugins/copyAssets.js'
 
-import viteFixSelfClosingTags from './plugins/posthtml/posthtml-self-closing.js'
-import include from './plugins/posthtml/include.js'
-import posthtmlReplaceAliases from './plugins/posthtml/posthtml-alias-plugin.js'
-import fixVituumTw from './plugins/posthtml/fix-vituum-tw.js'
-
+const rootDir = path.join(process.cwd(), 'src')
+const buildDir = path.join(process.cwd(), 'dist')
 const isProduction = process.env.NODE_ENV === 'production'
 
-const makeAliases = (aliases) => {
-  return Object.entries(aliases).reduce((acc, [key, value]) => {
-    acc[key] = path.resolve(process.cwd(), value)
-    return acc
-  }, {})
-}
-
-const GLOBAL_HTML_VARIABLES = {
-  IS_TAILWIND: templateCfg.isTailwind,
-  IS_DEV: !isProduction,
-  IS_PRELOADER: templateCfg.isPreloader,
-  ...templateCfg.HTMLVariables
-}
-
-const aliases = makeAliases(templateCfg.aliases)
-
-const ignoredDirs = [
-  'vendor', 'node_modules', 'plugins', 'dist', '.git', 'documentation', 'fonts-convert'
-]
+const ignoredDirs = ['vendor', 'node_modules', 'plugins', 'dist', '.git', 'documentation', 'fonts-converter']
 const ignoredFiles = ['package.json', 'yarn.lock', 'snippets.json', 'README.md']
 
 export default defineConfig({
+  root: rootDir,
   base: '',
   plugins: [
-    modules.vituum({
-      pages: { normalizeBasePath: true, }
-    }),
 
-    viteFixSelfClosingTags(),
-
-    modules.posthtml({
-      plugins: [
-        include({
-          globalVariables: GLOBAL_HTML_VARIABLES,
-        }),
-        posthtmlReplaceAliases(templateCfg.aliases),
-        ...((templateCfg.isTailwind && isProduction) ? [fixVituumTw()] : []),
-        modules.beautify({
-          indent_size: 2,
-          indent_inner_html: true,
-          extra_liners: [],
-        }),
-      ],
+    // HTML Composer
+    htmlComposer({
+      aliases: templateCfg.aliases || {},
+      HTMLVariables: {
+        IS_DEV: !isProduction,
+        IS_TAILWIND: templateCfg.isTailwind,
+        ...templateConfig.HTMLVariables || {},
+      }
     }),
 
     // TailwindCSS
     ...((templateCfg.isTailwind) ? [modules.tailwindcss()] : []),
-
     // Image optimization & webp
-    ...((isProduction && templateCfg.images.makeWebp && !templateCfg.images.optimizeNoWebp) ? [
-      modules.vitePluginImageOptimizer(templateCfg.images.webpQuality),
-    ] : []),
-    // Image optimization & no webp
-    ...((isProduction && templateCfg.images.optimizeNoWebp) ? [
-      modules.vitePluginImageOptimizer(templateCfg.images.imgQuality),
-    ] : []),
-
-    // Hot Module Replacement
-    {
-      name: 'custom-hmr',
-      enforce: 'post',
-      handleHotUpdate({ file, server }) {
-        if (file.endsWith('.html') || file.endsWith('.json')) {
-          server.ws.send({ type: 'full-reload', path: '*' })
-        }
-      },
-    },
+    ...((isProduction) ? [modules.vitePluginImageOptimizer(templateCfg.imgQuality),] : []),
+    // Dev navigation plugin
+    ...((templateCfg.isDevNavigation) ? [devNavigationPlugin({ srcDir: 'src', position: 'left' })] : []),
+    // Copy assets like fonts, images, etc.
+    ...((templateCfg.isPHPMailer) ? [copyAssetsPlugin({ 'src/php': 'dist/php' }),] : []),
   ],
 
-  // CSS preprocessor
   css: {
     devSourcemap: true,
     preprocessorOptions: {
@@ -93,7 +52,6 @@ export default defineConfig({
     },
   },
 
-  // Server config
   server: {
     host: '0.0.0.0',
     watch: {
@@ -102,17 +60,10 @@ export default defineConfig({
         ...ignoredFiles.map(file => `**/${file}/**`),
       ],
     },
-    proxy: {
-      '/api': {
-        target: `http://${templateCfg.serverProxy.domain}:${templateCfg.serverProxy.port}`,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(new RegExp(`^${templateCfg.serverProxy.target}`), '')
-      }
-    }
   },
 
   resolve: {
-    alias: { ...aliases },
+    alias: { ...templateCfg.aliases || {} },
   },
 
   build: {
@@ -120,9 +71,9 @@ export default defineConfig({
     assetsInlineLimit: 0,
     cssCodeSplit: false,
     emptyOutDir: true,
-    outDir: 'dist',
+    outDir: buildDir,
     rollupOptions: {
-
+      input: getHtmlEntryFiles('src'),
       output: {
         format: 'es',
         assetFileNames: (asset) => {
@@ -131,15 +82,9 @@ export default defineConfig({
           const srcPath = original ? original.replace('src/assets/', 'assets/').replace(/\/([^/]+)$/g, '') : ''
 
           const folders = {
-            png: srcPath,
-            jpg: srcPath,
-            jpeg: srcPath,
-            webp: srcPath,
-            svg: srcPath,
-            avi: 'assets/video',
-            mp4: 'assets/video',
-            mebm: 'assets/video',
-            woff2: 'assets/fonts',
+            png: srcPath, jpg: srcPath, jpeg: srcPath, webp: srcPath, svg: srcPath,
+            avi: 'assets/video', mp4: 'assets/video', mebm: 'assets/video',
+            woff: 'assets/fonts', woff2: 'assets/fonts',
             css: 'assets/css',
           }
 

@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+@import './fonts/fonts.css';
+@import './fonts/icons.css';
+/* @plugin "daisyui"; */
+
+@theme {
+  --font-display: 'Satoshi', 'sans-serif';
+  --breakpoint-3xl: 120rem;
+  --color-avocado-100: oklch(0.99 0 0);
+  /* ... */
+}
