@@ -1,11 +1,23 @@
 @import 'tailwindcss';
+@plugin "daisyui";
 @import './fonts/fonts.css';
 @import './fonts/icons.css';
-/* @plugin "daisyui"; */
 
 @theme {
   --font-display: 'Satoshi', 'sans-serif';
   --breakpoint-3xl: 120rem;
   --color-avocado-100: oklch(0.99 0 0);
   /* ... */
+}
+
+.magnetic-wrap {
+  display: inline-block;
+  padding: 30px 50px;
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
 }

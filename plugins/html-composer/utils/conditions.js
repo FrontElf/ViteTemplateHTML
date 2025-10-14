@@ -1,7 +1,6 @@
 import { evalExpression } from './expressions.js'
 import { logger } from './logger.js'
 
-// Обробка умовних тегів
 export function processConditions(tree, props, baseOptions = {}) {
    const {
       if: ifTag,

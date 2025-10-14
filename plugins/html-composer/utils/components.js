@@ -5,7 +5,6 @@ import { processConditions } from './conditions.js'
 import { processExpressions } from './expressions.js'
 import { processEach } from './each.js'
 
-// 🔹 Клонування AST (швидке, як у each.js)
 function cloneAstNode(node) {
    if (Array.isArray(node)) {
       return node.map(cloneAstNode)
@@ -19,7 +18,6 @@ function cloneAstNode(node) {
    return node
 }
 
-// Перетворення самозакриваючих тегів компонентів
 export function fixSelfClosingComponents(html, componentTags) {
    return componentTags.reduce((result, tag) => {
       const regex = new RegExp(`<${tag}((\\s+[^>]*)?)\\s*/>`, 'g')
@@ -27,7 +25,6 @@ export function fixSelfClosingComponents(html, componentTags) {
    }, html)
 }
 
-// Обробка локальних змінних компонента
 function processComponentLocals(componentContent, isLogger, loggerPrefix) {
    const scriptRegex = /<script\s+define>([\s\S]*?)<\/script>/
    const scriptMatch = componentContent.match(scriptRegex)
@@ -59,7 +56,6 @@ function processComponentLocals(componentContent, isLogger, loggerPrefix) {
    return { content, localContext }
 }
 
-// Включення компонентів
 export async function includeComponents(tree, componentMap, context, baseOptions, depth = 0) {
    const { encoding = 'utf-8' } = baseOptions
    const {
@@ -92,7 +88,6 @@ export async function includeComponents(tree, componentMap, context, baseOptions
       if (componentMap[tree.tag]) {
          const fileContent = fs.readFileSync(componentMap[tree.tag], encoding)
 
-         // children тепер масив нод → клон + обробка
          const childrenNodes = tree.content
             ? await includeComponents(cloneAstNode(tree.content), componentMap, context, baseOptions, depth)
             : []
@@ -101,15 +96,12 @@ export async function includeComponents(tree, componentMap, context, baseOptions
          const params = tree.attrs || {}
          const componentContext = { ...context, ...localContext, ...params, children: childrenNodes }
 
-         // 🔹 одразу парсимо компонент (тільки один раз)
          let parsed = parser(fixSelfClosingComponents(content, Object.keys(componentMap)))
 
-         // 🔹 пайплайн AST без render/parser
          parsed = processConditions(parsed, componentContext, baseOptions)
          parsed = await processEach(parsed, componentContext, baseOptions, componentMap)
          parsed = processExpressions(parsed, componentContext, baseOptions)
 
-         // рекурсія для вкладених компонентів
          return await includeComponents(parsed, componentMap, componentContext, baseOptions, depth + 1)
       } else if (tree.tag.match(/^[A-Z]/)) {
          const notFoundMessage = isNotFound ? getNotFoundMessage(tree.tag, isNotFoundCompact) : ''

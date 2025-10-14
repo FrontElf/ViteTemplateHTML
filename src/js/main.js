@@ -19,6 +19,12 @@ TF.menuInit()
 // import './libs/watcher.js'
 
 // ? ===============================================
+/* Magic Cursor */
+// Documentation inside the module file
+
+import './libs/magicCursor.js'
+
+// ? ===============================================
 /* Dynamic adaptive */
 // Documentation of the plugin:
 
@@ -93,6 +99,7 @@ TF.menuInit()
 
 // ? ===============================================
 // ? Custom scripts ================================
+
 
 import './custom.js'
 

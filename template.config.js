@@ -13,6 +13,7 @@ export default {
 
    HTMLVariables: {
       IS_PRELOADER: false,
+      IS_MAGIC_CURSOR: true,
       SITE_NAME: 'My Site',
       SITE_URL: 'https://www.mysite.com',
       API_URL: 'https://jsonplaceholder.typicode.com/users',

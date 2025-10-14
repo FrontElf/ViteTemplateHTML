@@ -1,6 +1,5 @@
 import { logger } from './logger.js'
 
-// Оцінка виразів
 export function evalExpression(expression, props, isLogger, loggerPrefix) {
    try {
       const context = { ...props }
@@ -12,7 +11,6 @@ export function evalExpression(expression, props, isLogger, loggerPrefix) {
    }
 }
 
-// Обробка шаблонних виразів у атрибутах і контенті
 export function processExpressions(tree, context, baseOptions = {}) {
    const {
       isLogger = false,
@@ -31,11 +29,9 @@ export function processExpressions(tree, context, baseOptions = {}) {
             if (typeof val === 'string' && val.includes('{{')) {
                const exprMatch = val.match(/^\s*\{\{([^}]+)\}\}\s*$/)
                if (exprMatch) {
-                  // атрибут містить тільки вираз → можна напряму присвоїти результат
                   const result = evalExpression(exprMatch[1].trim(), context, isLogger, loggerPrefix)
                   node.attrs[attr] = result
                } else {
-                  // звичайний рядок з виразами → робимо replace
                   node.attrs[attr] = val.replace(/\{\{([^}]+)\}\}/g, (_, expression) => {
                      const result = evalExpression(expression.trim(), context, isLogger, loggerPrefix)
                      return (result === null || result === undefined) ? '' : result
