@@ -22,7 +22,8 @@ TF.menuInit()
 /* Magic Cursor */
 // Documentation inside the module file
 
-import './libs/magicCursor.js'
+// import './libs/magicCursor.js'
+import './scripts/FEModals.js'
 
 // ? ===============================================
 /* Dynamic adaptive */

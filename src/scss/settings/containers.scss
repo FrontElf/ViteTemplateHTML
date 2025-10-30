@@ -5,14 +5,14 @@
    container-type: inline-size;
 
    @if ($maxWidthContainer>0) {
-      max-width: toRem($containerWidth);
+      max-width: #{$containerWidth}px;
       margin: 0 auto;
       width: 100%;
    }
 
    @if ($containerPadding>0) {
       @if ($maxWidthContainer>0) {
-         padding: 0 toRem(math.div($containerPadding, 2));
+         padding: 0 #{$containerPadding / 2}px;
       }
 
       @else {
@@ -22,7 +22,6 @@
    }
 }
 
-.container-no-space {
-   padding-left: 0;
-   padding-right: 0;
+._container-small {
+   max-width: #{$containerWidthSmall}px;
 }

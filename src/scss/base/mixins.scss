@@ -11,15 +11,15 @@
   @return $result;
 }
 
-@function toEm($px, $current: 16) {
-  $result: math.div($px, $current) + em;
-  @return $result;
-}
-
 @mixin gridCards($type: fit, $min: 280px, $max: 1fr, $gap: 30px) {
   display: grid;
   gap: $gap;
   grid-template-columns: repeat(auto-#{$type}, minmax($min, $max));
+}
+
+@function toEm($px, $current: 16) {
+  $result: math.div($px, $current) + em;
+  @return $result;
 }
 
 @mixin adaptiveValue($property,
@@ -28,11 +28,11 @@
   $keepSize: 0,
   $widthFrom: $containerWidth,
   $widthTo: $minWidth) {
-  @if ($startSize==0) {
+  @if ($startSize ==0) {
     $startSize: 0.000001;
   }
 
-  @if ($minSize==0) {
+  @if ($minSize ==0) {
     $minSize: 0.000001;
   }
 
@@ -48,50 +48,43 @@
   $slope: math.div(($startSize - $minSize), ($widthFrom - $widthTo));
   $yIntersection: -$widthTo * $slope + $minSize;
 
-  @if ($yIntersection==0) {
+  @if ($yIntersection ==0) {
     $yIntersection: 0.000001;
   }
 
-  $flyValue: #{toRem($yIntersection)}' + '#{$slope * 100}vw;
+  // === основне значення ===
+  $flyValue: #{$yIntersection}px + #{$slope * 100}vw;
+  $propertyValue: unquote("clamp(#{$minSize}px, #{$flyValue}, #{$startSize}px)");
 
-  $propertyValue: #{'clamp(' toRem($minSize) ',' $flyValue ',' toRem($startSize)
- ')'
-}
-
-;
-
-@if ($minSize > $startSize) {
-  $propertyValue: #{'clamp('
- toRem($startSize) ','
-    $flyValue ','
-    toRem($minSize) ')'
-}
-
-;
-}
-
-@if $keepSize !=1 and $keepSize !=3 {
-  @media (min-width: $widthFromMedia) {
-    #{$property}: toRem($startSize);
-  }
-}
-
-@media (min-width: $widthToMedia) and (max-width: $widthFromMedia) {
-  @supports (#{$property}: $propertyValue) {
-    #{$property}: $propertyValue;
+  @if ($minSize > $startSize) {
+    $propertyValue: unquote("clamp(#{$startSize}px, #{$flyValue}, #{$minSize}px)");
   }
 
-  @supports not (#{$property}: $propertyValue) {
-    #{$property}: calc(#{toRem($minSize)} + #{$addSize} * (100vw - #{toRem($widthTo)}) / #{math.div(
+  // === вище widthFrom ===
+  @if $keepSize !=1 and $keepSize !=3 {
+    @media (min-width: $widthFromMedia) {
+      #{$property}: #{$startSize}px;
+    }
+  }
+
+  // === адаптив між ===
+  @media (min-width: $widthToMedia) and (max-width: $widthFromMedia) {
+    @supports (#{$property}: $propertyValue) {
+      #{$property}: $propertyValue;
+    }
+
+    @supports not (#{$property}: $propertyValue) {
+      #{$property}: calc(#{$minSize}px + #{$addSize} * (100vw - #{$widthTo}px) / #{math.div(
  $widthFrom,
-      16) - math.div($widthTo, 16)
-  });
-}
+        16) - math.div($widthTo, 16)
+    });
+  }
 }
 
+// === нижче widthTo ===
 @if $keepSize !=1 and $keepSize !=2 {
   @media (max-width: $widthToMedia) {
-    #{$property}: toRem($minSize);
+    #{$property}: #{$minSize}px;
   }
 }
 }

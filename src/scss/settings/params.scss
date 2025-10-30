@@ -3,12 +3,13 @@
 
 // ============ Params ========================================================
 
-$test: 320px;
 $minWidth: 320;
 $maxWidth: 1920;
 $maxWidthContainer: 1122;
-$containerPadding: 30; 
+$maxWidthContainerSmall: 922;
+$containerPadding: 30;
 
 // ============ Container =====================================================
 
 $containerWidth: $maxWidthContainer + $containerPadding;
+$containerWidthSmall: $maxWidthContainerSmall + $containerPadding;

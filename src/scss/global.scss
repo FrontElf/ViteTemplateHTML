@@ -20,7 +20,7 @@ body {
   font-weight: var(--weight-regular);
   background-color: var(--color-bg);
   font-style: normal;
-  min-width: 320px;
+  min-width: $minWidth;
 
   .lock & {
     overflow: hidden;
@@ -34,6 +34,11 @@ body {
 .wrapper {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+
+  @supports (overflow: clip) {
+    overflow: clip;
+  }
 
   main {
     flex: 1 1 auto;

@@ -2,6 +2,7 @@ export default {
    isTailwind: true,
    isPHPMailer: false,
    isDevNavigation: true,
+   defaultFontSizeToRem: 16,
 
    imgQuality: {
       optimizeJpeg: false,

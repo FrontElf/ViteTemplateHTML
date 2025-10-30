@@ -58,15 +58,15 @@
 $grid-columns: 12;
 
 $gutter-widths: (
-   base: toRem(24),
-   sm: toRem(16),
-   md: toRem(24),
-   lg: toRem(32),
-   xl: toRem(40)
+   base: 24px,
+   sm: 16px,
+   md: 24,
+   lg: 32,
+   xl: 40
 );
 
 $breakpoints: (
-   base: toRem(320),
+   base: 320px,
    small: $mobileSmall,
    mobile: $mobile,
    tablet: $tablet,

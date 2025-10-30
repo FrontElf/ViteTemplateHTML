@@ -1,6 +1,9 @@
+@use "@s/inc" as *;
+
 :root {
-  --font-icons: "icons";
+  --font-icons: ;
   --font-main: 'Montserrat', sans-serif;
+  --font-size-main: 16px;
 
   //  Colors
   --color-primary: #e24922;
@@ -8,36 +11,7 @@
   --color-white: #ffffff;
   --color-bg: #f2eeea;
 
-  // Title sizes
-  --title-xl: 48px;
-  --title-xl-line: 1.3;
-
-  --title-lg: 36px;
-  --title-lg-line: 1.3;
-
-  --title-md: 24px;
-  --title-md-line: 1.33;
-
-  --title-sm: 18px;
-  --title-sm-line: 1.44;
-
-  // Body sizes
-  --text-base: 16px;
-  --text-base-line: 1.5;
-
-  --text-sm: 14px;
-  --text-sm-line: 1.57;
-
-  --text-xs: 10px;
-  --text-xs-line: 1.6;
-
   // Transitions
 
   --transition-main: 0.3s ease 0s;
-
-  // Font weights
-  --weight-regular: 400;
-  --weight-medium: 500;
-  --weight-semibold: 600;
-  --weight-bold: 700;
 }

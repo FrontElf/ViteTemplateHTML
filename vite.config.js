@@ -29,6 +29,16 @@ export default defineConfig({
       }
     }),
 
+    {
+      name: 'custom-hmr',
+      enforce: 'post',
+      handleHotUpdate({ file, server }) {
+        if (file.endsWith('.html') || file.endsWith('.json')) {
+          server.ws.send({ type: 'full-reload', path: '*' })
+        }
+      },
+    },
+
     // TailwindCSS
     ...((templateCfg.isTailwind) ? [modules.tailwindcss()] : []),
     // Image optimization & webp

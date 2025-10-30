@@ -1,48 +1,6 @@
 import gsap from "gsap"
 import { Power2 } from "gsap"
 
-/**
- * MagicCursor
- * ------------------------------------------------------------
- * A self-contained GSAP-powered custom cursor system.
- * Replaces the default mouse pointer with a smooth, animated, and
- * interactive ball that reacts to user actions.
- *
- * ✦ Features:
- * - Smooth cursor movement using GSAP ticker and interpolation
- * - Magnetic hover effect with parallax motion
- * - Alternative hover mode (enlarged cursor)
- * - Caret hover scaling for menu elements
- * - Text-on-hover via [data-cursor-text] attribute
- * - Interactive hover state with image/video previews
- * - Automatic show/hide logic for clickable or form elements
- *
- * ✦ Configuration:
- * All behavior and selectors are defined in `this.config` and can be
- * overridden by passing a custom config object to the constructor.
- * Example:
- *
- * const cursor = new MagicCursor({
- *   core: { sizes: { width: 14, height: 14 } },
- *   magnetic: { hoverScale: 2, movement: 30 }
- * })
- * cursor.init()
- *
- * ✦ Dependencies:
- * - GSAP 3.x (Tween, Ticker)
- * - Power2 easing from GSAP
- *
- * ✦ HTML Structure:
- * <div id="magic-cursor">
- *   <div id="ball"></div>
- * </div>
- *
- * This file automatically creates and initializes an instance:
- * const cursor = new MagicCursor()
- * cursor.init()
- * ------------------------------------------------------------
- */
-
 class MagicCursor {
    constructor(customConfig = {}) {
       // ====== Global options ===================
