@@ -7,7 +7,7 @@
  * - Focus trapping and focus return after closing
  * - Fully configurable via constructor options
  * - Attribute-based triggers (data-modal-open / data-modal-close)
- * - Callback support (onBeforeOpen, onAfterOpen, onBeforeClose, onAfterClose)
+ * - Callback support (onBeforeOpen, onAfterOpen, onBeforeClose, onAfterClose)   
  * - Public API methods: open, close, toggle, isOpen, getOpenModals, update, destroy
  * - Global access via window.FEModals
  *
@@ -65,9 +65,10 @@ class FEModals {
          lockScroll: false,
          // Classes
          bodyClass: 'modal-open',
-         activeClass: 'open',
+         activeClass: 'is-open',
          initClass: 'fe-modal-init',
          animatingClass: 'is-animating',
+         selectorOverlay: '.fe-modal-overlay',
          // Callbacks
          onBeforeOpen: null,
          onAfterOpen: null,
@@ -87,8 +88,12 @@ class FEModals {
 
    init() {
       this.openButtons.forEach(button => {
-         const selector = button.getAttribute(this.config.attrOpen)
+         let selector = button.getAttribute(this.config.attrOpen)
          if (!selector) return
+
+         if (!selector.startsWith('#')) {
+            selector = `#${selector}`
+         }
 
          const modal = document.querySelector(selector)
          if (!modal) return
@@ -109,10 +114,14 @@ class FEModals {
       modal.setAttribute('role', 'dialog')
       modal.setAttribute('aria-modal', 'true')
       modal.setAttribute('aria-hidden', 'true')
+      const overlay = modal.querySelector(this.config.selectorOverlay)
 
-      const closeButtons = modal.querySelectorAll(`[${this.config.attrClose}]`)
-      closeButtons.forEach(btn => {
-         btn.addEventListener('click', () => this.close(modal))
+      modal.addEventListener('click', (e) => {
+         if (e.target.closest(`${this.config.selectorOverlay} [${this.config.attrClose}]`)) {
+            this.close(modal)
+         } else if (e.target === overlay && overlay.hasAttribute(this.config.attrClose)) {
+            this.close(modal)
+         }
       })
 
       const backdropHandler = e => {

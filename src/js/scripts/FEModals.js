@@ -1,8 +1,8 @@
 import FEModals from '../libs/FEModals'
-
+import { bodyLock, bodyUnlock } from './functions.js'
 
 function beforeModalOpen(modal) {
-   // console.log('Callback before opening:', modal)
+   bodyLock(300)
 }
 function afterModalOpen(modal) {
    // console.log('After opening the callback:', modal)
@@ -11,7 +11,7 @@ function beforeModalClose(modal) {
    // console.log('Before closing the callback:', modal)
 }
 function afterModalClose(modal) {
-   // console.log('After closing the callback:', modal)
+   bodyUnlock(300)
 }
 
 const modals = new FEModals({
@@ -24,6 +24,7 @@ const modals = new FEModals({
    // Attributes
    attrOpen: 'data-modal-open',
    attrClose: 'data-modal-close',
+   selectorOverlay: '.fe-modal-overlay',
 
    // Behavior
    closeOnEsc: true,
@@ -33,7 +34,7 @@ const modals = new FEModals({
 
    // Classes
    bodyClass: 'modal-open',
-   activeClass: 'open',
+   activeClass: 'is-open',
    initClass: 'fe-modal-init',
    animatingClass: 'animating',
 })
