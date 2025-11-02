@@ -22,9 +22,10 @@ const modals = new FEModals({
    onAfterClose: afterModalClose,
 
    // Attributes
+   selectorModal: '.fe-modal',
+   selectorOverlay: '.fe-modal-overlay',
    attrOpen: 'data-modal-open',
    attrClose: 'data-modal-close',
-   selectorOverlay: '.fe-modal-overlay',
 
    // Behavior
    closeOnEsc: true,

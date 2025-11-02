@@ -58,6 +58,8 @@ class FEModals {
          // Attributes
          attrOpen: 'data-modal-open',
          attrClose: 'data-modal-close',
+         selectorOverlay: '.fe-modal-overlay',
+         selectorModal: '.modal',
          // Behavior
          closeOnEsc: true,
          closeAllOnEsc: true,
@@ -68,7 +70,6 @@ class FEModals {
          activeClass: 'is-open',
          initClass: 'fe-modal-init',
          animatingClass: 'is-animating',
-         selectorOverlay: '.fe-modal-overlay',
          // Callbacks
          onBeforeOpen: null,
          onAfterOpen: null,
@@ -80,33 +81,33 @@ class FEModals {
       this.openButtons = document.querySelectorAll(`[${this.config.attrOpen}]`)
       this.currentOpenModals = []
       this.lastFocusedElement = null
-      if (!this.openButtons.length) return
 
       this.init()
       if (this.config.closeOnEsc) this.initEscListener()
    }
 
    init() {
-      this.openButtons.forEach(button => {
+      this.modals = Array.from(document.querySelectorAll(this.config.selectorModal))
+      this.modals.forEach(modal => this.initModal(modal))
+
+      this._clickHandler = e => {
+         const button = e.target.closest(`[${this.config.attrOpen}]`)
+         if (!button) return
+
+         e.preventDefault()
          let selector = button.getAttribute(this.config.attrOpen)
          if (!selector) return
 
-         if (!selector.startsWith('#')) {
-            selector = `#${selector}`
-         }
+         if (!selector.startsWith('#')) selector = `#${selector}`
 
          const modal = document.querySelector(selector)
          if (!modal) return
 
-         this.modals.push(modal)
-         button.addEventListener('click', e => {
-            e.preventDefault()
-            this.lastFocusedElement = document.activeElement
-            this.open(modal)
-         })
-      })
+         this.lastFocusedElement = document.activeElement
+         this.open(modal)
+      }
 
-      this.modals.forEach(modal => this.initModal(modal))
+      document.addEventListener('click', this._clickHandler)
    }
 
    initModal(modal) {
@@ -147,7 +148,6 @@ class FEModals {
    async open(target) {
       const modal = this.resolveModal(target)
       if (!modal || modal.classList.contains(this.config.activeClass)) return
-
       if (this.config.singleOpen && this.currentOpenModals.length) {
          await Promise.all(
             this.currentOpenModals.map(m =>
@@ -270,7 +270,12 @@ class FEModals {
    }
 
    resolveModal(target) {
-      if (typeof target === 'string') return document.querySelector(target)
+      if (typeof target === 'string') {
+         if (!target.startsWith('#')) {
+            target = `#${target}`
+         }
+         return document.querySelector(target)
+      }
       return target instanceof Element ? target : null
    }
 
@@ -290,7 +295,6 @@ class FEModals {
 
    update() {
       this.destroy()
-      this.openButtons = document.querySelectorAll(`[${this.config.attrOpen}]`)
       this.currentOpenModals = []
       this.lastFocusedElement = null
       this.init()
@@ -300,22 +304,21 @@ class FEModals {
 
    destroy() {
       this.modals.forEach(modal => {
-         if (modal._backdropHandler)
-            modal.removeEventListener('click', modal._backdropHandler)
-         if (modal._trapFocus)
-            modal.removeEventListener('keydown', modal._trapFocus)
+         if (modal._backdropHandler) modal.removeEventListener('click', modal._backdropHandler)
+         if (modal._trapFocus) modal.removeEventListener('keydown', modal._trapFocus)
       })
-      if (this._escHandler)
-         document.removeEventListener('keydown', this._escHandler)
+
+      if (this._escHandler) document.removeEventListener('keydown', this._escHandler)
+
+      if (this._clickHandler) {
+         document.removeEventListener('click', this._clickHandler)
+         this._clickHandler = null
+      }
+
       this.modals = []
-      this.openButtons = []
       this.currentOpenModals = []
    }
 }
 
 export default FEModals
 export { FEModals }
-
-if (typeof window !== 'undefined') {
-   window.FEModals = FEModals
-}
