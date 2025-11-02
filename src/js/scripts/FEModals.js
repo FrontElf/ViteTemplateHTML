@@ -14,28 +14,34 @@ function afterModalClose(modal) {
    bodyUnlock(300)
 }
 
-const modals = new FEModals({
-   // Callbacks
-   onBeforeOpen: beforeModalOpen,
-   onAfterOpen: afterModalOpen,
-   onBeforeClose: beforeModalClose,
-   onAfterClose: afterModalClose,
+document.addEventListener('DOMContentLoaded', () => {
+   const modals = new FEModals({
+      // Callbacks
+      onBeforeOpen: beforeModalOpen,
+      onAfterOpen: afterModalOpen,
+      onBeforeClose: beforeModalClose,
+      onAfterClose: afterModalClose,
 
-   // Attributes
-   selectorModal: '.fe-modal',
-   selectorOverlay: '.fe-modal-overlay',
-   attrOpen: 'data-modal-open',
-   attrClose: 'data-modal-close',
+      // Attributes
+      selectorModal: '.fe-modal',
+      selectorOverlay: '.fe-modal-overlay',
+      attrOpen: 'data-modal-open',
+      attrClose: 'data-modal-close',
 
-   // Behavior
-   closeOnEsc: true,
-   closeAllOnEsc: true,
-   singleOpen: true,
-   lockScroll: false,
+      // Behavior
+      closeOnEsc: true,
+      closeAllOnEsc: true,
+      singleOpen: true,
+      lockScroll: false,
 
-   // Classes
-   bodyClass: 'modal-open',
-   activeClass: 'is-open',
-   initClass: 'fe-modal-init',
-   animatingClass: 'animating',
+      // Classes
+      bodyClass: 'modal-open',
+      activeClass: 'is-open',
+      initClass: 'fe-modal-init',
+      animatingClass: 'animating',
+   })
+
+   if (typeof window !== 'undefined') {
+      window.FEModals = modals
+   }
 })
