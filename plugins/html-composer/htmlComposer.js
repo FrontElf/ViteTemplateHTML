@@ -7,6 +7,7 @@ import { fixSelfClosingComponents, includeComponents } from './utils/components.
 import { processConditions } from './utils/conditions.js'
 import { processExpressions } from './utils/expressions.js'
 import { processEach } from './utils/each.js'
+import { processVueDirectives } from './utils/vueDirectives.js'
 import { moveStylesToHead } from './utils/moveStylesToHead.js'
 import { removeHtmlComments } from './utils/removeComments.js'
 import { formatHtml } from './utils/formatHtml.js'
@@ -22,6 +23,7 @@ export default function htmlComposer(options = {}) {
       components = {},
       HTMLVariables = {},
       each = {},
+      vueDirectives = {},
       stylesToHead = {},
       formatter = {},
       commentsCleaner = {}
@@ -34,12 +36,12 @@ export default function htmlComposer(options = {}) {
       conditions: { isLogger: false, if: 'if', else: 'else', elseif: 'elseif', ...conditions },
       expressions: { isLogger: false, ...expressions },
       each: { isLogger: false, ...each },
+      vueDirectives: { isLogger: false, if: 'v-if', for: 'v-for', range: 'v-range', as: 'v-as', ...vueDirectives },
       stylesToHead: { isLogger: false, ...stylesToHead },
       formatter: { isLogger: false, ...formatter },
       commentsCleaner: { isLogger: false, ...commentsCleaner }
    }
 
-   // ---- Динамічне збирання карти компонентів ----
    let componentMap = {}
    let componentTags = []
 
@@ -54,13 +56,11 @@ export default function htmlComposer(options = {}) {
       }
    }
 
-   // зібрати на старті
    rebuildComponentMap()
 
    return {
       name: 'vite-html-tree',
 
-      // 👉 Підписуємось на файлові події Vite
       configureServer(server) {
          server.watcher.on('add', file => {
             if (file.startsWith(path.resolve(includeBaseDir)) && file.endsWith('.html')) {
@@ -79,6 +79,7 @@ export default function htmlComposer(options = {}) {
          async handler(html) {
             const fullContext = { ...baseOptions.HTMLVariables, ...context }
             let tree = parser(fixSelfClosingComponents(html, componentTags))
+            tree = processVueDirectives(tree, fullContext, baseOptions)
             tree = processConditions(tree, fullContext, baseOptions)
             tree = await processEach(tree, fullContext, baseOptions, componentMap)
             tree = await includeComponents(tree, componentMap, fullContext, baseOptions)

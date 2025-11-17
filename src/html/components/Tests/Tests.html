@@ -1,0 +1,50 @@
+<script define>
+   const isList = true
+   const numbers = [1, 2, 3, 4]
+   const users = [
+      { name: 'John Doe', email: 'john.doe@example.com' },
+      { name: 'Jane Doe', email: 'jane.doe@example.com' },
+   ]
+</script>
+
+<div class="max-w-4xl m-auto">
+   <ul v-if="isList" class="list p-6 flex flex-col gap-4">
+      <li>Lorem ipsum dolor sit amet.</li>
+      <li>Lorem ipsum dolor sit amet.</li>
+   </ul>
+
+   <ul class="list p-6 flex flex-col gap-4">
+      <li v-for="(number, index, length) in [1, 2, 3, 4]" class="alert">
+         <span>number: {{ number }}, index: {{ index }}, length: {{ length }}</span>
+      </li>
+   </ul>
+
+   <ul class="p-6 flex flex-col gap-4">
+      <li v-for="(user, index, length) in test-data.json" class="alert">
+         <span class="text-red-500"> Length - {{ length }}; Index - {{ index }}:</span>
+         <span>Name - {{ user.name }}; Email - {{ user.email }};</span>
+      </li>
+   </ul>
+
+   <ul class="p-6 flex flex-col gap-4">
+      <TestsListItem v-for="(user, index, length) in test-data.json" />
+   </ul>
+
+   <ul class="p-6 flex flex-col gap-4">
+      <TestsListItem v-for="(user, index, length) in users" />
+   </ul>
+
+   <div class="flex flex-col gap-4 p-6">
+      <each data="test-data.json" loop="(user, index, length) in data">
+         <TestsListItem />
+      </each>
+   </div>
+
+   <div class="flex flex-col gap-4 p-6">
+      <p v-range="1 to 5 step 1" v-as="index" class="alert alert-warning alert-outline">{{index}}: Lorem ipsum dolor sit amet consectetur.</p>
+   </div>
+
+   <div class="flex flex-col gap-4 p-6">
+      <p v-range="1 to 10 step 2" v-as="index" class="alert alert-warning alert-outline">{{index}}: Lorem ipsum dolor sit amet consectetur.</p>
+   </div>
+</div>

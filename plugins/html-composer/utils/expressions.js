@@ -17,35 +17,42 @@ export function processExpressions(tree, context, baseOptions = {}) {
       loggerPrefix = '[HTML-Expressions]'
    } = baseOptions.expressions
 
-   function walk(node) {
-      if (Array.isArray(node)) {
-         return node.map(n =>
-            typeof n === 'string' ? processTextNode(n, context) : walk(n)
-         )
+   function processNode(node) {
+      if (typeof node === 'string') {
+         return processTextNode(node, context)
       }
 
-      if (node?.attrs) {
-         for (const [attr, val] of Object.entries(node.attrs)) {
+      if (!node || typeof node !== 'object') {
+         return node
+      }
+
+      // Обробка атрибутів
+      if (node.attrs) {
+         const newAttrs = { ...node.attrs }
+         for (const [attr, val] of Object.entries(newAttrs)) {
             if (typeof val === 'string' && val.includes('{{')) {
                const exprMatch = val.match(/^\s*\{\{([^}]+)\}\}\s*$/)
                if (exprMatch) {
                   const result = evalExpression(exprMatch[1].trim(), context, isLogger, loggerPrefix)
-                  node.attrs[attr] = result
+                  newAttrs[attr] = result
                } else {
-                  node.attrs[attr] = val.replace(/\{\{([^}]+)\}\}/g, (_, expression) => {
+                  newAttrs[attr] = val.replace(/\{\{([^}]+)\}\}/g, (_, expression) => {
                      const result = evalExpression(expression.trim(), context, isLogger, loggerPrefix)
                      return (result === null || result === undefined) ? '' : result
                   })
-
                }
             }
          }
+         node.attrs = newAttrs
       }
 
-      if (node?.content) {
-         node.content = node.content.map(n =>
-            typeof n === 'string' ? processTextNode(n, context) : walk(n)
-         )
+      // Обробка контенту
+      if (node.content) {
+         if (Array.isArray(node.content)) {
+            node.content = node.content.map(n => processNode(n))
+         } else {
+            node.content = processNode(node.content)
+         }
       }
 
       return node
@@ -62,7 +69,6 @@ export function processExpressions(tree, context, baseOptions = {}) {
                if (result && typeof result === 'object') return JSON.stringify(result)
                if (result === null || result === undefined) return ''
                return String(result)
-
             }
             return part
          })
@@ -70,5 +76,9 @@ export function processExpressions(tree, context, baseOptions = {}) {
       return text
    }
 
-   return walk(tree)
+   if (Array.isArray(tree)) {
+      return tree.map(processNode)
+   }
+   
+   return processNode(tree)
 }

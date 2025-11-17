@@ -1,0 +1,31 @@
+<!-- ================= -->
+<!-- “normal” approach -->
+<!-- ================= -->
+
+<!doctype html>
+<html lang="uk">
+   <!-- ============= Head ============= -->
+
+   <Head pageTitle="Home page" description="Home page description" />
+
+   <body>
+      <if condition="IS_MAGIC_CURSOR === true">
+         <MagicCursor />
+      </if>
+
+      <div class="wrapper">
+         <!-- =========== Header =========== -->
+         <Header />
+         <!-- ============ Main ============ -->
+         <main>
+            <Tests />
+         </main>
+         <!-- ============= Footer ============ -->
+         <Footer />
+         <!-- <Modal modalId="modal" /> -->
+      </div>
+      <!-- ============= Scripts =========== -->
+      <Scripts />
+   </body>
+
+</html>

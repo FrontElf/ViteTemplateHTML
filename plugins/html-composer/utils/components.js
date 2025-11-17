@@ -4,6 +4,7 @@ import { logger } from './logger.js'
 import { processConditions } from './conditions.js'
 import { processExpressions } from './expressions.js'
 import { processEach } from './each.js'
+import { processVueDirectives } from './vueDirectives.js'
 
 function cloneAstNode(node) {
    if (Array.isArray(node)) {
@@ -94,10 +95,26 @@ export async function includeComponents(tree, componentMap, context, baseOptions
 
          const { content, localContext } = processComponentLocals(fileContent, isLogger, loggerPrefix)
          const params = tree.attrs || {}
-         const componentContext = { ...context, ...localContext, ...params, children: childrenNodes }
+         
+         // Конвертуємо рядкові значення "true"/"false" в булеві
+         const normalizedParams = {}
+         for (const [key, value] of Object.entries(params)) {
+            if (value === 'true') {
+               normalizedParams[key] = true
+            } else if (value === 'false') {
+               normalizedParams[key] = false
+            } else {
+               normalizedParams[key] = value
+            }
+         }
+         
+         // Змінні з контексту (як user, index з циклів) мають бути доступні в компоненті
+         // Атрибути компонента перезаписують змінні з контексту, якщо вони вказані явно
+         const componentContext = { ...context, ...localContext, ...normalizedParams, children: childrenNodes }
 
          let parsed = parser(fixSelfClosingComponents(content, Object.keys(componentMap)))
 
+         parsed = processVueDirectives(parsed, componentContext, baseOptions)
          parsed = processConditions(parsed, componentContext, baseOptions)
          parsed = await processEach(parsed, componentContext, baseOptions, componentMap)
          parsed = processExpressions(parsed, componentContext, baseOptions)
