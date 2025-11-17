@@ -1,12 +1,13 @@
-// plugins/dev-sessions.mjs (або .js)
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const sessionsDir = path.resolve(process.cwd(), 'sessions')
 const sessionsFile = path.resolve(sessionsDir, 'sessions.json')
 const lockFile = path.resolve(sessionsDir, '.session-lock')
+import { logger } from './html-composer/utils/logger.js'
+
+const pluginName = '[dev-sessions-plugin]'
 
 const ensureDir = () => {
    if (!fs.existsSync(sessionsDir)) {
@@ -19,7 +20,7 @@ const readJson = (file, fallback = []) => {
    try {
       return JSON.parse(fs.readFileSync(file, 'utf-8'))
    } catch (err) {
-      console.error('[Dev Session] Пошкоджений JSON → скидаю:', file)
+      logger(pluginName, `Damaged JSON → reset: ${file}`, 'error')
       fs.writeFileSync(file, JSON.stringify(fallback, null, 2))
       return fallback
    }
@@ -30,8 +31,6 @@ const writeJson = (file, data) => {
    fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf-8')
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ГЛОБАЛЬНИЙ ЗАХИСТ ВІД ДУБЛЮВАННЯ
 let pluginInitialized = false
 
 export default function devSessionsPlugin() {
@@ -42,7 +41,6 @@ export default function devSessionsPlugin() {
 
    let session = null
 
-   // 1. Відновлення після крашу
    if (fs.existsSync(lockFile)) {
       try {
          const startTime = Number(fs.readFileSync(lockFile, 'utf-8').trim())
@@ -53,21 +51,20 @@ export default function devSessionsPlugin() {
                end: Date.now(),
                project: path.basename(process.cwd()),
                recovered: true,
-               note: `відновлено після крашу (~${mins} хв)`,
+               note: `recovered from the crash (~${mins} хв)`,
             }
             const sessions = readJson(sessionsFile)
             sessions.push(recovered)
             writeJson(sessionsFile, sessions)
-            console.log(`[Dev Session] Відновлено сесію після крашу: ${mins} хв`)
+            logger(pluginName, `Session resumed after crash: ${mins} хв`, 'info')
          }
       } catch (e) {
-         console.error('[Dev Session] Помилка lock-файлу:', e.message)
+         logger(pluginName, `Lock file error: ${e.message}`, 'error')
       } finally {
          try { fs.unlinkSync(lockFile) } catch { }
       }
    }
 
-   // 2. Нова сесія
    const startTime = Date.now()
    session = {
       id: `${startTime}-${process.pid}`,
@@ -78,12 +75,11 @@ export default function devSessionsPlugin() {
    try {
       fs.writeFileSync(lockFile, String(startTime), 'utf-8')
    } catch (e) {
-      console.warn('[Dev Session] Не вдалося створити lock-файл')
+      logger(pluginName, `Failed to create lock file`, 'warning')
    }
 
-   console.log(`[Dev Session] Сесія розпочата · ${session.project}`)
+   logger(pluginName, `Session started · ${session.project}`, 'rocket')
 
-   // 3. Фіналізація — з залізним захистом від дублювання
    const finalizeSession = (() => {
       let called = false
       return () => {
@@ -93,30 +89,29 @@ export default function devSessionsPlugin() {
          session.end = Date.now()
          const mins = Math.round((session.end - session.start) / 60000)
 
-         console.log(`[Dev Session] Сесія завершена: ${mins} хв`)
+         logger(pluginName, `Session ended: ${mins} хв`, 'rocket')
 
          try { fs.unlinkSync(lockFile) } catch { }
 
          const sessions = readJson(sessionsFile)
-         sessions.push({ ...session }) // копія, щоб не було мутацій
+         sessions.push({ ...session })
          writeJson(sessionsFile, sessions)
       }
    })()
 
-   // 4. Події (усі once!)
    process.once('exit', finalizeSession)
    process.once('SIGINT', () => { finalizeSession(); process.exit() })
    process.once('SIGTERM', () => { finalizeSession(); process.exit() })
-   process.once('SIGUSR2', finalizeSession) // nodemon
+   process.once('SIGUSR2', finalizeSession)
 
    process.on('uncaughtException', (err) => {
-      console.error('[Dev Session] Критична помилка:', err)
+      logger(pluginName, `Critical error:', ${err}`, 'error')
       finalizeSession()
       process.exit(1)
    })
 
    process.on('unhandledRejection', (reason) => {
-      console.error('[Dev Session] Unhandled Rejection:', reason)
+      logger(pluginName, `Unhandled Rejection: ${reason}`, 'error')
       finalizeSession()
       process.exit(1)
    })
