@@ -1,7 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
-
 const sessionsDir = path.resolve(process.cwd(), 'sessions')
 const sessionsFile = path.resolve(sessionsDir, 'sessions.json')
 const lockFile = path.resolve(sessionsDir, '.session-lock')

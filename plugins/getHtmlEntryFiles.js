@@ -23,7 +23,7 @@ function injectDevNavigation(html, srcDir, position) {
 
    const sidePosition = position === 'right' ? 'right: 0;' : 'left: 0;'
    const initialTransform = position === 'right' ? 'translateX(100%)' : 'translateX(-100%)'
-   const beforeSide = position === 'right' ? 'left: -15px;' : 'right: -15px;'
+   const beforeSide = position === 'right' ? 'left: -18px;' : 'right: -18px;'
    const beforeTransform = position === 'right' ? 'translateX(100%)' : 'translateX(-100%)'
    const rounded = position === 'right' ? '8px 0 0 8px' : '0 8px 8px 0'
 
@@ -57,18 +57,21 @@ function injectDevNavigation(html, srcDir, position) {
             ${beforeSide}
             background: inherit;
             height: 90px;
-            width: 20px;
+            width: 30px;
             border-radius: inherit;
             overflow: hidden;
             transition: all 0.3s ease;
+            opacity: 0.7;
          }
          .dev-nav-menu:hover {
             transform: translateX(0);
+            transition: all 0.3s ease 0.3s;
          }
          .dev-nav-menu:hover::before {
             transform: ${beforeTransform};
             height: 0;
             opacity: 0;
+            transition: all 0.3s ease 0.3s;
          }
          .dev-nav-menu ul {
             display: flex;
