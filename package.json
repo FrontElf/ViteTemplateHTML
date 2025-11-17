@@ -12,6 +12,7 @@
     "f": "node ./plugins/convertFonts.js && node ./plugins/iconsFontGenerator.js",
     "i": "node ./plugins/iconsFontGenerator.js",
     "a": "node ./plugins/generateAliases.js",
+    "s": "node ./plugins/print-sessions.js",
     "php": "node ./plugins/generateAliases.js && concurrently \"node ./plugins/php-server/server.js\" \"vite dev\"",
     "coffee": "node ./plugins/coffee.js"
   },
@@ -39,7 +40,8 @@
     "posthtml-parser": "^0.12.1",
     "posthtml-render": "^3.0.0",
     "sass": "^1.89.2",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vite-plugin-qrcode": "^0.3.0"
   },
   "resolutions": {
     "rollup": "npm:@rollup/wasm-node@latest"

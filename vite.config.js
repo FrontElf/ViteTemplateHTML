@@ -1,11 +1,7 @@
 import { defineConfig } from 'vite'
 import path from 'path'
-import modules from './imports.js'
-import templateCfg from './template.config.js'
-import htmlComposer from './plugins/html-composer/htmlComposer.js'
+import modules from './modules.js'
 import templateConfig from './template.config.js'
-import { getHtmlEntryFiles, devNavigationPlugin } from './plugins/getHtmlEntryFiles.js'
-import copyAssetsPlugin from './plugins/copyAssets.js'
 
 const rootDir = path.join(process.cwd(), 'src')
 const buildDir = path.join(process.cwd(), 'dist')
@@ -18,13 +14,15 @@ export default defineConfig({
   root: rootDir,
   base: '',
   plugins: [
+    modules.qrcode(),
+    modules.devSessionsPlugin(),
 
     // HTML Composer
-    htmlComposer({
-      aliases: templateCfg.aliases || {},
+    modules.htmlComposer({
+      aliases: templateConfig.aliases || {},
       HTMLVariables: {
         IS_DEV: !isProduction,
-        IS_TAILWIND: templateCfg.isTailwind,
+        IS_TAILWIND: templateConfig.isTailwind,
         ...templateConfig.HTMLVariables || {},
       }
     }),
@@ -40,13 +38,13 @@ export default defineConfig({
     },
 
     // TailwindCSS
-    ...((templateCfg.isTailwind) ? [modules.tailwindcss()] : []),
+    ...((templateConfig.isTailwind) ? [modules.tailwindcss()] : []),
     // Image optimization & webp
-    ...((isProduction) ? [modules.vitePluginImageOptimizer(templateCfg.imgQuality),] : []),
+    ...((isProduction) ? [modules.vitePluginImageOptimizer(templateConfig.imgQuality),] : []),
     // Dev navigation plugin
-    ...((templateCfg.isDevNavigation) ? [devNavigationPlugin({ srcDir: 'src', position: 'left' })] : []),
+    ...((templateConfig.isDevNavigation) ? [modules.devNavigationPlugin({ srcDir: 'src', position: 'left' })] : []),
     // Copy assets like fonts, images, etc.
-    ...((templateCfg.isPHPMailer) ? [copyAssetsPlugin({ 'src/php': 'dist/php' }),] : []),
+    ...((templateConfig.isPHPMailer) ? [modules.copyAssetsPlugin({ 'src/php': 'dist/php' }),] : []),
   ],
 
   css: {
@@ -63,7 +61,7 @@ export default defineConfig({
   },
 
   server: {
-    host: '0.0.0.0',
+    host: true,
     watch: {
       ignored: [
         ...ignoredDirs.map(dir => `**/${dir}/**`),
@@ -73,7 +71,7 @@ export default defineConfig({
   },
 
   resolve: {
-    alias: { ...templateCfg.aliases || {} },
+    alias: { ...templateConfig.aliases || {} },
   },
 
   build: {
@@ -83,7 +81,7 @@ export default defineConfig({
     emptyOutDir: true,
     outDir: buildDir,
     rollupOptions: {
-      input: getHtmlEntryFiles('src'),
+      input: modules.getHtmlEntryFiles('src'),
       output: {
         format: 'es',
         assetFileNames: (asset) => {
@@ -91,14 +89,16 @@ export default defineConfig({
           const original = asset.originalFileNames?.[0]
           const srcPath = original ? original.replace('src/assets/', 'assets/').replace(/\/([^/]+)$/g, '') : ''
 
-          const folders = {
-            png: srcPath, jpg: srcPath, jpeg: srcPath, webp: srcPath, svg: srcPath,
-            avi: 'assets/video', mp4: 'assets/video', mebm: 'assets/video',
-            woff: 'assets/fonts', woff2: 'assets/fonts',
-            css: 'assets/css',
-          }
+          const foldersMap = [
+            { exts: ['png', 'jpg', 'jpeg', 'webp', 'svg', 'avif', 'gif'], folder: srcPath },
+            { exts: ['avi', 'mp4', 'mebm'], folder: 'assets/video' },
+            { exts: ['mp3', 'ogg', 'wav'], folder: 'assets/audio' },
+            { exts: ['woff', 'woff2', 'ttf', 'otf', 'eot'], folder: 'assets/fonts' },
+            { exts: ['css'], folder: 'assets/css' },
+          ]
 
-          return `${folders[ext] || 'assets'}/[name][extname]`
+          const folder = foldersMap.find(f => f.exts.includes(ext))?.folder || 'assets'
+          return `${folder}/[name][extname]`
         },
 
         entryFileNames: 'assets/js/[name].js',
