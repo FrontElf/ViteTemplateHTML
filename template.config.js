@@ -2,6 +2,9 @@ export default {
    isTailwind: true,
    isPHPMailer: false,
    isDevNavigation: true,
+   isSessions: false,
+   isQrcode: true,
+
    defaultFontSizeToRem: 16,
 
    imgQuality: {

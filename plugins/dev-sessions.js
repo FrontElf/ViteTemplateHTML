@@ -16,7 +16,9 @@ const ensureDir = () => {
 const readJson = (file, fallback = []) => {
    if (!fs.existsSync(file)) return fallback
    try {
-      return JSON.parse(fs.readFileSync(file, 'utf-8'))
+      const raw = fs.readFileSync(file, 'utf-8').trim()
+      if (!raw) return fallback
+      return JSON.parse(raw)
    } catch (err) {
       logger(pluginName, `Damaged JSON → reset: ${file}`, 'error')
       fs.writeFileSync(file, JSON.stringify(fallback, null, 2))
@@ -105,13 +107,11 @@ export default function devSessionsPlugin() {
    process.on('uncaughtException', (err) => {
       logger(pluginName, `Critical error:', ${err}`, 'error')
       finalizeSession()
-      process.exit(1)
    })
 
    process.on('unhandledRejection', (reason) => {
       logger(pluginName, `Unhandled Rejection: ${reason}`, 'error')
       finalizeSession()
-      process.exit(1)
    })
 
    return {

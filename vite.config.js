@@ -14,8 +14,6 @@ export default defineConfig({
   root: rootDir,
   base: '',
   plugins: [
-    modules.qrcode(),
-    modules.devSessionsPlugin(),
 
     // HTML Composer
     modules.htmlComposer({
@@ -37,6 +35,10 @@ export default defineConfig({
       },
     },
 
+    // QR Code generator
+    ...((templateConfig.isQrcode) ? [modules.qrcode()] : []),
+    // Dev sessions plugin
+    ...((templateConfig.isSessions) ? [modules.devSessionsPlugin()] : []),
     // TailwindCSS
     ...((templateConfig.isTailwind) ? [modules.tailwindcss()] : []),
     // Image optimization & webp

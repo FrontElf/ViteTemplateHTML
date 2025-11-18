@@ -1,6 +1,5 @@
 import { promises as fs } from 'fs'
 import { logger } from './html-composer/utils/logger.js'
-import templateConfig from '../template.config.js'
 
 export const generateFontsStyle = async () => {
   const pluginName = '[fonts-style-plugin]'
