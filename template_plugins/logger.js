@@ -1,8 +1,3 @@
-// export const logger = (prefix = '', message, level = 'log') => {
-//    console[level](`${prefix ? prefix + ': ' : ''} ${message}`)
-// }
-
-
 import chalk from 'chalk'
 import templateCfg from '../../template.config.js'
 

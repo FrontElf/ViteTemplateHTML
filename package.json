@@ -1,47 +1,48 @@
 {
-  "name": "template",
-  "version": "1.0.0",
+  "name": "ViteTemplateHTML",
+  "version": "2.0.0",
   "type": "module",
   "license": "ISC",
   "keywords": [],
   "author": "FrontElf",
   "scripts": {
-    "d": "node ./plugins/generateAliases.js && vite dev",
+    "d": "node ./template_plugins/generate-config-file.js && vite dev",
     "b": "vite build",
     "p": "vite preview",
-    "f": "node ./plugins/convertFonts.js && node ./plugins/iconsFontGenerator.js",
-    "i": "node ./plugins/iconsFontGenerator.js",
-    "a": "node ./plugins/generateAliases.js",
-    "s": "node ./plugins/print-sessions.js",
-    "php": "node ./plugins/generateAliases.js && concurrently \"node ./plugins/php-server/server.js\" \"vite dev\"",
-    "coffee": "node ./plugins/coffee.js"
+    "f": "node ./template_plugins/convert-fonts.js && node ./template_plugins/icons-font-generator.js",
+    "i": "node ./template_plugins/icons-font-generator.js",
+    "s": "node ./template_plugins/print-sessions.js",
+    "cfg": "node ./template_plugins/generate-config-file.js",
+    "php": "node ./template_plugins/generate-config-file.js && concurrently \"node ./template_plugins/php-server/server.js\" \"vite dev\"",
+    "coffee": "node ./template_plugins/coffee.js"
+  },
+  "dependencies": {
+    "lightgallery": "^2.7.2",
+    "swiper": "^12.0.2",
+    "cheerio": "^1.1.0",
+    "gsap": "^3.13.0",
+    "daisyui": "^5.2.2",
+    "@davestewart/outliner": "^1.2.0",
+    "fast-glob": "^3.3.3",
+    "posthtml-parser": "^0.12.1",
+    "posthtml-render": "^3.0.0",
+    "postcss-pxtorem": "^6.1.0",
+    "postcss-sort-media-queries": "^5.2.0"
   },
   "devDependencies": {
     "chalk": "^5.4.1",
     "concurrently": "^9.2.1",
-    "lightgallery": "^2.7.2",
-    "micromodal": "^0.4.10",
     "node-php-server": "^0.1.2",
     "postcss": "^8.5.6",
     "prettier": "^3.3.3",
     "sharp": "^0.33.5",
     "svgtofont": "^6.0.0",
-    "swiper": "^12.0.2",
-    "ttf2woff2": "^6.0.1"
-  },
-  "dependencies": {
-    "@davestewart/outliner": "^1.2.0",
+    "ttf2woff2": "^6.0.1",
     "@tailwindcss/vite": "^4.1.10",
-    "cheerio": "^1.1.0",
-    "daisyui": "^5.2.2",
-    "fast-glob": "^3.3.3",
-    "gsap": "^3.13.0",
-    "postcss-pxtorem": "^6.1.0",
-    "posthtml-parser": "^0.12.1",
-    "posthtml-render": "^3.0.0",
     "sass": "^1.89.2",
     "vite": "^6.3.5",
-    "vite-plugin-qrcode": "^0.3.0"
+    "vite-plugin-qrcode": "^0.3.0",
+    "console-table-printer": "^2.15.0"
   },
   "resolutions": {
     "rollup": "npm:@rollup/wasm-node@latest"

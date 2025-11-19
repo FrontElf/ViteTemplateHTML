@@ -7,7 +7,7 @@ const rootDir = path.join(process.cwd(), 'src')
 const buildDir = path.join(process.cwd(), 'dist')
 const isProduction = process.env.NODE_ENV === 'production'
 
-const ignoredDirs = ['vendor', 'node_modules', 'plugins', 'dist', '.git', 'documentation', 'fonts-converter']
+const ignoredDirs = ['vendor', 'node_modules', 'template_plugins', 'dist', '.git', 'documentation', 'fonts-converter']
 const ignoredFiles = ['package.json', 'yarn.lock', 'snippets.json', 'README.md']
 
 export default defineConfig({
@@ -20,7 +20,8 @@ export default defineConfig({
       aliases: templateConfig.aliases || {},
       HTMLVariables: {
         IS_DEV: !isProduction,
-        IS_TAILWIND: templateConfig.isTailwind,
+        IS_TAILWIND: templateConfig.styles.tailwind,
+        // Variables from template.config.js
         ...templateConfig.HTMLVariables || {},
       }
     }),
@@ -40,11 +41,11 @@ export default defineConfig({
     // Dev sessions plugin
     ...((templateConfig.isSessions) ? [modules.devSessionsPlugin()] : []),
     // TailwindCSS
-    ...((templateConfig.isTailwind) ? [modules.tailwindcss()] : []),
+    ...((templateConfig.styles.tailwind) ? [modules.tailwindcss()] : []),
     // Image optimization & webp
     ...((isProduction) ? [modules.vitePluginImageOptimizer(templateConfig.imgQuality),] : []),
     // Dev navigation plugin
-    ...((templateConfig.isDevNavigation) ? [modules.devNavigationPlugin({ srcDir: 'src', position: 'left' })] : []),
+    ...((templateConfig.devNavigation.isShow) ? [modules.devNavigationPlugin({ srcDir: 'src', position: 'left' })] : []),
     // Copy assets like fonts, images, etc.
     ...((templateConfig.isPHPMailer) ? [modules.copyAssetsPlugin({ 'src/php': 'dist/php' }),] : []),
   ],
@@ -52,7 +53,6 @@ export default defineConfig({
   css: {
     devSourcemap: true,
     preprocessorOptions: {
-
       scss: {
         api: 'modern-compiler',
         additionalData: `@use "@s/inc" as *;`,
@@ -60,6 +60,19 @@ export default defineConfig({
         quietDeps: true,
       },
     },
+
+    postcss: {
+      plugins: [
+        // Replacing px with remh rem
+        ...((templateConfig.styles.pxToRem && isProduction) ? [
+          modules.pxtorem({ rootValue: templateConfig.styles.sizeToRem, exclude: /node_modules/i, })
+        ] : []),
+        // Sorting and grouping media requests
+        ...((templateConfig.styles.sortMediaQuery && isProduction) ? [
+          modules.sortMediaQueries({ sort: templateConfig.styles.sortType })
+        ] : [])
+      ]
+    }
   },
 
   server: {
@@ -77,9 +90,9 @@ export default defineConfig({
   },
 
   build: {
-    minify: true,
+    minify: templateConfig.isMinify || false,
     assetsInlineLimit: 0,
-    cssCodeSplit: false,
+    cssCodeSplit: true,
     emptyOutDir: true,
     outDir: buildDir,
     rollupOptions: {

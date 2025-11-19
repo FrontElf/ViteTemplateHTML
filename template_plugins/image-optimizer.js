@@ -20,7 +20,7 @@ function walkDir(dir, callback) {
 }
 
 async function optimizeImages(imageDir, options = {}) {
-   const pluginName = '[imageOptimizer-plugin]'
+   const pluginName = '[image-optimizer-plugin]'
    const {
       optimizeJpeg = true,
       generateWebP = true,

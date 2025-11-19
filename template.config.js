@@ -1,11 +1,40 @@
 export default {
-   isTailwind: true,
    isPHPMailer: false,
-   isDevNavigation: true,
-   isSessions: false,
+   isSessions: true,
    isQrcode: true,
+   isMinify: true,
 
-   defaultFontSizeToRem: 16,
+   styles: {
+      tailwind: true,
+      pxToRem: true,
+      sizeToRem: 16,
+      sortMediaQuery: true,
+      sortType: 'desktop-first', // or 'mobile-first'
+      critical: false,
+   },
+
+   devNavigation: {
+      isShow: true,
+      position: 'left top', // 'left top', 'left bottom', 'right top', 'right bottom'
+      color: '#ffffff',
+      background: 'rgba(51, 51, 51, 0.5)',
+      transition: '0.3s',
+      delay: '0.2s'
+   },
+
+   syntaxColors: {
+      isColors: true,
+      components: {
+         'tagColor': '#43cffa',
+         'attrColor': '#88e5f5',
+         'valueColor': '#a6f0a6'
+      },
+      conditions: {
+         'tagColor': '#66f7c7',
+         'attrColor': '#88e5f5',
+         'valueColor': '#a6f0a6'
+      }
+   },
 
    imgQuality: {
       optimizeJpeg: false,

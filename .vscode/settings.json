@@ -12,8 +12,56 @@
     "@v": "${folder}/src/assets/video/",
     "@f": "${folder}/src/assets/fonts/"
   },
-  "viteHtmlComponentCreator.defaultImports": {
-    "html_imports": [],
-    "scss_imports": []
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": [
+          "entity.name.tag.component.html",
+          "meta.tag.component.open.html punctuation.definition.tag.begin.html",
+          "meta.tag.component.open.html punctuation.definition.tag.end.html",
+          "meta.tag.component.close.html punctuation.definition.tag.begin.html",
+          "meta.tag.component.close.html punctuation.definition.tag.end.html"
+        ],
+        "settings": {
+          "foreground": "#43cffa"
+        }
+      },
+      {
+        "scope": "meta.tag.component.open.html entity.other.attribute-name.html",
+        "settings": {
+          "foreground": "#88e5f5"
+        }
+      },
+      {
+        "scope": "meta.tag.component.open.html string.quoted.double.html",
+        "settings": {
+          "foreground": "#a6f0a6"
+        }
+      },
+      {
+        "scope": [
+          "entity.name.tag.control.html",
+          "meta.tag.control.open.html punctuation.definition.tag.begin.html",
+          "meta.tag.control.open.html punctuation.definition.tag.end.html",
+          "meta.tag.control.close.html punctuation.definition.tag.begin.html",
+          "meta.tag.control.close.html punctuation.definition.tag.end.html"
+        ],
+        "settings": {
+          "foreground": "#66f7c7"
+        }
+      },
+      {
+        "scope": "meta.tag.control.open.html entity.other.attribute-name.html",
+        "settings": {
+          "foreground": "#88e5f5"
+        }
+      },
+      {
+        "scope": "meta.tag.control.open.html string.quoted.double.html",
+        "settings": {
+          "foreground": "#a6f0a6"
+        }
+      }
+    ]
   }
 }
