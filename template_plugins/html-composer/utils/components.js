@@ -95,7 +95,7 @@ export async function includeComponents(tree, componentMap, context, baseOptions
 
          const { content, localContext } = processComponentLocals(fileContent, isLogger, loggerPrefix)
          const params = tree.attrs || {}
-         
+
          // Конвертуємо рядкові значення "true"/"false" в булеві
          const normalizedParams = {}
          for (const [key, value] of Object.entries(params)) {
@@ -107,7 +107,7 @@ export async function includeComponents(tree, componentMap, context, baseOptions
                normalizedParams[key] = value
             }
          }
-         
+
          // Змінні з контексту (як user, index з циклів) мають бути доступні в компоненті
          // Атрибути компонента перезаписують змінні з контексту, якщо вони вказані явно
          const componentContext = { ...context, ...localContext, ...normalizedParams, children: childrenNodes }
