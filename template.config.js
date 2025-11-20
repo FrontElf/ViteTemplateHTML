@@ -26,6 +26,7 @@ export default {
       componentsPath: true,
       componentsWarning: true,
       syntaxHighlight: true,
+      componentsDirectory: 'src/html/components',
 
       syntaxColors: {
          components: {

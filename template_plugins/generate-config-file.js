@@ -6,7 +6,7 @@ import { logger } from './html-composer/utils/logger.js'
 function generateConfigFiles() {
    const pluginName = '[generate-aliases-plugin]'
    const aliases = templateConfig.aliases
-   const { componentsPath, componentsWarning, syntaxHighlight, syntaxColors } = templateConfig.templatePlugin
+   const { componentsPath, componentsWarning, syntaxHighlight, componentsDirectory, syntaxColors } = templateConfig.templatePlugin
    const { components, conditions } = syntaxColors
 
    const vscodeSettings = {
@@ -22,6 +22,7 @@ function generateConfigFiles() {
       "ViteHtmlPlugin": {
          ...((componentsPath) ? { "componentsPath": true, } : {}),
          ...((componentsWarning) ? { "componentsWarning": true, } : {}),
+         ...((componentsDirectory) ? { "componentsDirectory": componentsDirectory, } : {}),
       },
 
       ...((syntaxHighlight) ? {
@@ -84,7 +85,6 @@ function generateConfigFiles() {
             ]
          }
       } : {}),
-
    }
 
    fs.writeFileSync(path.resolve('.vscode/settings.json'), JSON.stringify(vscodeSettings, null, 2))

@@ -14,7 +14,8 @@
   },
   "ViteHtmlPlugin": {
     "componentsPath": true,
-    "componentsWarning": true
+    "componentsWarning": true,
+    "componentsDirectory": "src/html/components"
   },
   "editor.tokenColorCustomizations": {
     "textMateRules": [
