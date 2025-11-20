@@ -22,18 +22,23 @@ export default {
       delay: '0.2s'
    },
 
-   syntaxColors: {
-      isColors: true,
-      components: {
-         'tagColor': '#43cffa',
-         'attrColor': '#88e5f5',
-         'valueColor': '#a6f0a6'
+   templatePlugin: {
+      componentsPath: true,
+      componentsWarning: true,
+      syntaxHighlight: true,
+
+      syntaxColors: {
+         components: {
+            tagColor: '#43cffa',
+            attrColor: '#88e5f5',
+            valueColor: '#a6f0a6'
+         },
+         conditions: {
+            tagColor: '#66f7c7',
+            attrColor: '#88e5f5',
+            valueColor: '#a6f0a6'
+         }
       },
-      conditions: {
-         'tagColor': '#66f7c7',
-         'attrColor': '#88e5f5',
-         'valueColor': '#a6f0a6'
-      }
    },
 
    imgQuality: {

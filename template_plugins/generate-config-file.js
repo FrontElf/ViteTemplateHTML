@@ -6,7 +6,8 @@ import { logger } from './html-composer/utils/logger.js'
 function generateConfigFiles() {
    const pluginName = '[generate-aliases-plugin]'
    const aliases = templateConfig.aliases
-   const { isColors, components, conditions } = templateConfig.syntaxColors
+   const { componentsPath, componentsWarning, syntaxHighlight, syntaxColors } = templateConfig.templatePlugin
+   const { components, conditions } = syntaxColors
 
    const vscodeSettings = {
       'path-autocomplete.pathMappings': Object.entries(aliases).reduce((acc, [key, value]) => {
@@ -18,7 +19,12 @@ function generateConfigFiles() {
          return acc
       }, {}),
 
-      ...((isColors) ? {
+      "ViteHtmlPlugin": {
+         ...((componentsPath) ? { "componentsPath": true, } : {}),
+         ...((componentsWarning) ? { "componentsWarning": true, } : {}),
+      },
+
+      ...((syntaxHighlight) ? {
          "editor.tokenColorCustomizations": {
             "textMateRules": [
                {
@@ -30,19 +36,22 @@ function generateConfigFiles() {
                      "meta.tag.component.close.html punctuation.definition.tag.end.html"
                   ],
                   "settings": {
-                     "foreground": components.tagColor
+                     "foreground": components.tagColor,
+                     "fontStyle": ""
                   }
                },
                {
                   "scope": "meta.tag.component.open.html entity.other.attribute-name.html",
                   "settings": {
                      "foreground": components.attrColor,
+                     "fontStyle": ""
                   }
                },
                {
                   "scope": "meta.tag.component.open.html string.quoted.double.html",
                   "settings": {
                      "foreground": components.valueColor,
+                     "fontStyle": ""
                   }
                },
                {
@@ -51,22 +60,25 @@ function generateConfigFiles() {
                      "meta.tag.control.open.html punctuation.definition.tag.begin.html",
                      "meta.tag.control.open.html punctuation.definition.tag.end.html",
                      "meta.tag.control.close.html punctuation.definition.tag.begin.html",
-                     "meta.tag.control.close.html punctuation.definition.tag.end.html",
+                     "meta.tag.control.close.html punctuation.definition.tag.end.html"
                   ],
                   "settings": {
-                     "foreground": conditions.tagColor
+                     "foreground": conditions.tagColor,
+                     "fontStyle": ""
                   }
                },
                {
                   "scope": "meta.tag.control.open.html entity.other.attribute-name.html",
                   "settings": {
                      "foreground": conditions.attrColor,
+                     "fontStyle": ""
                   }
                },
                {
                   "scope": "meta.tag.control.open.html string.quoted.double.html",
                   "settings": {
                      "foreground": conditions.valueColor,
+                     "fontStyle": ""
                   }
                }
             ]

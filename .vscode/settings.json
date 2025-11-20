@@ -12,6 +12,10 @@
     "@v": "${folder}/src/assets/video/",
     "@f": "${folder}/src/assets/fonts/"
   },
+  "ViteHtmlPlugin": {
+    "componentsPath": true,
+    "componentsWarning": true
+  },
   "editor.tokenColorCustomizations": {
     "textMateRules": [
       {
