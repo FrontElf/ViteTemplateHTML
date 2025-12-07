@@ -4,16 +4,15 @@ import { optimize } from 'svgo'
 import fs from 'fs/promises'
 import path from 'path'
 import { logger } from './html-composer/utils/logger.js'
-import generateHtmlIcons from './generateHtmlIcons.js'
-import templateConfig from '../template.config.js'
+import generateHtmlIcons from './generate-html-icons.js'
 const pluginName = '[icons-font-generator-plugin]'
 
 // Configuration
 const paths = {
   src: path.resolve(process.cwd(), './fonts-converter/icons'),
-  optimizedDist: path.resolve(process.cwd(), './plugins/ifont-gen/optimized-icons'),
-  buildDist: path.resolve(process.cwd(), './plugins/ifont-gen/build'),
-  templates: path.resolve(process.cwd(), './plugins/ifont-gen/templates/styles'),
+  optimizedDist: path.resolve(process.cwd(), './template_plugins/ifont-gen/optimized-icons'),
+  buildDist: path.resolve(process.cwd(), './template_plugins/ifont-gen/build'),
+  templates: path.resolve(process.cwd(), './template_plugins/ifont-gen/templates/styles'),
   fonts: path.resolve(process.cwd(), './src/assets/fonts'),
   assets: path.resolve(process.cwd(), './src/assets'),
   scss: path.resolve(process.cwd(), 'src/scss/fonts'),

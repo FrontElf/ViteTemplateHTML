@@ -2,7 +2,7 @@ import { promises as fs } from 'fs'
 import path from 'path'
 import ttf2woff2 from 'ttf2woff2'
 import { sync as globSync } from 'glob'
-import { generateFontsStyle } from './fontsStyleGenerator.js'
+import { generateFontsStyle } from './fonts-style-generator.js'
 import { logger } from './html-composer/utils/logger.js'
 
 async function convertFonts() {

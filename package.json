@@ -9,7 +9,7 @@
     "d": "node ./template_plugins/generate-config-file.js && vite dev",
     "b": "vite build",
     "p": "vite preview",
-    "f": "node ./template_plugins/convert-fonts.js && node ./template_plugins/icons-font-generator.js",
+    "f": "node ./template_plugins/fonts-converter.js && node ./template_plugins/icons-font-generator.js",
     "i": "node ./template_plugins/icons-font-generator.js",
     "s": "node ./template_plugins/print-sessions.js",
     "cfg": "node ./template_plugins/generate-config-file.js",

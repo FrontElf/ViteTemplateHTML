@@ -26,7 +26,7 @@ export default function htmlComposer(options = {}) {
       vueDirectives = {},
       stylesToHead = {},
       formatter = {},
-      commentsCleaner = {}
+      commentsCleaner = {},
    } = options
 
    const baseOptions = {
@@ -39,7 +39,7 @@ export default function htmlComposer(options = {}) {
       vueDirectives: { isLogger: false, if: 'v-if', for: 'v-for', range: 'v-range', as: 'v-as', ...vueDirectives },
       stylesToHead: { isLogger: false, ...stylesToHead },
       formatter: { isLogger: false, ...formatter },
-      commentsCleaner: { isLogger: false, ...commentsCleaner }
+      commentsCleaner: { isLogger: false, ...commentsCleaner },
    }
 
    let componentMap = {}
@@ -101,6 +101,6 @@ export default function htmlComposer(options = {}) {
 
             return htmlResult
          }
-      }
+      },
    }
 }
