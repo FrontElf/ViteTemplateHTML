@@ -5,6 +5,7 @@ const config = {
    isQrcode: true,
    isMinify: true,
    isPHPMailer: false,
+   isInlineSprite: false,
 
    styles: {
       tailwind: true,
@@ -47,9 +48,9 @@ const config = {
    imgQuality: {
       optimizeJpeg: true,
       generateWebP: true,
-      webpOptions: { lossless: true, quality: 70 },
-      jpegOptions: { quality: 70, progressive: true, mozjpeg: true },
-      pngOptions: { compressionLevel: 7 },
+      webpOptions: { lossless: false, quality: 60 },
+      jpegOptions: { quality: 60, progressive: true, mozjpeg: true },
+      pngOptions: { compressionLevel: 6 },
    },
 
    HTMLVariables: {

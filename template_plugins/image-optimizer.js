@@ -32,7 +32,7 @@ async function optimizeImages(imageDir, options = {}) {
    const generatedWebPFiles = new Set()
 
    if (!fs.existsSync(imageDir)) {
-      logger(pluginName, `The directory ${imageDir} does not exist, skipping image optimization.`, 'info')
+      logger(pluginName, `The directory does not exist, skipping image optimization.`, 'info')
       return generatedWebPFiles
    }
 
@@ -50,14 +50,17 @@ async function optimizeImages(imageDir, options = {}) {
       const tempFilePath = path.join(outputDir, `${fileNameWithoutExt}_temp${ext}`)
 
       try {
+         const image = sharp(inputFilePath)
+
          if ((ext === ".jpg" || ext === ".jpeg") && optimizeJpeg) {
-            await sharp(inputFilePath)
+            await image.clone()
                .jpeg(jpegOptions)
                .toFile(tempFilePath)
 
             await fsPromises.rename(tempFilePath, inputFilePath)
+
          } else if (ext === ".png") {
-            await sharp(inputFilePath)
+            await image.clone()
                .png(pngOptions)
                .toFile(tempFilePath)
 
@@ -66,9 +69,10 @@ async function optimizeImages(imageDir, options = {}) {
 
          if (generateWebP) {
             const outputFilePathWebP = path.join(outputDir, `${fileNameWithoutExt}.webp`)
-            await sharp(inputFilePath)
+            await image
                .webp(webpOptions)
                .toFile(outputFilePathWebP)
+
             generatedWebPFiles.add(outputFilePathWebP)
          }
       } catch (error) {

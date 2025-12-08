@@ -9,6 +9,7 @@ import htmlComposer from './template_plugins/html-composer/htmlComposer.js'
 import templateConfig from './template.config.js'
 import copyAssetsPlugin from './template_plugins/copy-assets.js'
 import devSessionsPlugin from './template_plugins/dev-sessions.js'
+import htmlSvgSpritePlugin from './template_plugins/svg-inline-sprite.js'
 
 export default {
    qrcode,
@@ -16,6 +17,7 @@ export default {
    pxtorem,
    sortMediaQueries,
    vitePluginImageOptimizer,
+   htmlSvgSpritePlugin,
    getHtmlEntryFiles,
    devNavigationPlugin,
    htmlComposer,

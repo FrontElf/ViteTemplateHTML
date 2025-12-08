@@ -1,162 +1,149 @@
-const uniqArray = (array) => {
-  return array.filter(function (item, index, self) {
-    const itemIndex = self.indexOf(item);
-    const isUnique = itemIndex === index;
-    return isUnique;
-  });
-};
+/**
+ * ScrollWatcher (на базі Intersection Observer API)
+ * Призначення: Ефективне відстеження видимості елементів на основі
+ * атрибутів data-watch-*, групуючи їх за однаковими параметрами спостереження.
+ */
 
 class ScrollWatcher {
-  constructor(props) {
+  constructor(props = {}) {
     let defaultConfig = {
       logging: true,
-    };
-    this.config = Object.assign(defaultConfig, props);
-    this.observer;
-    !document.documentElement.classList.contains('watcher')
-      ? this.scrollWatcherRun()
-      : null;
+      selector: '[data-watch]',
+      viewClass: '_watcher-view',
+    }
+
+    this.config = Object.assign(defaultConfig, props)
+    this.observers = new Map()
+
+    if (!document.documentElement.classList.contains('watcher')) {
+      this.scrollWatcherRun()
+    }
   }
-  // We update the constructor
+
   scrollWatcherUpdate() {
-    this.scrollWatcherRun();
+    this.scrollWatcherRun()
   }
-  // We start the constructor
+
   scrollWatcherRun() {
-    document.documentElement.classList.add('watcher');
-    this.scrollWatcherConstructor(document.querySelectorAll('[data-watch]'));
+    document.documentElement.classList.add('watcher')
+    this.observers.forEach(observer => observer.disconnect())
+    this.observers.clear()
+
+    const items = document.querySelectorAll(this.config.selector)
+    this.scrollWatcherConstructor(items)
   }
-  // Observer designer
+
   scrollWatcherConstructor(items) {
-    if (items.length) {
-      // We unite the parameters
-      let uniqParams = uniqArray(
-        Array.from(items).map(function (item) {
-          return `${item.dataset.watchRoot ? item.dataset.watchRoot : null}|${item.dataset.watchMargin ? item.dataset.watchMargin : '0px'}|${item.dataset.watchThreshold ? item.dataset.watchThreshold : 0}`;
-        })
-      );
-      // We get object groups with the same parameters,
-      // We create settings, initializing the observer
-      uniqParams.forEach((uniqParam) => {
-        let uniqParamArray = uniqParam.split('|');
-        let paramsWatch = {
-          root: uniqParamArray[0],
-          margin: uniqParamArray[1],
-          threshold: uniqParamArray[2],
-        };
-        let groupItems = Array.from(items).filter(function (item) {
-          let watchRoot = item.dataset.watchRoot
-            ? item.dataset.watchRoot
-            : null;
-          let watchMargin = item.dataset.watchMargin
-            ? item.dataset.watchMargin
-            : '0px';
-          let watchThreshold = item.dataset.watchThreshold
-            ? item.dataset.watchThreshold
-            : 0;
-          if (
-            String(watchRoot) === paramsWatch.root &&
-            String(watchMargin) === paramsWatch.margin &&
-            String(watchThreshold) === paramsWatch.threshold
-          ) {
-            return item;
-          }
-        });
+    if (items.length === 0) return
 
-        let configWatcher = this.getScrollWatcherConfig(paramsWatch);
+    const groups = new Map()
+    const elementsArray = Array.from(items)
 
-        // Observer initialization with their settings
-        this.scrollWatcherInit(groupItems, configWatcher);
-      });
-    }
+    elementsArray.forEach((item) => {
+      const watchRoot = item.dataset.watchRoot ?? null
+      const watchMargin = item.dataset.watchMargin ?? '0px'
+      const watchThreshold = item.dataset.watchThreshold ?? 0
+
+      const key = `${watchRoot}|${watchMargin}|${watchThreshold}`
+
+      if (!groups.has(key)) {
+        groups.set(key, [])
+      }
+      groups.get(key).push(item)
+    })
+
+    groups.forEach((groupItems, key) => {
+      const [root, margin, threshold] = key.split('|')
+      const paramsWatch = { root, margin, threshold }
+
+      const configWatcher = this.getScrollWatcherConfig(paramsWatch)
+
+      if (configWatcher) {
+        this.scrollWatcherInit(groupItems, configWatcher, key)
+      }
+    })
   }
-  // The settings function
+
   getScrollWatcherConfig(paramsWatch) {
-    // Create settings
-    let configWatcher = {};
-    // The father in which the observation is conducted
-    if (document.querySelector(paramsWatch.root)) {
-      configWatcher.root = document.querySelector(paramsWatch.root);
-    } else if (paramsWatch.root !== 'null') {
+    let configWatcher = {}
+
+    if (paramsWatch.root && paramsWatch.root !== 'null') {
+      configWatcher.root = document.querySelector(paramsWatch.root)
     }
-    //Retreating
-    configWatcher.rootMargin = paramsWatch.margin;
+
+    configWatcher.rootMargin = paramsWatch.margin
     if (
       paramsWatch.margin.indexOf('px') < 0 &&
       paramsWatch.margin.indexOf('%') < 0
     ) {
-      return;
+      return
     }
-    //Turning points
+
     if (paramsWatch.threshold === 'prx') {
-      // parallax mode
-      paramsWatch.threshold = [];
+      paramsWatch.threshold = []
       for (let i = 0; i <= 1.0; i += 0.005) {
-        paramsWatch.threshold.push(i);
+        paramsWatch.threshold.push(i)
       }
     } else {
-      paramsWatch.threshold = paramsWatch.threshold.split(',');
+      paramsWatch.threshold = String(paramsWatch.threshold).split(',').map(Number)
     }
-    configWatcher.threshold = paramsWatch.threshold;
+    configWatcher.threshold = paramsWatch.threshold
 
-    return configWatcher;
+    return configWatcher
   }
-  // The function of creating a new observer with their settings
-  scrollWatcherCreate(configWatcher) {
-    this.observer = new IntersectionObserver((entries, observer) => {
+
+  scrollWatcherCreate(configWatcher, key) {
+    const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
-        this.scrollWatcherCallback(entry, observer);
-      });
-    }, configWatcher);
-  }
-  //Observer initialization function with their settings
-  scrollWatcherInit(items, configWatcher) {
-    // creating a new observer with their settings
-    this.scrollWatcherCreate(configWatcher);
-    // Transfer to the observer of elements
-    items.forEach((item) => this.observer.observe(item));
-  }
-  //Function of Basic Actions Processing Points
-  scrollWatcherIntersecting(entry, targetElement) {
-    if (entry.isIntersecting) {
-      // We see an object
-      // add the class
-      !targetElement.classList.contains('_watcher-view')
-        ? targetElement.classList.add('_watcher-view')
-        : null;
-    } else {
-      // We don't see an object
-      // We pick up the class
-      targetElement.classList.contains('_watcher-view')
-        ? targetElement.classList.remove('_watcher-view')
-        : null;
-    }
-  }
-  // Function of shutdown by object
-  scrollWatcherOff(targetElement, observer) {
-    observer.unobserve(targetElement);
+        this.scrollWatcherCallback(entry, observer)
+      })
+    }, configWatcher)
+    this.observers.set(key, observer)
+    return observer
   }
 
-  // Observation processing function
+  scrollWatcherInit(items, configWatcher, key) {
+    const observer = this.scrollWatcherCreate(configWatcher, key)
+    items.forEach((item) => observer.observe(item))
+  }
+
+  scrollWatcherIntersecting(entry, targetElement) {
+    const viewClass = this.config.viewClass
+
+    if (entry.isIntersecting) {
+      if (!targetElement.classList.contains(viewClass)) {
+        targetElement.classList.add(viewClass)
+      }
+    } else {
+      if (targetElement.classList.contains(viewClass)) {
+        targetElement.classList.remove(viewClass)
+      }
+    }
+  }
+
+  scrollWatcherOff(targetElement, observer) {
+    observer.unobserve(targetElement)
+  }
+
   scrollWatcherCallback(entry, observer) {
-    const targetElement = entry.target;
-    // Treatment of basic actions of works points
-    this.scrollWatcherIntersecting(entry, targetElement);
-    // If there is an attribute of Data-Watch-end we remove the tracking
-    targetElement.hasAttribute('data-watch-once') && entry.isIntersecting
-      ? this.scrollWatcherOff(targetElement, observer)
-      : null;
-    // We create our feedback event
+    const targetElement = entry.target
+    this.scrollWatcherIntersecting(entry, targetElement)
+
+    if (targetElement.hasAttribute('data-watch-once') && entry.isIntersecting) {
+      this.scrollWatcherOff(targetElement, observer)
+    }
+
     document.dispatchEvent(
       new CustomEvent('watcherCallback', {
         detail: {
           entry: entry,
+          target: targetElement,
         },
       })
-    );
+    )
   }
 }
-// Start watcher
+
 document.addEventListener('DOMContentLoaded', function () {
-  const watcher = new ScrollWatcher({});
-});
+  const watcher = new ScrollWatcher()
+})

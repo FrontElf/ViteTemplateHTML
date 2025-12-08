@@ -48,6 +48,8 @@ export default defineConfig({
     ...((templateConfig.devNavigation.isShow) ? [modules.devNavigationPlugin({ srcDir: 'src', position: 'left' })] : []),
     // Copy assets like fonts, images, etc.
     ...((templateConfig.isPHPMailer) ? [modules.copyAssetsPlugin({ 'src/php': 'dist/php' }),] : []),
+    // SVG Inline Sprite Plugin
+    ...((templateConfig.isInlineSprite) ? [modules.htmlSvgSpritePlugin(),] : []),
   ],
 
   css: {
