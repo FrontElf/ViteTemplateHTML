@@ -1,0 +1,8 @@
+// {{ComponentName}} Styles
+
+// .{{component-name}}
+.{{component-name}} {
+
+   // .{{component-name}}__container
+   &__container {}
+}

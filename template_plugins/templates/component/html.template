@@ -1,5 +1,5 @@
-<!-- {{COMPONENT_NAME}} scss -->
+<!-- {{ComponentName}} scss -->
 <link rel="stylesheet" href="@c/{{ComponentName}}/{{ComponentName}}.scss" />
 
-<!-- {{COMPONENT_NAME}} html -->
-<div class="{{ComponentName}}"></div>
+<!-- {{component-name}} html -->
+<div class="{{component-name}}"></div>
