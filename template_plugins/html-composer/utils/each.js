@@ -185,6 +185,6 @@ export async function processEach(tree, context, baseOptions = {}, componentMap)
    if (Array.isArray(tree)) {
       return await Promise.all(tree.map(processNode))
    }
-   
+
    return await processNode(tree)
 }

@@ -72,7 +72,7 @@ export default function htmlSvgSpritePlugin(userOptions = {}) {
 
          fs.writeFileSync(finalPath, spriteContent)
 
-         logger(pluginName, ` SVG-спрайт створено: dist/${options.spriteFileName} (${svgMap.size} іконок)`, 'info')
+         logger(pluginName, ` SVG sprite created: dist/${options.spriteFileName} (${svgMap.size} icons)`, 'info')
       },
    }
 }
