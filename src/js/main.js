@@ -39,13 +39,13 @@ TF.menuInit()
 /* Get element height */
 // Creates CSS variables with the height of the required elements
 
-// import "./libs/get-element-height.js"
+// import "./libs/FEHeightWatcher.js"
 
 // ? ===============================================
 /* Function to add and remove classes to the root element when scrolling down or up*/
 // Documentation inside the module file:
 
-// import "./libs/header-class-scroll.js"
+// import "./libs/FEScrollHeader.js"
 
 // ? ===============================================
 /* Swiper Slider */
@@ -82,25 +82,27 @@ TF.menuInit()
 // import "./scripts/FESpoilers.js"
 
 // ? ===============================================
-
 /* Select functionality */
 // Documentation inside the module file
 
 // import "./libs/select.js"
 
 // ? ===============================================
-
 /* Set cookie with the given name and value. */
 // Documentation https://github.com/js-cookie/js-cookie/tree/latest#readme
 
 // import './scripts/cookie.js'
-import './scripts/FETextWrap.js'
+
+// ? ===============================================
+// FETextWrap - Wrap words & letters in spans
+
+// import './scripts/FETextWrap.js'
 
 // ? ===============================================
 /* Video resize. */
 // Documentation inside the module file
 
-// import './libs/video-resize.js'
+// import './libs/FEVideoResize.js'
 
 // ? ===============================================
 // ? Custom scripts ================================
