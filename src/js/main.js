@@ -19,11 +19,15 @@ TF.menuInit()
 // import './libs/watcher.js'
 
 // ? ===============================================
+/* FEMediaQuery */
+
+// import './scripts/FEMediaQuery.js'
+
+// ? ===============================================
 /* Magic Cursor */
 // Documentation inside the module file
 
 // import './libs/magicCursor.js'
-import './scripts/FEModals.js'
 
 // ? ===============================================
 /* Dynamic adaptive */
@@ -66,17 +70,16 @@ import './scripts/FEModals.js'
 // import "./libs/tabs.js"
 
 // ? ===============================================
-/* Modals Popups */
-// Documentation: https://micromodal.vercel.app/
+/* FEModals Popups */
 
-// import "./scripts/modal.js"
+// import "./scripts/FEModals.js"
 
 // ? ===============================================
 
-/* Spoiler functionality */
+/* FESpoilers functionality */
 // Documentation inside the module file
 
-// import "./scripts/spoilers.js"
+// import "./scripts/FESpoilers.js"
 
 // ? ===============================================
 
@@ -91,6 +94,7 @@ import './scripts/FEModals.js'
 // Documentation https://github.com/js-cookie/js-cookie/tree/latest#readme
 
 // import './scripts/cookie.js'
+import './scripts/FETextWrap.js'
 
 // ? ===============================================
 /* Video resize. */

@@ -89,7 +89,7 @@ function generateConfigFiles() {
 
    fs.writeFileSync(path.resolve('.vscode/settings.json'), JSON.stringify(vscodeSettings, null, 2))
 
-   logger(pluginName, `Config files have been generated!`, 'success')
+   logger(pluginName, `Файл конфігурації було оновлено!`, 'success')
 }
 
 generateConfigFiles()

@@ -9,6 +9,7 @@ const pluginName = '[dev-sessions-plugin]'
 
 let session = null
 let pluginInitialized = false
+let isFinalized = false
 
 const ensureDir = () => {
    if (!fs.existsSync(sessionsDir)) {
@@ -23,7 +24,7 @@ const readJson = (file, fallback = []) => {
       if (!raw) return fallback
       return JSON.parse(raw)
    } catch (err) {
-      logger(pluginName, `Damaged JSON → reset: ${file}`, 'error')
+      console.error(`${pluginName} Пошкоджений JSON → скидання: ${file}`)
       fs.writeFileSync(file, JSON.stringify(fallback, null, 2))
       return fallback
    }
@@ -43,22 +44,33 @@ const formatDate = (ts) => {
 }
 
 function finalizeSession() {
-   if (!session) return
+   if (!session || isFinalized) return
+   isFinalized = true
+
    session.end = Date.now()
    session.date = formatDate(session.start)
 
    const mins = Math.round((session.end - session.start) / 60000)
-   logger(pluginName, `Session ended: ${mins} mins`, 'info')
 
-   try { fs.unlinkSync(lockFile) } catch { }
+   try {
+      if (fs.existsSync(lockFile)) fs.unlinkSync(lockFile)
+   } catch (e) {
+      console.error('Помилка видалення файлу блокування:', e)
+   }
 
-   const sessions = readJson(sessionsFile)
-   sessions.push({
-      date: session.date,
-      start: session.start,
-      end: session.end
-   })
-   writeJson(sessionsFile, sessions)
+   try {
+      const sessions = readJson(sessionsFile)
+      sessions.push({
+         date: session.date,
+         start: session.start,
+         end: session.end
+      })
+      writeJson(sessionsFile, sessions)
+      logger(pluginName, `Сесію завершено: ${mins} хв`, 'info')
+   } catch (e) {
+      console.error('Помилка збереження сеансу:', e)
+   }
+
    session = null
 }
 
@@ -70,43 +82,66 @@ function startSessionTracking() {
 
    if (fs.existsSync(lockFile)) {
       try {
-         const startTime = Number(fs.readFileSync(lockFile, 'utf-8').trim())
-         if (startTime && Date.now() - startTime < 86_400_000) {
+         const rawLock = fs.readFileSync(lockFile, 'utf-8').trim()
+         const startTime = Number(rawLock)
+         if (startTime && !isNaN(startTime) && Date.now() - startTime < 86_400_000) {
             session = {
                id: `${startTime}-persisted`,
                start: startTime,
                project: path.basename(process.cwd()),
                recovered: true
             }
-            logger(pluginName, `Session resumed after crash: ${Math.round((Date.now() - startTime) / 60000)} хв`, 'info')
-            return
+            const recoveredMins = Math.round((Date.now() - startTime) / 60000)
+            logger(pluginName, `Сесію відновлено після збою: ${recoveredMins} хв`, 'info')
          }
       } catch (e) {
-         logger(pluginName, `Lock file error: ${e.message}`, 'error')
+         logger(pluginName, `Помилка файлу блокування: ${e.message}`, 'error')
       }
    }
 
-   // нова сесія
-   const startTime = Date.now()
-   session = {
-      id: `${startTime}-${process.pid}`,
-      start: startTime,
-      project: path.basename(process.cwd())
+   if (!session) {
+      const startTime = Date.now()
+      session = {
+         id: `${startTime}-${process.pid}`,
+         start: startTime,
+         project: path.basename(process.cwd())
+      }
+      fs.writeFileSync(lockFile, String(startTime), 'utf-8')
+      logger(pluginName, `Сесію розпочато · ${session.project}`, 'rocket')
    }
-   fs.writeFileSync(lockFile, String(startTime), 'utf-8')
-   logger(pluginName, `Session started · ${session.project}`, 'rocket')
 
-   process.once('beforeExit', finalizeSession)
-   process.once('SIGINT', () => { finalizeSession(); setImmediate(() => process.exit()) })
-   process.once('SIGTERM', () => { finalizeSession(); setImmediate(() => process.exit()) })
-   process.once('SIGUSR2', finalizeSession)
-   process.on('uncaughtException', (err) => { finalizeSession(); throw err })
-   process.on('unhandledRejection', finalizeSession)
+   const handleSignal = (signal) => {
+      finalizeSession()
+      process.exit(0)
+   }
+
+   process.on('SIGHUP', () => handleSignal('SIGHUP'))
+   process.on('SIGINT', () => handleSignal('SIGINT'))
+   process.on('SIGTERM', () => handleSignal('SIGTERM'))
+   process.on('SIGUSR2', () => {
+      finalizeSession()
+      process.kill(process.pid, 'SIGUSR2')
+   })
+
+   process.on('exit', finalizeSession)
+
+   process.on('uncaughtException', (err) => {
+      console.error('Uncaught Exception:', err)
+      finalizeSession()
+      process.exit(1)
+   })
 }
 
 export default function devSessionsPlugin() {
    return {
       name: 'vite-plugin-dev-sessions',
+
+      configureServer(server) {
+         server.httpServer?.on('close', () => {
+            finalizeSession()
+         })
+      },
+
       configResolved(config) {
          const isDevMode = config.command === 'serve' && config.mode !== 'production'
          if (!isDevMode) return

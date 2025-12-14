@@ -26,22 +26,14 @@ const config = {
    },
 
    templatePlugin: {
-      componentsPath: true,
-      componentsWarning: true,
       syntaxHighlight: true,
+      componentsWarning: true,
+      componentsPath: true,
       componentsDirectory: "src/html/components",
 
       syntaxColors: {
-         components: {
-            tagColor: "#37e4fb",
-            attrColor: "#9fe7f4",
-            valueColor: "#6af95d"
-         },
-         conditions: {
-            tagColor: "#7affb4",
-            attrColor: "#18d9fb",
-            valueColor: "#e0fba7"
-         }
+         components: { tagColor: "#37e4fb", attrColor: "#9fe7f4", valueColor: "#6af95d" },
+         conditions: { tagColor: "#7affb4", attrColor: "#18d9fb", valueColor: "#e0fba7" }
       },
    },
 
