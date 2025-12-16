@@ -1,5 +1,16 @@
 import { logger } from './logger.js'
 
+// Regex patterns for directive parsing
+const PATTERNS = {
+   // Matches: "item in array" or "(item, index) in array" or "(item, index, length) in array"
+   // Groups: 1=item, 2=index (optional), 3=length (optional), 4=dataSource
+   forLoop: /^\s*\(?\s*([a-zA-Z_$][\w$]*)(?:\s*,\s*([a-zA-Z_$][\w$]*))?(?:\s*,\s*([a-zA-Z_$][\w$]*))?\s*\)?\s+in\s+(.+)$/,
+
+   // Matches: "1 to 10" or "1 to 10 step 2" or "10 to 1 step -1"
+   // Groups: 1=start, 2=end, 3=step (optional, can be negative)
+   range: /^\s*(\d+)\s+to\s+(\d+)(?:\s+step\s+(-?\d+))?\s*$/i,
+}
+
 export function processVueDirectives(tree, context, baseOptions = {}) {
    const {
       isLogger = false,
@@ -41,7 +52,7 @@ export function processVueDirectives(tree, context, baseOptions = {}) {
          const forExpression = node.attrs[forDirective]
          const { [forDirective]: _, ...restAttrs } = node.attrs
 
-         const forMatch = forExpression.match(/^\s*\(?\s*([a-zA-Z_$][\w$]*)(?:\s*,\s*([a-zA-Z_$][\w$]*))?(?:\s*,\s*([a-zA-Z_$][\w$]*))?\s*\)?\s+in\s+(.+)$/)
+         const forMatch = forExpression.match(PATTERNS.forLoop)
 
          if (!forMatch) {
             isLogger && logger(loggerPrefix, `Invalid ${forDirective} expression format: "${forExpression}"`, 'error')
@@ -87,7 +98,7 @@ export function processVueDirectives(tree, context, baseOptions = {}) {
          const varName = node.attrs[asDirective] || 'i'
          const { [rangeDirective]: _, [asDirective]: __, ...restAttrs } = node.attrs
 
-         const rangeMatch = rangeExpression.match(/^\s*(\d+)\s+to\s+(\d+)(?:\s+step\s+(\d+))?\s*$/i)
+         const rangeMatch = rangeExpression.match(PATTERNS.range)
 
          if (!rangeMatch) {
             isLogger && logger(loggerPrefix, `Invalid ${rangeDirective} expression format: "${rangeExpression}"`, 'error')
@@ -100,7 +111,7 @@ export function processVueDirectives(tree, context, baseOptions = {}) {
          const [, startStr, endStr, stepStr] = rangeMatch
          const start = parseInt(startStr, 10)
          const end = parseInt(endStr, 10)
-         const step = stepStr ? parseInt(stepStr, 10) : 1
+         let step = stepStr ? parseInt(stepStr, 10) : (start <= end ? 1 : -1)
 
          if (step === 0) {
             isLogger && logger(loggerPrefix, `Invalid ${rangeDirective} step: step cannot be 0`, 'error')
@@ -110,13 +121,22 @@ export function processVueDirectives(tree, context, baseOptions = {}) {
             }
          }
 
+         if ((step > 0 && start > end) || (step < 0 && start < end)) {
+            isLogger && logger(loggerPrefix, `Invalid ${rangeDirective}: step direction doesn't match start/end (${start} to ${end} step ${step})`, 'warning')
+            return {
+               ...node,
+               content: node.content ? processContent(node.content) : undefined
+            }
+         }
+
          const numbers = []
+         const maxIterations = 10000
          if (step > 0) {
-            for (let i = start; i <= end; i += step) {
+            for (let i = start; i <= end && numbers.length < maxIterations; i += step) {
                numbers.push(i)
             }
          } else {
-            for (let i = start; i >= end; i += step) {
+            for (let i = start; i >= end && numbers.length < maxIterations; i += step) {
                numbers.push(i)
             }
          }

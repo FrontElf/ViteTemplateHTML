@@ -1,6 +1,38 @@
 import { promises as fs } from 'fs'
 import { logger } from './html-composer/utils/logger.js'
 
+const fontWeightMap = {
+  Thin: 100,
+  Hairline: 100,
+  ExtraLight: 200,
+  UltraLight: 200,
+  Light: 300,
+  Regular: 400,
+  Medium: 500,
+  SemiBold: 600,
+  DemiBold: 600,
+  Bold: 700,
+  ExtraBold: 800,
+  UltraBold: 800,
+  Black: 900,
+  Heavy: 900,
+  ExtraBlack: 950,
+  UltraBlack: 950,
+}
+
+function getFontWeight(fontFileName) {
+  for (const [key, weight] of Object.entries(fontWeightMap)) {
+    if (fontFileName.includes(key)) {
+      if ((key === 'Bold' || key === 'Black') &&
+          (fontFileName.includes('Extra') || fontFileName.includes('Ultra'))) {
+        continue
+      }
+      return weight
+    }
+  }
+  return 400
+}
+
 export const generateFontsStyle = async () => {
   const pluginName = '[fonts-style-plugin]'
   const fontsFile = `./src/scss/fonts/fonts.scss`
@@ -20,49 +52,7 @@ export const generateFontsStyle = async () => {
         if (newFileOnly !== fontFileName) {
           let fontName = fontFileName.split('-')[0]
           let fontStyle = fontFileName.includes('Italic') ? 'italic' : 'normal'
-
-          let fontWeight = 400
-          if (
-            fontFileName.includes('Thin') ||
-            fontFileName.includes('Hairline')
-          ) {
-            fontWeight = 100
-          } else if (
-            fontFileName.includes('ExtraLight') ||
-            fontFileName.includes('UltraLight')
-          ) {
-            fontWeight = 200
-          } else if (fontFileName.includes('Light')) {
-            fontWeight = 300
-          } else if (fontFileName.includes('Medium')) {
-            fontWeight = 500
-          } else if (
-            fontFileName.includes('SemiBold') ||
-            fontFileName.includes('DemiBold')
-          ) {
-            fontWeight = 600
-          } else if (
-            fontFileName.includes('Bold') &&
-            !fontFileName.includes('Extra') &&
-            !fontFileName.includes('Ultra')
-          ) {
-            fontWeight = 700
-          } else if (
-            fontFileName.includes('ExtraBold') ||
-            fontFileName.includes('UltraBold')
-          ) {
-            fontWeight = 800
-          } else if (
-            fontFileName.includes('Black') ||
-            fontFileName.includes('Heavy')
-          ) {
-            fontWeight = 900
-          } else if (
-            fontFileName.includes('ExtraBlack') ||
-            fontFileName.includes('UltraBlack')
-          ) {
-            fontWeight = 950
-          }
+          let fontWeight = getFontWeight(fontFileName)
 
           fileContent += `
 /**

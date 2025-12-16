@@ -4,6 +4,15 @@ import { processExpressions, evalExpression } from './expressions.js'
 import { logger } from './logger.js'
 import { includeComponents } from './components.js'
 
+// Regex patterns for loop parsing
+const PATTERNS = {
+   // Matches: "item in __rangeData__" or "item, index in __rangeData__"
+   rangeLoop: /^\s*([a-zA-Z_$][\w$]*)(?:\s*,\s*([a-zA-Z_$][\w$]*))?\s+in\s+__rangeData__\s*$/,
+
+   // Matches: "item in array" or "(item, index) in array" or "(item, index, length) in array"
+   forLoop: /^\s*\(?\s*([a-zA-Z_$][\w$]*)(?:\s*,\s*([a-zA-Z_$][\w$]*))?(?:\s*,\s*([a-zA-Z_$][\w$]*))?\s*\)?\s+in\s+(.+)$/,
+}
+
 function cloneAstNode(node) {
    if (Array.isArray(node)) {
       return node.map(cloneAstNode)
@@ -25,6 +34,40 @@ async function evaluateExpression(expression, context, isLogger, loggerPrefix) {
       isLogger && logger(loggerPrefix, `Error evaluating expression "${expression}": ${error.message}`, 'error')
       return null
    }
+}
+
+async function processLoopIteration(items, node, context, baseOptions, componentMap, config) {
+   const { itemName, indexName, lengthName, isArray = true } = config
+   const newContent = []
+
+   for (const [index, item] of items.entries()) {
+      const loopProps = { ...context }
+
+      if (isArray) {
+         loopProps[itemName] = item
+         if (indexName) loopProps[indexName] = index
+      } else {
+         loopProps[itemName] = item[1]
+         if (indexName) loopProps[indexName] = item[0]
+      }
+
+      if (lengthName) {
+         loopProps[lengthName] = items.length
+      }
+
+      const iterationContent = cloneAstNode(node.content || [])
+
+      let processedContent = await includeComponents(iterationContent, componentMap, loopProps, baseOptions)
+      processedContent = processExpressions(processedContent, loopProps, baseOptions)
+
+      if (Array.isArray(processedContent)) {
+         newContent.push(...processedContent)
+      } else if (processedContent) {
+         newContent.push(processedContent)
+      }
+   }
+
+   return newContent
 }
 
 export async function processEach(tree, context, baseOptions = {}, componentMap) {
@@ -61,34 +104,16 @@ export async function processEach(tree, context, baseOptions = {}, componentMap)
 
          // Перевірка на спеціальні дані для f-range
          if (node._rangeData) {
-            const loopMatch = loopAttr.match(/^\s*([a-zA-Z_$][\w$]*)(?:\s*,\s*([a-zA-Z_$][\w$]*))?\s+in\s+__rangeData__\s*$/)
+            const loopMatch = loopAttr.match(PATTERNS.rangeLoop)
             if (loopMatch) {
                const [, itemName, indexName] = loopMatch
-               const dataArray = node._rangeData
-               const newContent = []
-
-               for (const [index, item] of dataArray.entries()) {
-                  const loopProps = { ...context }
-                  loopProps[itemName] = item
-                  if (indexName) loopProps[indexName] = index
-
-                  const iterationContent = cloneAstNode(node.content || [])
-
-                  let processedContent = await includeComponents(iterationContent, componentMap, loopProps, baseOptions)
-                  processedContent = processExpressions(processedContent, loopProps, baseOptions)
-
-                  if (Array.isArray(processedContent)) {
-                     newContent.push(...processedContent)
-                  } else if (processedContent) {
-                     newContent.push(processedContent)
-                  }
-               }
-
-               return newContent
+               return await processLoopIteration(node._rangeData, node, context, baseOptions, componentMap, {
+                  itemName, indexName, isArray: true
+               })
             }
          }
 
-         const loopMatch = loopAttr.match(/^\s*\(?\s*([a-zA-Z_$][\w$]*)(?:\s*,\s*([a-zA-Z_$][\w$]*))?(?:\s*,\s*([a-zA-Z_$][\w$]*))?\s*\)?\s+in\s+(.+)$/)
+         const loopMatch = loopAttr.match(PATTERNS.forLoop)
          if (!loopMatch) {
             isLogger && logger(loggerPrefix, `Invalid loop attribute format: "${loopAttr}"`, 'error')
             return node
@@ -124,17 +149,25 @@ export async function processEach(tree, context, baseOptions = {}, componentMap)
             }
 
             else if (typeof dataPath === 'string') {
+               const dataDir = path.resolve(process.cwd(), 'src/data')
                const filePath = path.isAbsolute(dataPath)
                   ? dataPath
-                  : path.join(process.cwd(), 'src/data', dataPath)
+                  : path.join(dataDir, dataPath)
 
-               try {
-                  const fileContent = await fs.readFile(filePath, 'utf8')
-                  localContext.data = JSON.parse(fileContent)
-                  isLogger && logger(loggerPrefix, `Loaded data from "${dataPath}"`, 'info')
-               } catch (e) {
-                  isLogger && logger(loggerPrefix, `Failed to read or parse data file "${filePath}": ${e.message}`, 'error')
+               // Validate path is within allowed directory
+               const resolvedPath = path.resolve(filePath)
+               if (!resolvedPath.startsWith(dataDir)) {
+                  isLogger && logger(loggerPrefix, `Path "${dataPath}" is outside allowed data directory`, 'warning')
                   localContext.data = []
+               } else {
+                  try {
+                     const fileContent = await fs.readFile(filePath, 'utf8')
+                     localContext.data = JSON.parse(fileContent)
+                     isLogger && logger(loggerPrefix, `Loaded data from "${dataPath}"`, 'info')
+                  } catch (e) {
+                     isLogger && logger(loggerPrefix, `Failed to read or parse data file "${filePath}": ${e.message}`, 'error')
+                     localContext.data = []
+                  }
                }
             }
          }
@@ -146,37 +179,12 @@ export async function processEach(tree, context, baseOptions = {}, componentMap)
             return []
          }
 
-         const newContent = []
-         const items = Array.isArray(dataArray) ? dataArray : Object.entries(dataArray)
+         const isArrayData = Array.isArray(dataArray)
+         const items = isArrayData ? dataArray : Object.entries(dataArray)
 
-         for (const [index, item] of items.entries()) {
-            const loopProps = { ...localContext }
-
-            if (Array.isArray(dataArray)) {
-               loopProps[itemName] = item
-               if (indexName) loopProps[indexName] = index
-            } else {
-               loopProps[itemName] = item[1]
-               if (indexName) loopProps[indexName] = item[0]
-            }
-
-            if (lengthName) {
-               loopProps[lengthName] = items.length
-            }
-
-            const iterationContent = cloneAstNode(node.content || [])
-
-            let processedContent = await includeComponents(iterationContent, componentMap, loopProps, baseOptions)
-            processedContent = processExpressions(processedContent, loopProps, baseOptions)
-
-            if (Array.isArray(processedContent)) {
-               newContent.push(...processedContent)
-            } else if (processedContent) {
-               newContent.push(processedContent)
-            }
-         }
-
-         return newContent
+         return await processLoopIteration(items, node, localContext, baseOptions, componentMap, {
+            itemName, indexName, lengthName, isArray: isArrayData
+         })
       }
 
       return node

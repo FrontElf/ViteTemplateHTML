@@ -5,7 +5,8 @@ import { promises as fsPromises } from "fs"
 import { load } from "cheerio"
 import postcss from "postcss"
 import { logger } from './html-composer/utils/logger.js'
-// import co
+
+const pluginName = '[image-optimizer-plugin]'
 
 function walkDir(dir, callback) {
    const files = fs.readdirSync(dir, { withFileTypes: true })
@@ -20,7 +21,6 @@ function walkDir(dir, callback) {
 }
 
 async function optimizeImages(imageDir, options = {}) {
-   const pluginName = '[image-optimizer-plugin]'
    const {
       optimizeJpeg = true,
       generateWebP = true,
@@ -142,7 +142,7 @@ async function updateHtmlFiles(outputDir, generatedWebPFiles, options = {}) {
          const updatedHtml = $.html()
          await fsPromises.writeFile(htmlFile, updatedHtml, "utf-8")
       } catch (error) {
-         logger(`${pluginName} Error while updating the HTML file ${htmlFile}: ${error.message}`, 'error')
+         logger(pluginName, `Error while updating the HTML file ${htmlFile}: ${error.message}`, 'error')
       }
    }
 }
@@ -176,7 +176,7 @@ async function updateCssFiles(outputDir) {
          ]).process(cssContent, { from: cssFile, to: cssFile })
          await fsPromises.writeFile(cssFile, result.css, "utf-8")
       } catch (error) {
-         logger(`${pluginName} Error while updating the CSS file ${cssFile}: ${error.message}`, 'error')
+         logger(pluginName, `Error while updating the CSS file ${cssFile}: ${error.message}`, 'error')
       }
    }
 }

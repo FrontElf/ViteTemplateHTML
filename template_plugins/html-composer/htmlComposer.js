@@ -76,30 +76,36 @@ export default function htmlComposer(options = {}) {
 
       transformIndexHtml: {
          order: 'pre',
-         async handler(html) {
-            const fullContext = { ...baseOptions.HTMLVariables, ...context }
-            let tree = parser(fixSelfClosingComponents(html, componentTags))
-            tree = processVueDirectives(tree, fullContext, baseOptions)
-            tree = processConditions(tree, fullContext, baseOptions)
-            tree = await processEach(tree, fullContext, baseOptions, componentMap)
-            tree = await includeComponents(tree, componentMap, fullContext, baseOptions)
-            tree = processExpressions(tree, fullContext, baseOptions)
-            tree = replaceAliases(tree, aliases)
+         async handler(html, ctx) {
+            try {
+               const fullContext = { ...baseOptions.HTMLVariables, ...context }
+               let tree = parser(fixSelfClosingComponents(html, componentTags))
+               tree = processVueDirectives(tree, fullContext, baseOptions)
+               tree = processConditions(tree, fullContext, baseOptions)
+               tree = await processEach(tree, fullContext, baseOptions, componentMap)
+               tree = await includeComponents(tree, componentMap, fullContext, baseOptions)
+               tree = processExpressions(tree, fullContext, baseOptions)
+               tree = replaceAliases(tree, aliases)
 
-            for (const plugin of plugins) {
-               tree = plugin(tree)
+               for (const plugin of plugins) {
+                  tree = plugin(tree)
+               }
+
+               tree = moveStylesToHead(tree, baseOptions)
+
+               let htmlResult = render(tree)
+               htmlResult = removeHtmlComments(htmlResult, baseOptions)
+
+               if (process.env.NODE_ENV === 'production') {
+                  htmlResult = formatHtml(htmlResult, baseOptions)
+               }
+
+               return htmlResult
+            } catch (error) {
+               const fileName = ctx?.filename || 'unknown'
+               console.error(`[html-composer] Error processing ${fileName}:`, error.message)
+               return html
             }
-
-            tree = moveStylesToHead(tree, baseOptions)
-
-            let htmlResult = render(tree)
-            htmlResult = removeHtmlComments(htmlResult, baseOptions)
-
-            if (process.env.NODE_ENV === 'production') {
-               htmlResult = formatHtml(htmlResult, baseOptions)
-            }
-
-            return htmlResult
          }
       },
    }

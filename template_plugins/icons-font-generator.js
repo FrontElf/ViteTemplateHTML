@@ -22,6 +22,9 @@ const paths = {
 const fontParams = {
   fontName: 'icons',
   classNamePrefix: '_icon',
+  startNumber: 20000,
+  fontHeight: 1024,
+  unitsPerEm: 1024,
 }
 
 const packageJson = JSON.parse(await fs.readFile('./package.json', 'utf8'))
@@ -87,14 +90,14 @@ const generateFont = async () => {
       fontName: fontParams.fontName,
       classNamePrefix: fontParams.classNamePrefix,
       outSVGPath: true,
-      startNumber: 20000,
+      startNumber: fontParams.startNumber,
       css: true,
       useCSSVars: true,
       generateInfoData: true,
       styleTemplates: paths.templates,
       svgicons2svgfont: {
-        fontHeight: 1024,
-        unitsPerEm: 1024,
+        fontHeight: fontParams.fontHeight,
+        unitsPerEm: fontParams.unitsPerEm,
         centerHorizontally: true,
         centerVertically: true,
         normalize: true,
@@ -148,9 +151,26 @@ const clearOptimizedIconsFolder = async () => {
   }
 }
 
+// Check if directory exists
+const directoryExists = async (dirPath) => {
+  try {
+    await fs.access(dirPath)
+    return true
+  } catch {
+    return false
+  }
+}
+
 // Main execution function
 const main = async () => {
   try {
+    // Validate source directory exists
+    if (!await directoryExists(paths.src)) {
+      logger(pluginName, `Source directory does not exist: ${paths.src}`, 'error')
+      logger(pluginName, `Create "fonts-converter/icons" folder and add SVG files`, 'info')
+      return
+    }
+
     await createDirectoryIfNotExists(paths.optimizedDist)
 
     const svgFiles = (await fs.readdir(paths.src)).filter(

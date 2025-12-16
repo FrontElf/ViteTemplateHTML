@@ -24,7 +24,7 @@ const readJson = (file, fallback = []) => {
       if (!raw) return fallback
       return JSON.parse(raw)
    } catch (err) {
-      console.error(`${pluginName} Пошкоджений JSON → скидання: ${file}`)
+      console.error(`${pluginName} Corrupted JSON, resetting: ${file}`)
       fs.writeFileSync(file, JSON.stringify(fallback, null, 2))
       return fallback
    }
@@ -55,7 +55,7 @@ function finalizeSession() {
    try {
       if (fs.existsSync(lockFile)) fs.unlinkSync(lockFile)
    } catch (e) {
-      console.error('Помилка видалення файлу блокування:', e)
+      console.error('Error deleting lock file:', e)
    }
 
    try {
@@ -66,9 +66,9 @@ function finalizeSession() {
          end: session.end
       })
       writeJson(sessionsFile, sessions)
-      logger(pluginName, `Сесію завершено: ${mins} хв`, 'info')
+      logger(pluginName, `Session ended: ${mins} min`, 'info')
    } catch (e) {
-      console.error('Помилка збереження сеансу:', e)
+      console.error('Error saving session:', e)
    }
 
    session = null
@@ -92,10 +92,10 @@ function startSessionTracking() {
                recovered: true
             }
             const recoveredMins = Math.round((Date.now() - startTime) / 60000)
-            logger(pluginName, `Сесію відновлено після збою: ${recoveredMins} хв`, 'info')
+            logger(pluginName, `Session recovered after crash: ${recoveredMins} min`, 'info')
          }
       } catch (e) {
-         logger(pluginName, `Помилка файлу блокування: ${e.message}`, 'error')
+         logger(pluginName, `Lock file error: ${e.message}`, 'error')
       }
    }
 
@@ -107,7 +107,7 @@ function startSessionTracking() {
          project: path.basename(process.cwd())
       }
       fs.writeFileSync(lockFile, String(startTime), 'utf-8')
-      logger(pluginName, `Сесію розпочато · ${session.project}`, 'rocket')
+      logger(pluginName, `Session started · ${session.project}`, 'rocket')
    }
 
    const handleSignal = (signal) => {

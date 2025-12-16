@@ -2,7 +2,7 @@ import fs from 'fs/promises'
 import path from 'path'
 import { logger } from './html-composer/utils/logger.js'
 
-const filesPath = path.resolve(process.cwd(), './plugins/ifont-gen/build')
+const filesPath = path.resolve(process.cwd(), './template_plugins/ifont-gen/build')
 const savePath = path.resolve(process.cwd(), './src')
 const packageJson = JSON.parse(await fs.readFile(path.resolve(process.cwd(), 'package.json'), 'utf8'))
 const { version, name } = packageJson

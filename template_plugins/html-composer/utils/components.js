@@ -1,4 +1,4 @@
-import fs from 'fs'
+import { promises as fs } from 'fs'
 import { parser } from 'posthtml-parser'
 import { logger } from './logger.js'
 import { processConditions } from './conditions.js'
@@ -95,7 +95,7 @@ export async function includeComponents(tree, componentMap, context, baseOptions
 
    if (tree?.tag) {
       if (componentMap[tree.tag]) {
-         const fileContent = fs.readFileSync(componentMap[tree.tag], encoding)
+         const fileContent = await fs.readFile(componentMap[tree.tag], encoding)
 
          const childrenNodes = tree.content
             ? await includeComponents(cloneAstNode(tree.content), componentMap, context, baseOptions, depth)

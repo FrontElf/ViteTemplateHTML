@@ -6,7 +6,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+plugins-review-result.md
+templating-review-result.md
+info.md
 
+.claude
 node_modules
 dist
 package-lock.json

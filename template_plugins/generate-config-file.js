@@ -87,9 +87,26 @@ function generateConfigFiles() {
       } : {}),
    }
 
-   fs.writeFileSync(path.resolve('.vscode/settings.json'), JSON.stringify(vscodeSettings, null, 2))
+   const settingsPath = path.resolve('.vscode/settings.json')
+   const vscodeDir = path.resolve('.vscode')
 
-   logger(pluginName, `Файл конфігурації було оновлено!`, 'success')
+   if (!fs.existsSync(vscodeDir)) {
+      fs.mkdirSync(vscodeDir, { recursive: true })
+   }
+
+   let existingSettings = {}
+   if (fs.existsSync(settingsPath)) {
+      try {
+         existingSettings = JSON.parse(fs.readFileSync(settingsPath, 'utf-8'))
+      } catch (e) {
+         logger(pluginName, `Error reading settings.json, creating new file`, 'warning')
+      }
+   }
+
+   const mergedSettings = { ...existingSettings, ...vscodeSettings }
+   fs.writeFileSync(settingsPath, JSON.stringify(mergedSettings, null, 2))
+
+   logger(pluginName, `Configuration file updated successfully!`, 'success')
 }
 
 generateConfigFiles()
