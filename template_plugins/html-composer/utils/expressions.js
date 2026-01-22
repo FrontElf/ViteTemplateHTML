@@ -2,9 +2,33 @@ import { logger } from './logger.js'
 
 export function evalExpression(expression, props, isLogger, loggerPrefix) {
    try {
-      const context = { ...props }
-      const fn = new Function(...Object.keys(context), `return ${expression}`)
-      return fn(...Object.values(context))
+      const proxy = new Proxy({ ...props, props }, {
+         has(target, key) {
+            // 1. If property exists in props, we claim it
+            if (key in target) return true
+
+            // 2. Check if it's a global (like Math, JSON, Infinity)
+            // We intentionally let these "escape" the proxy/with block so they resolve to global scope
+            try {
+               if (global[key] !== undefined) return false
+            } catch (e) { }
+
+            // 3. Last check for browser environment globals if needed, or specific whitelisted globals
+            // For now, assuming Node environment primarily for build tools, but 'Math' etc should be safe.
+
+            // 4. If not global and not in props, we claim it so `with` doesn't throw ReferenceError
+            return true
+         },
+         get(target, key) {
+            // If key exists, return it
+            if (key in target) return target[key]
+            // If we claimed it in has() but it's not in target, it's undefined
+            return undefined
+         }
+      })
+
+      const fn = new Function('context', `with(context) { return ${expression} }`)
+      return fn(proxy)
    } catch (e) {
       isLogger && logger(loggerPrefix, `Failed to evaluate expression: ${expression} - ${e.message}`, 'error')
       return null
@@ -79,6 +103,6 @@ export function processExpressions(tree, context, baseOptions = {}) {
    if (Array.isArray(tree)) {
       return tree.map(processNode)
    }
-   
+
    return processNode(tree)
 }
