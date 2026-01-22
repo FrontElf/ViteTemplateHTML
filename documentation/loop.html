@@ -133,6 +133,33 @@
             </div>
          </section>
 
+         <section class="section py-10 ">
+            <div class="px-4 m-auto max-w-[1300px]">
+               <h2 class="text-2xl mb-6">Vue-style синтаксис (<span class="badge badge-md badge-neutral">v-for</span>, <span class="badge badge-md badge-neutral">v-range</span>)</h2>
+
+               <h3 class="mb-4">Цикл <span class="badge badge-md badge-neutral">v-for</span></h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;div v-for="(item, index) in items"&gt;</code></pre>
+                  <pre><code>   {{ index + 1 }}. {{ item.name }}</code></pre>
+                  <pre><code>&lt;/div&gt;</code></pre>
+                  <br>
+                  <pre><code><span class="opacity-50">// З використанням параметра length</span></code></pre>
+                  <pre><code>&lt;div v-for="(item, index, length) in items"&gt;</code></pre>
+                  <pre><code>   {{ index + 1 }} of {{ length }}: {{ item.name }}</code></pre>
+                  <pre><code>&lt;/div&gt;</code></pre>
+               </div>
+
+               <h3 class="mb-4">Діапазон <span class="badge badge-md badge-neutral">v-range</span></h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;ul&gt;</code></pre>
+                  <pre><code>   &lt;li v-range="1 to 5" v-as="i"&gt;</code></pre>
+                  <pre><code>      Item {{ i }}</code></pre>
+                  <pre><code>   &lt;/li&gt;</code></pre>
+                  <pre><code>&lt;/ul&gt;</code></pre>
+               </div>
+            </div>
+         </section>
+
       </main>
 
       <script src="files/script.js"></script>

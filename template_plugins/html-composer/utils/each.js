@@ -58,7 +58,9 @@ async function processLoopIteration(items, node, context, baseOptions, component
 
       const iterationContent = cloneAstNode(node.content || [])
 
-      let processedContent = processConditions(iterationContent, loopProps, baseOptions)
+      // Process nested loops with the current loop context first
+      let processedContent = await processEach(iterationContent, loopProps, baseOptions, componentMap)
+      processedContent = processConditions(processedContent, loopProps, baseOptions)
       processedContent = await includeComponents(processedContent, componentMap, loopProps, baseOptions)
       processedContent = processExpressions(processedContent, loopProps, baseOptions)
 
@@ -85,15 +87,6 @@ export async function processEach(tree, context, baseOptions = {}, componentMap)
 
       if (!node || typeof node !== 'object') {
          return node
-      }
-
-      // Обробка вкладеного контенту спочатку
-      if (node.content) {
-         if (Array.isArray(node.content)) {
-            node.content = await Promise.all(node.content.map(processNode))
-         } else {
-            node.content = await processNode(node.content)
-         }
       }
 
       // Обробка тегу <each>
@@ -187,6 +180,15 @@ export async function processEach(tree, context, baseOptions = {}, componentMap)
          return await processLoopIteration(items, node, localContext, baseOptions, componentMap, {
             itemName, indexName, lengthName, isArray: isArrayData
          })
+      }
+
+      // Обробка вкладеного контенту для звичайних тегів
+      if (node.content) {
+         if (Array.isArray(node.content)) {
+            node.content = await Promise.all(node.content.map(processNode))
+         } else {
+            node.content = await processNode(node.content)
+         }
       }
 
       return node

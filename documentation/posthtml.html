@@ -110,6 +110,43 @@
             </div>
          </section>
 
+         <section class="section py-10 ">
+            <div class="px-4 m-auto max-w-[1300px]">
+               <h2 class="text-2xl mb-6">Безпечний доступ до пропсів та глобальні об'єкти:</h2>
+
+               <h3 class="mb-4">Безпечний доступ (Safe Access)</h3>
+               <p class="mb-4">Якщо змінна не передана в компонент, вона повертає <span class="badge badge-md badge-neutral">undefined</span> замість помилки. Це дозволяє використовувати значення за замовчуванням через оператор <code>||</code>.</p>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code><span class="opacity-50">// Якщо title не передано, виведеться 'Default Title'</span></code></pre>
+                  <pre><code>&lt;h1&gt;{{ title || 'Default Title' }}&lt;/h1&gt;</code></pre>
+               </div>
+
+               <h3 class="mb-4">Глобальні об'єкти (Math, JSON, etc.)</h3>
+               <p class="mb-4">У виразах доступні стандартні глобальні об'єкти JavaScript.</p>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code><span class="opacity-50">// Використання Math</span></code></pre>
+                  <pre><code>&lt;div class="width-{{ Math.round(width) }}"&gt;&lt;/div&gt;</code></pre>
+                  <br>
+                  <pre><code><span class="opacity-50">// Використання JSON</span></code></pre>
+                  <pre><code>&lt;div data-config="{{ JSON.stringify(config) }}"&gt;&lt;/div&gt;</code></pre>
+               </div>
+            </div>
+         </section>
+
+         <section class="section py-10 ">
+            <div class="px-4 m-auto max-w-[1300px]">
+               <h2 class="text-2xl mb-6">Динамічні атрибути:</h2>
+               <h3 class="mb-4">Спеціальний пропс <span class="badge badge-md badge-neutral">attributes</span> дозволяє передати об'єкт атрибутів, які будуть розгорнуті на кореневому елементі компонента.</h3>
+
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;Button attributes="{{ { id: 'btn-1', 'data-type': 'primary' } }}"&gt;Click&lt;/Button&gt;</code></pre>
+                  <br>
+                  <pre><code><span class="opacity-50">// Результат:</span></code></pre>
+                  <pre><code>&lt;button id="btn-1" data-type="primary"&gt;Click&lt;/button&gt;</code></pre>
+               </div>
+            </div>
+         </section>
+
       </main>
 
       <script src="files/script.js"></script>

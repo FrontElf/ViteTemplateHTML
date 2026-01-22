@@ -1,0 +1,63 @@
+<!-- Table scss -->
+<link rel="stylesheet" href="@c/Table/Table.scss" />
+<!-- Table script -->
+<script define>
+	const table = [
+		{
+			title: 'Квартира до 80м2',
+			rows: [
+				{ text: 'Водопостачання, опалення або тепла підлога', isChecked: true },
+				{ text: 'Легка доступність трубопроводів і комунікацій', isChecked: true },
+				{ text: 'Загальна площа об’єкту до 80м2', isChecked: true },
+				{ text: 'Базовий набір обладнання для пошуку', isChecked: true },
+				{ text: 'Плановий пошук', isChecked: true },
+				{ text: '3500 грн.', isChecked: true }
+			]
+		},
+		{
+			title: 'Квартира чи будинок від 80м2',
+			rows: [
+				{ text: 'Водопостачання, опалення або тепла підлога', isChecked: true },
+				{ text: 'Важка доступність трубопроводів і комунікацій', isChecked: true },
+				{ text: 'Загальна площа об’єкту від 80м2', isChecked: true },
+				{ text: 'Розширений набір обладнання для пошуку', isChecked: false },
+				{ text: 'Плановий пошук', isChecked: true },
+				{ text: '5500 грн.', isChecked: false }
+			]
+		},
+		{
+			title: 'Комерційні та промислові об’єкти',
+			rows: [
+				{ text: 'Водопостачання, опалення або тепла підлога', isChecked: false },
+				{ text: 'Важка доступність трубопроводів і комунікацій', isChecked: false },
+				{ text: 'Загальна площа об’єкту від 200м2', isChecked: false },
+				{ text: 'Залучення додаткового обладнання та експертів', isChecked: false },
+				{ text: 'Терміновий пошук', isChecked: false },
+				{ text: 'За домовленістю', isChecked: false }
+			]
+		}
+	]
+</script>
+
+<!-- table html -->
+<div class="table">
+	<div class="table__container">
+		<div class="table__table">
+			<table>
+				<thead>
+					<tr>
+						<th v-for="item in table">{{item.title}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(row, rowIndex) in table[0].rows">
+						<td v-for="item in table">
+							<i v-if="item.rows[rowIndex].isChecked" class="_icon-check"></i>
+							<span>{{item.rows[rowIndex].text}}</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

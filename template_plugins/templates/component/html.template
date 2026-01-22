@@ -4,4 +4,8 @@
 <script define></script>
 
 <!-- {{component-name}} html -->
-<div class="{{component-name}}"></div>
+<div class="{{component-name}}">
+	<div class="{{component-name}}__container">
+
+	</div>
+</div>
