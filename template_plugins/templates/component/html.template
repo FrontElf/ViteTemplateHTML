@@ -1,5 +1,7 @@
 <!-- {{ComponentName}} scss -->
 <link rel="stylesheet" href="@c/{{ComponentName}}/{{ComponentName}}.scss" />
+<!-- {{ComponentName}} script -->
+<script define></script>
 
 <!-- {{component-name}} html -->
 <div class="{{component-name}}"></div>
