@@ -1,6 +1,7 @@
 import fs from 'fs/promises'
 import path from 'path'
 import { processExpressions, evalExpression } from './expressions.js'
+import { processConditions } from './conditions.js'
 import { logger } from './logger.js'
 import { includeComponents } from './components.js'
 
@@ -57,7 +58,8 @@ async function processLoopIteration(items, node, context, baseOptions, component
 
       const iterationContent = cloneAstNode(node.content || [])
 
-      let processedContent = await includeComponents(iterationContent, componentMap, loopProps, baseOptions)
+      let processedContent = processConditions(iterationContent, loopProps, baseOptions)
+      processedContent = await includeComponents(processedContent, componentMap, loopProps, baseOptions)
       processedContent = processExpressions(processedContent, loopProps, baseOptions)
 
       if (Array.isArray(processedContent)) {

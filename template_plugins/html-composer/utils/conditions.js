@@ -85,6 +85,10 @@ export function processConditions(tree, props, baseOptions = {}) {
             } else if ([elseifTag, elseTag].includes(node.tag)) {
                isLogger && logger(loggerPrefix, `Skipping standalone <${node.tag}> at index ${i}`, 'warn')
                i++
+            } else if (node.tag === 'each') {
+               // Скіпаємо обробку контенту всередині <each>, оскільки його обробить processEach
+               result.push(node)
+               i++
             } else {
                if (node.content) node.content = walk(node.content)
                result.push(node)
@@ -95,6 +99,7 @@ export function processConditions(tree, props, baseOptions = {}) {
          return result
       }
 
+      if (nodes?.tag === 'each') return nodes
       if (nodes?.content) nodes.content = walk(nodes.content)
       return nodes
    }

@@ -2,7 +2,7 @@ const config = {
    ViteTemplateHTML: true,
 
    isSessions: true,
-   isQrcode: true,
+   isQrcode: false,
    isMinify: true,
    isPHPMailer: false,
    isInlineSprite: false,

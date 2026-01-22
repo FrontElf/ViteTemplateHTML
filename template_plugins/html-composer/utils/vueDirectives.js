@@ -30,24 +30,6 @@ export function processVueDirectives(tree, context, baseOptions = {}) {
          return node
       }
 
-      if (node.attrs && node.attrs[ifDirective]) {
-         const condition = node.attrs[ifDirective]
-         const { [ifDirective]: _, ...restAttrs } = node.attrs
-
-         const ifNode = {
-            tag: 'if',
-            attrs: { condition },
-            content: [{
-               ...node,
-               attrs: restAttrs,
-               content: node.content ? processContent(node.content) : undefined
-            }]
-         }
-
-         isLogger && logger(loggerPrefix, `Converted ${ifDirective}="${condition}" to <if> tag`, 'info')
-         return ifNode
-      }
-
       if (node.attrs && node.attrs[forDirective]) {
          const forExpression = node.attrs[forDirective]
          const { [forDirective]: _, ...restAttrs } = node.attrs
@@ -82,15 +64,33 @@ export function processVueDirectives(tree, context, baseOptions = {}) {
                loop: loopExpression,
                ...(isJsonFile && { data: dataSourceTrimmed })
             },
-            content: [{
+            content: [processNode({
                ...node,
                attrs: restAttrs,
                content: node.content ? processContent(node.content) : undefined
-            }]
+            })]
          }
 
          isLogger && logger(loggerPrefix, `Converted ${forDirective}="${forExpression}" to <each> tag`, 'info')
          return eachNode
+      }
+
+      if (node.attrs && node.attrs[ifDirective]) {
+         const condition = node.attrs[ifDirective]
+         const { [ifDirective]: _, ...restAttrs } = node.attrs
+
+         const ifNode = {
+            tag: 'if',
+            attrs: { condition },
+            content: [processNode({
+               ...node,
+               attrs: restAttrs,
+               content: node.content ? processContent(node.content) : undefined
+            })]
+         }
+
+         isLogger && logger(loggerPrefix, `Converted ${ifDirective}="${condition}" to <if> tag`, 'info')
+         return ifNode
       }
 
       if (node.attrs && node.attrs[rangeDirective]) {

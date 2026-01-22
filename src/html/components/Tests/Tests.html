@@ -5,9 +5,20 @@
       { name: 'John Doe', email: 'john.doe@example.com' },
       { name: 'Jane Doe', email: 'jane.doe@example.com' },
    ]
+   const pages = ["Home", "About", "Contacts", "Shop"]
 </script>
 
 <div class="max-w-4xl m-auto">
+
+   <div class="breadcrumbs text-sm p-6">
+      <ul>
+         <li v-for="(page, index, length) in pages">
+            <a v-if="index + 1 < length">{{page}}</a>
+            <span v-if="index + 1 === length" class="!no-underline">{{page}}</span>
+         </li>
+      </ul>
+   </div>
+
    <ul v-if="isList" class="list p-6 flex flex-col gap-4">
       <li>Lorem ipsum dolor sit amet.</li>
       <li>Lorem ipsum dolor sit amet.</li>

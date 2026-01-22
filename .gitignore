@@ -6,9 +6,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+
+CLAUDE.md
+info.md
 plugins-review-result.md
 templating-review-result.md
-info.md
 
 .claude
 node_modules
