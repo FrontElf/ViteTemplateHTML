@@ -6,6 +6,6 @@
 <!-- {{component-name}} html -->
 <div class="{{component-name}}">
 	<div class="{{component-name}}__container">
-
+	
 	</div>
 </div>

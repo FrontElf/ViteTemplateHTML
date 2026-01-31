@@ -1,358 +1,254 @@
 import gsap from "gsap"
-import { Power2 } from "gsap"
 
-class MagicCursor {
-   constructor(customConfig = {}) {
-      // ====== Global options ===================
-      this.config = {
-         core: {
-            selectors: {
-               magicCursor: "#magic-cursor",
-               ball: "#ball",
-            },
-            ratio: 0.1,
-            sizes: {
-               width: 12,
-               height: 12,
-            },
-         },
-         classes: {
-            notHide: "not-hide-cursor",
-            magneticHover: "magnetic-hover-on",
-            alternativeHover: "alternative-hover-on",
-            caretHover: "caret-hover-on",
-            textHover: "data-text-hover-on",
-            interactiveHover: "interactive-hover-on",
-         },
-         visibility: {
-            hideSelectors: "a, button, .hide-cursor",
-         },
-         magnetic: {
-            selector: ".magnetic-item",
-            wrapperClass: "magnetic-wrap",
-            hoverScale: 1.8,
-            movement: 25,
-            isHoverHide: true
-         },
-         alternative: {
-            selector: ".cursor-alter",
-            hoverSize: "100px",
-         },
-         carets: {
-            selector: ".magic-caret",
-            hoverScale: 1.3,
-         },
-         text: {
-            attributeName: "data-cursor-text",
-            textWrapperClass: "ball-view-text",
-            hoverSize: 95,
-         },
-         interactive: {
-            selector: ".interactive-item",
-            actionSelector: ".interactive-action",
-            imageSelector: ".interactive-image",
-            hoverSize: "20vw",
-         },
-      }
-
-      this.config = this.#deepMerge(this.config, customConfig)
-
-      // ====== Core state ======
-      this.magicCursor = document.querySelector(this.config.core.selectors.magicCursor)
-      this.ball = document.querySelector(this.config.core.selectors.ball)
-      this.mouse = { x: 0, y: 0 }
-      this.pos = { x: 0, y: 0 }
-      this.active = false
-   }
-
-   // =====================================================
-   // ===================== INIT ==========================
-   // =====================================================
-   init() {
-      if (!this.magicCursor || !this.ball) {
-         console.warn("Magic cursor or ball element not found!")
-         return
-      }
-
-      this.initCore()
-      this.initMagnetic()
-      this.initAlternative()
-      this.initCarets()
-      this.initText()
-      this.initInteractive()
-      this.initVisibility()
-   }
-
-   // =====================================================
-   // ===================== CORE ==========================
-   // =====================================================
-   initCore() {
-      const { sizes, ratio } = this.config.core
-      gsap.set(this.ball, {
-         xPercent: -50,
-         yPercent: -50,
-         width: sizes.width,
-         height: sizes.height,
-      })
-
-      document.addEventListener("mousemove", (e) => {
-         this.mouse.x = e.clientX
-         this.mouse.y = e.clientY
-      })
-
-      gsap.ticker.add(() => {
-         if (!this.active) {
-            this.pos.x += (this.mouse.x - this.pos.x) * ratio
-            this.pos.y += (this.mouse.y - this.pos.y) * ratio
-            gsap.set(this.ball, { x: this.pos.x, y: this.pos.y })
-         }
-      })
-      document.body.classList.add('magic-cursor-init')
-   }
-
-   // =====================================================
-   // ================== VISIBILITY =======================
-   // =====================================================
-   initVisibility(custom = {}) {
-      const opt = { ...this.config.visibility, ...custom }
-      const { notHide } = this.config.classes
-      const ball = this.ball
-      const magicCursor = this.magicCursor
-
-      document.querySelectorAll(opt.hideSelectors).forEach((el) => {
-         if (!el.classList.contains(notHide) && !el.classList.contains("cursor-alter")) {
-            el.addEventListener("mouseenter", () => {
-               gsap.to(ball, { duration: 0.3, scale: 0, opacity: 0 })
-            })
-            el.addEventListener("mouseleave", () => {
-               gsap.to(ball, { duration: 0.3, scale: 1, opacity: 1 })
-            })
-         }
-      })
-
-      document.addEventListener("mouseleave", () => {
-         gsap.to(magicCursor, { duration: 0.3, autoAlpha: 0 })
-      })
-
-      document.addEventListener("mouseenter", () => {
-         gsap.to(magicCursor, { duration: 0.3, autoAlpha: 1 })
-      })
-
-      document.addEventListener("mousemove", () => {
-         gsap.to(magicCursor, { duration: 0.3, autoAlpha: 1 })
-      })
-   }
-
-   // =====================================================
-   // =================== MAGNETIC ========================
-   // =====================================================
-   initMagnetic(custom = {}) {
-      const opt = { ...this.config.magnetic, ...custom }
-      const { notHide, magneticHover } = this.config.classes
-      const { selector, wrapperClass, hoverScale, movement, isHoverHide } = opt
-      const { ball } = this
-      const magicCursor = this.magicCursor
-
-      const magneticItems = document.querySelectorAll(selector)
-      const magneticItemsLinks = document.querySelectorAll(`a${selector}, button${selector}`)
-
-      magneticItems.forEach((item) => {
-         const wrap = document.createElement("div")
-         wrap.classList.add(wrapperClass)
-         item.parentNode.insertBefore(wrap, item)
-         wrap.appendChild(item)
-      })
-
-      if (!isHoverHide) magneticItemsLinks.forEach((item) => item.classList.add(notHide))
-
-      document.querySelectorAll(`.${wrapperClass}`).forEach((wrap) => {
-         wrap.addEventListener("mousemove", (e) => {
-            this.#parallaxCursor(e, wrap, 2)
-            this.#callParallax(e, wrap, selector, movement)
-         })
-
-         wrap.addEventListener("mouseenter", () => {
-            gsap.to(ball, { duration: 0.3, scale: hoverScale })
-            this.active = true
-            magicCursor.classList.add(magneticHover)
-         })
-
-         wrap.addEventListener("mouseleave", () => {
-            gsap.to(ball, { duration: 0.3, scale: 1 })
-            const target = wrap.querySelector(selector)
-            if (target) gsap.to(target, { duration: 0.3, x: 0, y: 0, clearProps: "all" })
-            this.active = false
-            magicCursor.classList.remove(magneticHover)
-         })
-      })
-   }
-
-   // =====================================================
-   // ================= ALTERNATIVE =======================
-   // =====================================================
-   initAlternative(custom = {}) {
-      const opt = { ...this.config.alternative, ...custom }
-      const { alternativeHover } = this.config.classes
-      const { selector, hoverSize } = opt
-      const { ball } = this
-      const magicCursor = this.magicCursor
-
-      document.querySelectorAll(selector).forEach((el) => {
-         el.addEventListener("mouseenter", () => {
-            magicCursor.classList.add(alternativeHover)
-            gsap.to(ball, { duration: 0.3, width: hoverSize, height: hoverSize })
-         })
-         el.addEventListener("mouseleave", () => {
-            gsap.to(ball, {
-               duration: 0.3,
-               width: this.config.core.sizes.width,
-               height: this.config.core.sizes.height,
-            })
-            magicCursor.classList.remove(alternativeHover)
-         })
-      })
-   }
-
-   // =====================================================
-   // ==================== CARETS =========================
-   // =====================================================
-   initCarets(custom = {}) {
-      const opt = { ...this.config.carets, ...custom }
-      const { caretHover } = this.config.classes
-      const { selector, hoverScale } = opt
-      const { ball } = this
-      const magicCursor = this.magicCursor
-
-      document.querySelectorAll(selector).forEach((wrap) => {
-         wrap.addEventListener("mouseenter", () => {
-            gsap.to(ball, { duration: 0.3, scale: hoverScale })
-            magicCursor.classList.add(caretHover)
-         })
-         wrap.addEventListener("mouseleave", () => {
-            gsap.to(ball, { duration: 0.3, scale: 1 })
-            magicCursor.classList.remove(caretHover)
-         })
-      })
-   }
-
-   // =====================================================
-   // ===================== TEXT ==========================
-   // =====================================================
-   initText(custom = {}) {
-      const opt = { ...this.config.text, ...custom }
-      const { textHover, notHide } = this.config.classes
-      const { attributeName, textWrapperClass, hoverSize } = opt
-      const { ball } = this
-      const magicCursor = this.magicCursor
-
-      document.querySelectorAll(`[${attributeName}]`).forEach((el) => {
-         el.classList.add(notHide)
-         el.addEventListener("mouseenter", () => {
-            const ballView = document.createElement("div")
-            ballView.classList.add(textWrapperClass)
-            ballView.innerHTML = el.getAttribute(attributeName)
-            ball.appendChild(ballView)
-
-            magicCursor.classList.add(textHover)
-            gsap.to(ball, { duration: 0.3, yPercent: -75, width: hoverSize, height: hoverSize })
-            gsap.to(`.${textWrapperClass}`, { duration: 0.3, scale: 1, autoAlpha: 1 })
-         })
-         el.addEventListener("mouseleave", () => {
-            gsap.to(ball, {
-               duration: 0.3,
-               yPercent: -50,
-               width: this.config.core.sizes.width,
-               height: this.config.core.sizes.height,
-            })
-            gsap.to(`.${textWrapperClass}`, { duration: 0.3, scale: 0, autoAlpha: 0, clearProps: "all" })
-            ball.querySelector(`.${textWrapperClass}`)?.remove()
-            magicCursor.classList.remove(textHover)
-         })
-      })
-   }
-
-   // =====================================================
-   // ================== INTERACTIVE ======================
-   // =====================================================
-   initInteractive(custom = {}) {
-      const opt = { ...this.config.interactive, ...custom }
-      const { interactiveHover, notHide } = this.config.classes
-      const { selector, actionSelector, imageSelector, hoverSize } = opt
-      const { ball } = this
-      const magicCursor = this.magicCursor
-
-      document.querySelectorAll(selector).forEach((item) => {
-         const image = item.querySelector(imageSelector)
-         const action = item.querySelector(actionSelector)
-         if (!image || !action) return
-
-         action.classList.add(notHide)
-
-         action.addEventListener("mouseenter", () => {
-            magicCursor.classList.add(interactiveHover)
-            ball.appendChild(image)
-            gsap.to(ball, { duration: 0.3, width: hoverSize, height: hoverSize })
-            image.querySelectorAll("video").forEach((v) => v.play())
-         })
-
-         action.addEventListener("mouseleave", () => {
-            const appendEl = ball.querySelector(imageSelector)
-            magicCursor.classList.remove(interactiveHover)
-            if (appendEl) item.appendChild(appendEl)
-            gsap.to(ball, {
-               duration: 0.3,
-               width: this.config.core.sizes.width,
-               height: this.config.core.sizes.height,
-            })
-            image.querySelectorAll("video").forEach((v) => v.pause())
-         })
-      })
-   }
-
-   // =====================================================
-   // ================ PRIVATE HELPERS ====================
-   // =====================================================
-   #callParallax(e, parent, selector, movement) {
-      const target = parent.querySelector(selector)
-      if (!target) return
-      const rect = parent.getBoundingClientRect()
-      const relX = e.clientX - rect.left
-      const relY = e.clientY - rect.top
-
-      gsap.to(target, {
-         duration: 0.3,
-         x: ((relX - rect.width / 2) / rect.width) * movement,
-         y: ((relY - rect.height / 2) / rect.height) * movement,
-         ease: Power2.easeOut,
-      })
-   }
-
-   #parallaxCursor(e, parent, movement = 2) {
-      const rect = parent.getBoundingClientRect()
-      const relX = e.clientX - rect.left
-      const relY = e.clientY - rect.top
-      this.pos.x = rect.left + rect.width / 2 + (relX - rect.width / 2) / movement
-      this.pos.y = rect.top + rect.height / 2 + (relY - rect.height / 2) / movement
-      gsap.to(this.ball, { duration: 0.3, x: this.pos.x, y: this.pos.y })
-   }
-
-   #deepMerge(target, source) {
-      for (const key in source) {
-         if (
-            source[key] &&
-            typeof source[key] === "object" &&
-            !Array.isArray(source[key])
-         ) {
-            if (!target[key]) target[key] = {}
-            this.#deepMerge(target[key], source[key])
-         } else {
-            target[key] = source[key]
-         }
-      }
-      return target
+const state = {
+   mouse: { x: 0, y: 0 },
+   pos: { x: 0, y: 0 },
+   isLocked: false,
+   mode: "default",
+   baseSize: 12,
+   text: {
+      selector: "[data-cursor-text]",
+      activeSize: 80,
+      duration: 0.3,
+      labelClass: "cursor-label",
+      activeClass: "is-active"
+   },
+   magnetic: {
+      selector: ".magnetic-item",
+      movement: 25,
+      scale: 2,
+      duration: 0.3,
+      activeClass: "is-magnetic"
    }
 }
 
+const deepMerge = (target, source) => {
+   for (const key in source) {
+      if (source[key] instanceof Object && !Array.isArray(source[key])) {
+         if (!target[key]) Object.assign(target, { [key]: {} })
+         deepMerge(target[key], source[key])
+      } else {
+         Object.assign(target, { [key]: source[key] })
+      }
+   }
+   return target
+}
 
-const cursor = new MagicCursor()
-cursor.init()
+const setMode = (ball, mode, payload = {}) => {
+   if (!ball) return
+   if (state.mode === mode) return
+
+   state.mode = mode
+   gsap.killTweensOf(ball)
+
+   if (mode === "default") {
+      ball.innerHTML = ""
+      ball.classList.remove(state.text.activeClass)
+      ball.classList.remove(state.magnetic.activeClass)
+
+      gsap.to(ball, {
+         width: state.baseSize,
+         height: state.baseSize,
+         scale: 1,
+         duration: state.text.duration,
+         overwrite: "auto"
+      })
+      return
+   }
+
+   if (mode === "text") {
+      const text = payload.text || ""
+      ball.innerHTML = `<span class="${state.text.labelClass}">${text}</span>`
+      ball.classList.add(state.text.activeClass)
+      ball.classList.remove(state.magnetic.activeClass)
+
+      gsap.to(ball, {
+         width: state.text.activeSize,
+         height: state.text.activeSize,
+         scale: 1,
+         duration: state.text.duration,
+         overwrite: "auto"
+      })
+      return
+   }
+
+   if (mode === "magnetic") {
+      ball.innerHTML = ""
+      ball.classList.remove(state.text.activeClass)
+      ball.classList.add(state.magnetic.activeClass)
+
+      gsap.set(ball, { width: state.baseSize, height: state.baseSize })
+      gsap.to(ball, {
+         scale: state.magnetic.scale,
+         duration: state.magnetic.duration,
+         overwrite: "auto"
+      })
+   }
+}
+
+const getTextZone = (el) => (el && el.closest ? el.closest(state.text.selector) : null)
+const getMagnetWrap = (el) => (el && el.closest ? el.closest(".magnetic-wrap") : null)
+
+export const initMagicCursor = (userConfig = {}) => {
+   const defaultConfig = { selector: "#ball", ratio: 0.15, size: 12 }
+   const config = deepMerge(defaultConfig, userConfig)
+   const ball = document.querySelector(config.selector)
+   if (!ball) return
+
+   state.baseSize = config.size
+
+   gsap.set(ball, {
+      xPercent: -50,
+      yPercent: -50,
+      width: config.size,
+      height: config.size,
+      opacity: 0,
+      scale: 1
+   })
+
+   const onFirstMove = (e) => {
+      if (!e) return
+      state.mouse.x = e.clientX
+      state.mouse.y = e.clientY
+      state.pos.x = e.clientX
+      state.pos.y = e.clientY
+      gsap.to(ball, { opacity: 1, duration: 0.3, overwrite: "auto" })
+      window.removeEventListener("pointermove", onFirstMove)
+   }
+
+   window.addEventListener("pointermove", onFirstMove, { passive: true })
+   window.addEventListener("pointermove", (e) => {
+      if (!e) return
+      state.mouse.x = e.clientX
+      state.mouse.y = e.clientY
+   }, { passive: true })
+
+   gsap.ticker.add(() => {
+      if (!state.isLocked) {
+         state.pos.x += (state.mouse.x - state.pos.x) * config.ratio
+         state.pos.y += (state.mouse.y - state.pos.y) * config.ratio
+         gsap.set(ball, { x: state.pos.x, y: state.pos.y })
+      }
+   })
+}
+
+export const initCursorText = (userConfig = {}) => {
+   state.text = deepMerge(state.text, userConfig)
+
+   const ball = document.querySelector("#ball")
+   const zones = document.querySelectorAll(state.text.selector)
+   if (!zones || !zones.length) return
+
+   document.addEventListener("pointerover", (e) => {
+      if (!e) return
+      if (state.mode === "magnetic") return
+      const zone = getTextZone(e.target)
+      if (!zone) return
+      if (!ball) return
+      const text = zone.getAttribute("data-cursor-text") || ""
+      setMode(ball, "text", { text })
+   }, true)
+
+   document.addEventListener("pointerout", (e) => {
+      if (!e) return
+      if (state.mode === "magnetic") return
+      const fromZone = getTextZone(e.target)
+      if (!fromZone) return
+      const toZone = getTextZone(e.relatedTarget)
+      if (toZone) return
+      if (!ball) return
+      setMode(ball, "default")
+   }, true)
+}
+
+export const initMagneticEffect = (userConfig = {}) => {
+   state.magnetic = deepMerge(state.magnetic, userConfig)
+
+   const ball = document.querySelector("#ball")
+   const items = document.querySelectorAll(state.magnetic.selector)
+   if (!items || !items.length) return
+
+   items.forEach(item => {
+      if (!item || !item.parentNode) return
+
+      const wrap = document.createElement("div")
+      wrap.classList.add("magnetic-wrap")
+      item.parentNode.insertBefore(wrap, item)
+      wrap.appendChild(item)
+
+      wrap.addEventListener("pointermove", (e) => {
+         if (!e) return
+
+         const rect = wrap.getBoundingClientRect?.()
+         if (!rect) return
+
+         const relX = e.clientX - rect.left
+         const relY = e.clientY - rect.top
+
+         gsap.to(item, {
+            x: ((relX - rect.width / 2) / rect.width) * state.magnetic.movement,
+            y: ((relY - rect.height / 2) / rect.height) * state.magnetic.movement,
+            duration: state.magnetic.duration,
+            overwrite: "auto"
+         })
+
+         state.pos.x = rect.left + rect.width / 2 + (relX - rect.width / 2) / 2
+         state.pos.y = rect.top + rect.height / 2 + (relY - rect.height / 2) / 2
+
+         if (ball) {
+            gsap.to(ball, {
+               x: state.pos.x,
+               y: state.pos.y,
+               duration: state.magnetic.duration,
+               overwrite: "auto"
+            })
+         }
+      }, { passive: true })
+
+      wrap.addEventListener("pointerenter", () => {
+         state.isLocked = true
+         if (ball) setMode(ball, "magnetic")
+      })
+
+      wrap.addEventListener("pointerleave", (e) => {
+         state.isLocked = false
+
+         if (ball) {
+            ball.classList.remove(state.magnetic.activeClass)
+            gsap.to(ball, { scale: 1, duration: state.magnetic.duration, overwrite: "auto" })
+         }
+
+         gsap.to(item, {
+            x: 0,
+            y: 0,
+            duration: state.magnetic.duration + 0.1,
+            clearProps: "all",
+            overwrite: "auto"
+         })
+
+         if (!ball || !e) return
+
+         const x = Number.isFinite(e.clientX) ? e.clientX : 0
+         const y = Number.isFinite(e.clientY) ? e.clientY : 0
+
+         const el = document.elementFromPoint?.(x, y)
+         const zone = getTextZone(el)
+
+         if (zone) {
+            const text = zone.getAttribute("data-cursor-text") || ""
+            setMode(ball, "text", { text })
+         } else {
+            setMode(ball, "default")
+         }
+      })
+   })
+
+   document.addEventListener("pointerover", (e) => {
+      if (!e || !ball) return
+      const wrap = getMagnetWrap(e.target)
+      if (!wrap) return
+      setMode(ball, "magnetic")
+   }, true)
+}
+
+//========================================================================================================================================================

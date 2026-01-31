@@ -8,7 +8,7 @@ const { createServer, close } = pkg
 
 const localPhpMap = {
    win32: 'bin/win/php.exe',
-   darwin: 'bin/mac/php',
+   darwin: '/opt/homebrew/bin/php',
    linux: 'bin/lin/php',
 }
 
@@ -26,7 +26,7 @@ const host = templateCfg.PHPserver?.domain || '127.0.0.1'
 createServer({
    port,
    hostname: host,
-   base: './plugins/php-server',
+   base: './template_plugins/php-server',
    keepalive: true,
    open: false,
    bin: phpPath,

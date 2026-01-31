@@ -66,7 +66,7 @@ export default defineConfig({
     postcss: {
       plugins: [
         // Replacing px with remh rem
-        ...((templateConfig.styles.pxToRem && isProduction) ? [
+        ...((templateConfig.styles.pxToRem) ? [
           modules.pxtorem({ rootValue: templateConfig.styles.sizeToRem, minPixelValue: 0, propList: ['*'] })
         ] : []),
         // Sorting and grouping media requests

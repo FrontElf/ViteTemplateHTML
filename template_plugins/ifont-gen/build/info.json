@@ -1,38 +1,140 @@
 {
-  "email": {
+  "Instagram": {
     "encodedCode": "\\ea01",
     "prefix": "_icon",
-    "className": "_icon-email",
+    "className": "_icon-Instagram",
     "unicode": "&#59905;"
   },
-  "facebook": {
+  "arrow": {
     "encodedCode": "\\ea02",
     "prefix": "_icon",
-    "className": "_icon-facebook",
+    "className": "_icon-arrow",
     "unicode": "&#59906;"
   },
-  "instagram": {
+  "battery": {
     "encodedCode": "\\ea03",
     "prefix": "_icon",
-    "className": "_icon-instagram",
+    "className": "_icon-battery",
     "unicode": "&#59907;"
   },
-  "phone": {
+  "check": {
     "encodedCode": "\\ea04",
     "prefix": "_icon",
-    "className": "_icon-phone",
+    "className": "_icon-check",
     "unicode": "&#59908;"
   },
-  "region": {
+  "close-svgrepo-com": {
     "encodedCode": "\\ea05",
     "prefix": "_icon",
-    "className": "_icon-region",
+    "className": "_icon-close-svgrepo-com",
     "unicode": "&#59909;"
   },
-  "star": {
+  "close": {
     "encodedCode": "\\ea06",
     "prefix": "_icon",
-    "className": "_icon-star",
+    "className": "_icon-close",
     "unicode": "&#59910;"
+  },
+  "drop": {
+    "encodedCode": "\\ea07",
+    "prefix": "_icon",
+    "className": "_icon-drop",
+    "unicode": "&#59911;"
+  },
+  "facebook": {
+    "encodedCode": "\\ea08",
+    "prefix": "_icon",
+    "className": "_icon-facebook",
+    "unicode": "&#59912;"
+  },
+  "flood": {
+    "encodedCode": "\\ea09",
+    "prefix": "_icon",
+    "className": "_icon-flood",
+    "unicode": "&#59913;"
+  },
+  "graphic": {
+    "encodedCode": "\\ea0a",
+    "prefix": "_icon",
+    "className": "_icon-graphic",
+    "unicode": "&#59914;"
+  },
+  "level": {
+    "encodedCode": "\\ea0b",
+    "prefix": "_icon",
+    "className": "_icon-level",
+    "unicode": "&#59915;"
+  },
+  "linkedIn": {
+    "encodedCode": "\\ea0c",
+    "prefix": "_icon",
+    "className": "_icon-linkedIn",
+    "unicode": "&#59916;"
+  },
+  "menu": {
+    "encodedCode": "\\ea0d",
+    "prefix": "_icon",
+    "className": "_icon-menu",
+    "unicode": "&#59917;"
+  },
+  "messenger": {
+    "encodedCode": "\\ea0e",
+    "prefix": "_icon",
+    "className": "_icon-messenger",
+    "unicode": "&#59918;"
+  },
+  "planet": {
+    "encodedCode": "\\ea0f",
+    "prefix": "_icon",
+    "className": "_icon-planet",
+    "unicode": "&#59919;"
+  },
+  "tap": {
+    "encodedCode": "\\ea10",
+    "prefix": "_icon",
+    "className": "_icon-tap",
+    "unicode": "&#59920;"
+  },
+  "thermometer": {
+    "encodedCode": "\\ea11",
+    "prefix": "_icon",
+    "className": "_icon-thermometer",
+    "unicode": "&#59921;"
+  },
+  "tiktok": {
+    "encodedCode": "\\ea12",
+    "prefix": "_icon",
+    "className": "_icon-tiktok",
+    "unicode": "&#59922;"
+  },
+  "twitter": {
+    "encodedCode": "\\ea13",
+    "prefix": "_icon",
+    "className": "_icon-twitter",
+    "unicode": "&#59923;"
+  },
+  "usb": {
+    "encodedCode": "\\ea14",
+    "prefix": "_icon",
+    "className": "_icon-usb",
+    "unicode": "&#59924;"
+  },
+  "user": {
+    "encodedCode": "\\ea15",
+    "prefix": "_icon",
+    "className": "_icon-user",
+    "unicode": "&#59925;"
+  },
+  "whatsapp": {
+    "encodedCode": "\\ea16",
+    "prefix": "_icon",
+    "className": "_icon-whatsapp",
+    "unicode": "&#59926;"
+  },
+  "youtube": {
+    "encodedCode": "\\ea17",
+    "prefix": "_icon",
+    "className": "_icon-youtube",
+    "unicode": "&#59927;"
   }
 }

@@ -58,7 +58,13 @@ export function processExpressions(tree, context, baseOptions = {}) {
                const exprMatch = val.match(/^\s*\{\{([^}]+)\}\}\s*$/)
                if (exprMatch) {
                   const result = evalExpression(exprMatch[1].trim(), context, isLogger, loggerPrefix)
-                  newAttrs[attr] = result
+                  let finalResult = result
+                  if (attr === 'src' && result && typeof result === 'object' && !Array.isArray(result)) {
+                     finalResult = result.desktop || result.src || ''
+                  } else if (attr === 'src' && Array.isArray(result) && result.length > 0 && result[0] && typeof result[0] === 'object') {
+                     finalResult = result[0].desktop || result[0].src || ''
+                  }
+                  newAttrs[attr] = finalResult
                } else {
                   newAttrs[attr] = val.replace(/\{\{([^}]+)\}\}/g, (_, expression) => {
                      const result = evalExpression(expression.trim(), context, isLogger, loggerPrefix)

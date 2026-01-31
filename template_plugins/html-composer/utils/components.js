@@ -132,6 +132,16 @@ export async function includeComponents(tree, componentMap, context, baseOptions
             }
          }
 
+         // Оцінюємо рядки, що починаються з { або [, як JavaScript-вирази
+         for (const [key, val] of Object.entries(normalizedParams)) {
+            if (typeof val === 'string' && (val.trim().startsWith('{') || val.trim().startsWith('['))) {
+               const evaluated = evalExpression(val.trim(), context, isLogger, loggerPrefix)
+               if (evaluated !== null && evaluated !== undefined) {
+                  normalizedParams[key] = evaluated
+               }
+            }
+         }
+
          // Створюємо контекст доступний для <script define>: глобальний контекст + пропси + children
          const availableContext = { ...context, ...normalizedParams, children: childrenNodes }
 

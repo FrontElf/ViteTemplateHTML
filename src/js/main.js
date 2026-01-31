@@ -75,6 +75,11 @@ TF.menuInit()
 // import "./scripts/FEModals.js"
 
 // ? ===============================================
+/* FEMagicCursor */
+
+import './scripts/FEMagicCursor.js'
+
+// ? ===============================================
 
 /* FESpoilers functionality */
 // Documentation inside the module file
@@ -106,7 +111,6 @@ TF.menuInit()
 
 // ? ===============================================
 // ? Custom scripts ================================
-
 
 import './custom.js'
 

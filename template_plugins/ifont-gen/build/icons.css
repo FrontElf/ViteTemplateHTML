@@ -13,17 +13,51 @@
 
 
 :root {
---_icon-email: "\ea01";
---_icon-facebook: "\ea02";
---_icon-instagram: "\ea03";
---_icon-phone: "\ea04";
---_icon-region: "\ea05";
---_icon-star: "\ea06";
+--_icon-Instagram: "\ea01";
+--_icon-arrow: "\ea02";
+--_icon-battery: "\ea03";
+--_icon-check: "\ea04";
+--_icon-close-svgrepo-com: "\ea05";
+--_icon-close: "\ea06";
+--_icon-drop: "\ea07";
+--_icon-facebook: "\ea08";
+--_icon-flood: "\ea09";
+--_icon-graphic: "\ea0a";
+--_icon-level: "\ea0b";
+--_icon-linkedIn: "\ea0c";
+--_icon-menu: "\ea0d";
+--_icon-messenger: "\ea0e";
+--_icon-planet: "\ea0f";
+--_icon-tap: "\ea10";
+--_icon-thermometer: "\ea11";
+--_icon-tiktok: "\ea12";
+--_icon-twitter: "\ea13";
+--_icon-usb: "\ea14";
+--_icon-user: "\ea15";
+--_icon-whatsapp: "\ea16";
+--_icon-youtube: "\ea17";
 }
-._icon-email::before { content: var(--_icon-email); }
+._icon-Instagram::before { content: var(--_icon-Instagram); }
+._icon-arrow::before { content: var(--_icon-arrow); }
+._icon-battery::before { content: var(--_icon-battery); }
+._icon-check::before { content: var(--_icon-check); }
+._icon-close-svgrepo-com::before { content: var(--_icon-close-svgrepo-com); }
+._icon-close::before { content: var(--_icon-close); }
+._icon-drop::before { content: var(--_icon-drop); }
 ._icon-facebook::before { content: var(--_icon-facebook); }
-._icon-instagram::before { content: var(--_icon-instagram); }
-._icon-phone::before { content: var(--_icon-phone); }
-._icon-region::before { content: var(--_icon-region); }
-._icon-star::before { content: var(--_icon-star); }
+._icon-flood::before { content: var(--_icon-flood); }
+._icon-graphic::before { content: var(--_icon-graphic); }
+._icon-level::before { content: var(--_icon-level); }
+._icon-linkedIn::before { content: var(--_icon-linkedIn); }
+._icon-menu::before { content: var(--_icon-menu); }
+._icon-messenger::before { content: var(--_icon-messenger); }
+._icon-planet::before { content: var(--_icon-planet); }
+._icon-tap::before { content: var(--_icon-tap); }
+._icon-thermometer::before { content: var(--_icon-thermometer); }
+._icon-tiktok::before { content: var(--_icon-tiktok); }
+._icon-twitter::before { content: var(--_icon-twitter); }
+._icon-usb::before { content: var(--_icon-usb); }
+._icon-user::before { content: var(--_icon-user); }
+._icon-whatsapp::before { content: var(--_icon-whatsapp); }
+._icon-youtube::before { content: var(--_icon-youtube); }
 

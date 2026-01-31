@@ -1,7 +1,10 @@
 #magic-cursor {
-   --magic-cursor-color-main: oklch(60.6% 0.25 292.717);
-   --magic-cursor-color-border: oklch(60.6% 0.25 292.717);
-   --magic-cursor-color-text: #000000;
+   --magic-cursor-color-main: rgba(142, 81, 255, 1);
+   --magic-cursor-color-border: rgba(142, 81, 255, 1);
+   --magic-cursor-color-text: #ffffff;
+   --magic-cursor-magnetic-opacity: 0.5;
+   --magic-cursor-shadow-size: 10px;
+   --magic-cursor-bg-hover-text: rgba(142, 81, 255, 0.7);
    position: fixed;
    top: 0;
    left: 0;
@@ -9,7 +12,7 @@
    height: 100%;
    pointer-events: none;
    z-index: 9999;
-   display: none;
+   // display: none;
 
    .magic-cursor-init & {
       display: block;
@@ -23,7 +26,6 @@
       align-items: center;
       justify-content: center;
       color: var(--magic-cursor-color-text);
-      opacity: 1;
       border: none;
       background-color: transparent;
 
@@ -32,6 +34,7 @@
       &::before {
          content: '';
          position: absolute;
+         z-index: 1;
          display: block;
          top: 0;
          left: 0;
@@ -45,6 +48,18 @@
          mix-blend-mode: difference;
       }
 
+      &.is-active {
+         &::before {
+            background: var(--magic-cursor-bg-hover-text);
+            box-shadow: 0 0 var(--magic-cursor-shadow-size) 0px var(--magic-cursor-bg-hover-text);
+            border-color: var(--magic-cursor-bg-hover-text);
+         }
+      }
+
+      &.is-magnetic {
+         opacity: var(--magic-cursor-magnetic-opacity) !important;
+      }
+
       img {
          display: block;
          z-index: 2;
@@ -55,20 +70,16 @@
       }
    }
 
-   .ball-drag {
-      &::before {
-         background-color: rgba(127, 207, 61, 0.5);
-      }
-   }
-
    .ball-view-text {
-      color: #ffffff;
+      color: var(--magic-cursor-color-text);
       display: block;
       opacity: 1;
       font-size: 28px;
       font-weight: 700;
       padding: 5px 10px;
       border-radius: 4px;
+      position: relative;
+      z-index: 2;
    }
 
    &.interactive-hover-on #ball {
