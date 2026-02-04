@@ -1,7 +1,7 @@
 @use "@s/inc" as *;
 @use "sass:math";
 
-[class*="__s-container"] {
+[class*="__container"] {
    container-type: inline-size;
 
    @if ($maxWidthContainer>0) {

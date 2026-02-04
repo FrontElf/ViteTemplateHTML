@@ -84,7 +84,7 @@ import './scripts/FEMagicCursor.js'
 /* FESpoilers functionality */
 // Documentation inside the module file
 
-// import "./scripts/FESpoilers.js"
+import "./scripts/FESpoilers.js"
 
 // ? ===============================================
 /* Select functionality */
