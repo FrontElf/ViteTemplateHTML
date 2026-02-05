@@ -1,0 +1,23 @@
+// StreetMap Styles
+
+// .street-map
+.street-map {
+
+   &__container {}
+
+   &__view {
+      min-height: 600px;
+
+
+      // MapLibre GL Popup Customization
+      .maplibregl-popup {
+         .maplibregl-popup-title {
+            color: var(--color-text, #333333);
+         }
+
+         .maplibregl-popup-close-button {
+            display: none;
+         }
+      }
+   }
+}

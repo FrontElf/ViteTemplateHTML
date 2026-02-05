@@ -67,7 +67,7 @@ export default defineConfig({
       plugins: [
         // Replacing px with remh rem
         ...((templateConfig.styles.pxToRem) ? [
-          modules.pxtorem({ rootValue: templateConfig.styles.sizeToRem, minPixelValue: 0, propList: ['*'] })
+          modules.pxtorem({ rootValue: templateConfig.styles.sizeToRem, minPixelValue: 1, propList: ['*'] })
         ] : []),
         // Sorting and grouping media requests
         ...((templateConfig.styles.sortMediaQuery && isProduction) ? [

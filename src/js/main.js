@@ -84,7 +84,7 @@ import './scripts/FEMagicCursor.js'
 /* FESpoilers functionality */
 // Documentation inside the module file
 
-import "./scripts/FESpoilers.js"
+// import "./scripts/FESpoilers.js"
 
 // ? ===============================================
 /* Select functionality */
@@ -108,6 +108,12 @@ import "./scripts/FESpoilers.js"
 // Documentation inside the module file
 
 // import './libs/FEVideoResize.js'
+
+// ? ===============================================
+/* Map Libre & OpenStreetMap */
+// Documentation inside the module file
+
+import './scripts/maplibreGl.js'
 
 // ? ===============================================
 // ? Custom scripts ================================
