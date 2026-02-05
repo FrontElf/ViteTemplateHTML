@@ -23,10 +23,16 @@ const MAP_STYLES = {
 }
 
 // Дані для міток на карті
-const LOCATIONS = [
-    { coords: [30.5234, 50.4501], title: "Майдан Незалежності" },
-    { coords: [30.5191, 50.4488], title: "Золоті Ворота" }
-]
+let locations = []
+
+try {
+    const rawLocations = document.getElementById("map")?.getAttribute("data-map-locations")
+    if (rawLocations) {
+        locations = JSON.parse(rawLocations)
+    }
+} catch (e) {
+    console.error("Помилка парсингу локацій:", e)
+}
 
 // Основна функція ініціалізації карти
 async function initMap() {
@@ -38,18 +44,29 @@ async function initMap() {
         const map = new maplibregl.Map({
             container: container,
             style: getStyleUrl(MAP_STYLES.streets),
-            center: [30.5234, 50.4501],
             zoom: 15.5,
             pitch: 50,
             bearing: -20,
             antialias: true
+            // center: [30.5234, 50.4501],
         })
+
+        if (locations.length > 0) {
+            const bounds = new maplibregl.LngLatBounds()
+            locations.forEach(loc => bounds.extend(loc.coords))
+
+            map.fitBounds(bounds, {
+                padding: 50,    // відступ від країв екрана в пікселях
+                maxZoom: 15,    // щоб карта не "влетіла" занадто близько, якщо мітка одна
+                duration: 0     // анімація польоту до міток (мс)
+            })
+        }
 
         // Навігація (Zoom + Compass)
         map.addControl(new maplibregl.NavigationControl(), "top-right")
 
         // Додаємо мітки після завантаження
-        LOCATIONS.forEach(loc => {
+        locations.forEach(loc => {
             // const markerColor = "#FF0000" // Можна задати колір мітки
             new maplibregl.Marker({ ...(typeof markerColor !== 'undefined' && { color: markerColor }) })
                 .setLngLat(loc.coords)

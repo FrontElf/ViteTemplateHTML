@@ -1,11 +1,16 @@
 <!-- StreetMap scss -->
 <link rel="stylesheet" href="@c/UI/StreetMap/StreetMap.scss" />
 <!-- StreetMap script -->
-<script define></script>
+<script define>
+	const mapLocations = [
+		{ coords: [30.5234, 50.4501], title: "Майдан Незалежності" },
+		{ coords: [30.5191, 50.4488], title: "Золоті Ворота" }
+	]
+</script>
 
 <!-- street-map html -->
 <div class="street-map">
 	<div class="street-map__container">
-		<div id="map" class="street-map__view"></div>
+		<div id="map" data-map-locations="{{JSON.stringify(mapLocations)}}" class="street-map__view"></div>
 	</div>
 </div>
