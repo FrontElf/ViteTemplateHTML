@@ -105,30 +105,14 @@ export async function includeComponents(tree, componentMap, context, baseOptions
 
          // Конвертуємо рядкові значення "true"/"false" в булеві
          const normalizedParams = {}
-         let injectedAttributes = {}
 
          for (const [key, value] of Object.entries(params)) {
-            if (key === 'attributes') {
-               // Обробка спеціального пропса attributes
-               if (typeof value === 'string' && value.trim().startsWith('{')) {
-                  // Спробуємо витягнути вміст фігурних дужок, якщо вони є, або просто оцінити
-                  const expr = value.trim().replace(/^\{\{(.*)\}\}$/, '$1')
-                  const evaluated = evalExpression(expr, context, isLogger, loggerPrefix)
-                  if (evaluated && typeof evaluated === 'object') {
-                     injectedAttributes = evaluated
-                  }
-               } else if (typeof value === 'object') {
-                  // Якщо раптом вже об'єкт
-                  injectedAttributes = value
-               }
+            if (value === 'true') {
+               normalizedParams[key] = true
+            } else if (value === 'false') {
+               normalizedParams[key] = false
             } else {
-               if (value === 'true') {
-                  normalizedParams[key] = true
-               } else if (value === 'false') {
-                  normalizedParams[key] = false
-               } else {
-                  normalizedParams[key] = value
-               }
+               normalizedParams[key] = value
             }
          }
 
@@ -158,25 +142,6 @@ export async function includeComponents(tree, componentMap, context, baseOptions
          parsed = processConditions(parsed, componentContext, baseOptions)
          parsed = await processEach(parsed, componentContext, baseOptions, componentMap)
          parsed = processExpressions(parsed, componentContext, baseOptions)
-
-         // Ін'єкція атрибутів у кореневий елемент компонента
-         if (Object.keys(injectedAttributes).length > 0) {
-            const injectAttrs = (nodes) => {
-               for (const node of nodes) {
-                  if (node.tag) {
-                     node.attrs = { ...node.attrs, ...injectedAttributes }
-                     return true // Stop after injecting into the first tag (root)
-                  }
-               }
-               return false
-            }
-
-            if (Array.isArray(parsed)) {
-               injectAttrs(parsed)
-            } else if (parsed.tag) {
-               parsed.attrs = { ...parsed.attrs, ...injectedAttributes }
-            }
-         }
 
          return await includeComponents(parsed, componentMap, componentContext, baseOptions, depth + 1)
       } else if (tree.tag.match(/^[A-Z]/)) {

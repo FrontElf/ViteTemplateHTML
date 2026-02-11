@@ -1,0 +1,63 @@
+@forward "@s/libs/spoilers-base";
+// Spoilers Styles
+
+// .spoilers
+.spoilers-section {
+
+   &__container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      align-items: start;
+   }
+}
+
+.spoilers {
+
+   .spoiler {
+      border: 1px solid #ccc;
+
+      &__panel {
+         display: flex;
+         align-items: center;
+         cursor: pointer;
+      }
+
+      &__text {}
+
+      &__icon {}
+
+      &__content {}
+
+      &__body {}
+   }
+}
+
+
+.spoilers-images {
+   position: relative;
+   overflow: hidden;
+   padding-bottom: 56%;
+
+   img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+
+      &.spoilers-img {
+         opacity: 0;
+         transition: opacity 0.3s;
+
+         &.spoiler-img-active {
+            opacity: 1;
+         }
+      }
+
+   }
+}
+
+.sp-image {}

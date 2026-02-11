@@ -1,3 +1,5 @@
+// https://cloud.maptiler.com/
+
 import "maplibre-gl/dist/maplibre-gl.css"
 
 // Ключ API для MapTiler
@@ -57,7 +59,7 @@ async function initMap() {
 
             map.fitBounds(bounds, {
                 padding: 50,    // відступ від країв екрана в пікселях
-                maxZoom: 15,    // щоб карта не "влетіла" занадто близько, якщо мітка одна
+                maxZoom: 17,    // щоб карта не "влетіла" занадто близько, якщо мітка одна
                 duration: 0     // анімація польоту до міток (мс)
             })
         }

@@ -84,7 +84,7 @@ import './scripts/FEMagicCursor.js'
 /* FESpoilers functionality */
 // Documentation inside the module file
 
-// import "./scripts/FESpoilers.js"
+import "./scripts/FESpoilers.js"
 
 // ? ===============================================
 /* Select functionality */
@@ -111,7 +111,7 @@ import './scripts/FEMagicCursor.js'
 
 // ? ===============================================
 /* Map Libre & OpenStreetMap */
-// Documentation inside the module file
+// Documentation https://cloud.maptiler.com/
 
 import './scripts/maplibreGl.js'
 

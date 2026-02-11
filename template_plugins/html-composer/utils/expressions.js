@@ -52,8 +52,16 @@ export function processExpressions(tree, context, baseOptions = {}) {
 
       // Обробка атрибутів
       if (node.attrs) {
-         const newAttrs = { ...node.attrs }
-         for (const [attr, val] of Object.entries(newAttrs)) {
+         const newAttrs = {}
+         for (const [attr, val] of Object.entries(node.attrs)) {
+            const dynamicAttrKeyMatch = attr.match(/^\s*\{\{([^}]+)\}\}\s*$/)
+
+            if (dynamicAttrKeyMatch) {
+               const result = evalExpression(dynamicAttrKeyMatch[1].trim(), context, isLogger, loggerPrefix)
+               injectDynamicAttributes(newAttrs, result)
+               continue
+            }
+
             if (typeof val === 'string' && val.includes('{{')) {
                const exprMatch = val.match(/^\s*\{\{([^}]+)\}\}\s*$/)
                if (exprMatch) {
@@ -64,13 +72,16 @@ export function processExpressions(tree, context, baseOptions = {}) {
                   } else if (attr === 'src' && Array.isArray(result) && result.length > 0 && result[0] && typeof result[0] === 'object') {
                      finalResult = result[0].desktop || result[0].src || ''
                   }
-                  newAttrs[attr] = finalResult
+                  setAttribute(newAttrs, attr, finalResult)
                } else {
-                  newAttrs[attr] = val.replace(/\{\{([^}]+)\}\}/g, (_, expression) => {
+                  const interpolatedValue = val.replace(/\{\{([^}]+)\}\}/g, (_, expression) => {
                      const result = evalExpression(expression.trim(), context, isLogger, loggerPrefix)
                      return (result === null || result === undefined) ? '' : result
                   })
+                  setAttribute(newAttrs, attr, interpolatedValue)
                }
+            } else {
+               setAttribute(newAttrs, attr, val)
             }
          }
          node.attrs = newAttrs
@@ -111,4 +122,36 @@ export function processExpressions(tree, context, baseOptions = {}) {
    }
 
    return processNode(tree)
+}
+
+function injectDynamicAttributes(target, dynamicValue) {
+   if (!dynamicValue || typeof dynamicValue !== 'object' || Array.isArray(dynamicValue)) {
+      return
+   }
+
+   for (const [dynamicKey, dynamicAttrValue] of Object.entries(dynamicValue)) {
+      setAttribute(target, dynamicKey, dynamicAttrValue)
+   }
+}
+
+function setAttribute(attrs, key, value) {
+   if (!key || value === null || value === undefined || value === false) {
+      return
+   }
+
+   const normalizedValue = value === true ? '' : String(value)
+
+   if (key === 'class' && attrs.class) {
+      attrs.class = `${attrs.class} ${normalizedValue}`.trim()
+      return
+   }
+
+   if (key === 'style' && attrs.style) {
+      const current = attrs.style.trim()
+      const next = normalizedValue.trim()
+      attrs.style = current && next ? `${current}; ${next}` : `${current}${next}`
+      return
+   }
+
+   attrs[key] = normalizedValue
 }
