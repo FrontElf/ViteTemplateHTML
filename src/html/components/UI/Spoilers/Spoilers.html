@@ -1,48 +1,52 @@
 <!-- Spoilers scss -->
 <link rel="stylesheet" href="@c/UI/Spoilers/Spoilers.scss" />
 <!-- Spoilers script -->
-<script define></script>
+<script define>
+	const spoilers = [
+		{
+			title: 'Title',
+			text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.',
+			image: '@i/1.jpg',
+		},
+		{
+			title: 'Title 2',
+			text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.',
+			image: '@i/2.jpg',
+		},
+	]
+
+	const randomGroup = RANDOM_ID('spoilers_group_')
+
+	const isShow = (index) => {
+		return index === 0 ? 'show' : 'hide'
+	}
+
+</script>
 
 <!-- spoilers html -->
 <div class="spoilers-section">
 	<div class="spoilers-section__container">
 		<div class="spoilers">
-			<div class='spoiler' data-spoiler data-spoiler-group="services">
+
+			<div v-for="(spoiler, index) in spoilers" class='spoiler' data-spoiler-state="{{isShow(index)}}" data-spoiler data-spoiler-group="{{randomGroup}}">
 				<div class='spoiler__panel' data-spoiler-title>
-					<div class='spoiler__text'>Title</div>
+					<div class='spoiler__text'>{{spoiler.title}}</div>
 					<span class='spoiler__icon'>
-						<svg stroke='currentColor' fill='none' stroke-width='2' viewBox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'>
+						<svg stroke='currentColor' fill='none' stroke-width='2' viewBox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round'>
 							<polyline points='6 9 12 15 18 9'></polyline>
 						</svg>
 					</span>
 				</div>
 				<div class='spoiler__content' data-spoiler-content>
-					<div class='spoiler__body'>
-						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui sit mollitia quibusdam cumque ut maiores eveniet ullam id! Corrupti maxime error suscipit, facilis unde, ab totam vel explicabo illum quibusdam ratione beatae? Nemo, natus repellat facere saepe voluptatibus architecto rem voluptates, corrupti ad nam nulla pariatur harum cum eligendi.
-					</div>
+					<div class='spoiler__body'>{{spoiler.text}}</div>
 				</div>
 			</div>
-			<div class='spoiler' data-spoiler data-spoiler-group="services">
-				<div class='spoiler__panel' data-spoiler-title>
-					<div class='spoiler__text'>Title 2</div>
-					<span class='spoiler__icon'>
-						<svg stroke='currentColor' fill='none' stroke-width='2' viewBox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'>
-							<polyline points='6 9 12 15 18 9'></polyline>
-						</svg>
-					</span>
-				</div>
-				<div class='spoiler__content' data-spoiler-content>
-					<div class='spoiler__body'>
-						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui sit mollitia quibusdam cumque ut maiores eveniet ullam id! Corrupti maxime error suscipit, facilis unde, ab totam vel explicabo illum quibusdam ratione beatae? Nemo, natus repellat facere saepe voluptatibus architecto rem voluptates, corrupti ad nam nulla pariatur harum cum eligendi.
-					</div>
-				</div>
-			</div>
+
 		</div>
 
 		<div class="spoilers-images">
 			<img src="@i/3.jpg">
-			<img class="spoilers-img" data-spoiler-image-group="services" src="@i/1.jpg">
-			<img class="spoilers-img" data-spoiler-image-group="services" src="@i/2.jpg">
+			<img v-for="spoiler in spoilers" class="spoilers-img" data-spoiler-image-group="{{randomGroup}}" src="{{spoiler.image}}">
 		</div>
 	</div>
 </div>

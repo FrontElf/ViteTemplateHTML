@@ -3,16 +3,14 @@
 <!-- StreetMap script -->
 <script define>
 	const mapLocations = [
-		// { coords: [30.5234, 50.4501], title: "Майдан Незалежності" },
-		// { coords: [30.5191, 50.4488], title: "Золоті Ворота" },
-		// { coords: [30.5391, 50.4688], title: "Золоті Ворота" },
-		{ coords: [26.61736904986607, 51.31870613712711], title: "Золоті Ворота" },
+		{ coords: [26.65736904986804, 51.35870613712811], title: "Золоті Ворота 1" },
+		{ coords: [26.61736904986607, 51.31870613712711], title: "Золоті Ворота 2" },
 	]
 </script>
 
 <!-- street-map html -->
 <div class="street-map">
 	<div class="street-map__container">
-		<div id="map" data-map-locations="{{JSON.stringify(mapLocations)}}" class="street-map__view"></div>
+		<div id="map" data-map-locations="{{JSON_STRINGIFY(mapLocations)}}" class="street-map__view"></div>
 	</div>
 </div>

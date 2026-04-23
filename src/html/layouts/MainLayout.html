@@ -5,13 +5,8 @@
    <Head pageTitle="{{title}}" description="{{description}}" />
 
    <body>
-      <if condition="IS_MAGIC_CURSOR === true">
-         <MagicCursor />
-      </if>
-
-      <if condition="IS_PRELOADER === true">
-         <Preloader />
-      </if>
+      <MagicCursor v-if(IS_MAGIC_CURSOR===true) />
+      <Preloader v-if(IS_PRELOADER===true) />
 
       <div class="wrapper">
          <!-- =========== Header =========== -->

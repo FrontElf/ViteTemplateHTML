@@ -1,11 +1,55 @@
 
 /**
+ * Inter font face
+ */
+@font-face {
+   font-family: 'Inter';
+   font-display: swap;
+   src: url("@f/Inter-Bold.woff2") format("woff2");
+   font-weight: 700;
+   font-style: normal;
+}
+                    
+/**
+ * Inter font face
+ */
+@font-face {
+   font-family: 'Inter';
+   font-display: swap;
+   src: url("@f/Inter-Regular.woff2") format("woff2");
+   font-weight: 400;
+   font-style: normal;
+}
+                    
+/**
+ * Inter_24pt font face
+ */
+@font-face {
+   font-family: 'Inter_24pt';
+   font-display: swap;
+   src: url("@f/Inter_24pt-Regular.woff2") format("woff2");
+   font-weight: 400;
+   font-style: normal;
+}
+                    
+/**
  * Lato font face
  */
 @font-face {
    font-family: 'Lato';
    font-display: swap;
    src: url("@f/Lato-Regular.woff2") format("woff2");
+   font-weight: 400;
+   font-style: normal;
+}
+                    
+/**
+ * Manrope font face
+ */
+@font-face {
+   font-family: 'Manrope';
+   font-display: swap;
+   src: url("@f/Manrope-Regular.woff2") format("woff2");
    font-weight: 400;
    font-style: normal;
 }
@@ -40,6 +84,17 @@
    font-display: swap;
    src: url("@f/Montserrat-SemiBold.woff2") format("woff2");
    font-weight: 600;
+   font-style: normal;
+}
+                    
+/**
+ * PlayfairDisplay font face
+ */
+@font-face {
+   font-family: 'PlayfairDisplay';
+   font-display: swap;
+   src: url("@f/PlayfairDisplay-Regular.woff2") format("woff2");
+   font-weight: 400;
    font-style: normal;
 }
                     

@@ -148,7 +148,11 @@ class FESpoilers {
     const initState = spoiler.getAttribute(this.settings.stateAttribute) || this.settings.hideAttr
 
     if (initState === this.settings.showAttr) {
-      spoiler.classList.add(this.settings.initShowClass)
+      spoiler.classList.add(
+        this.settings.initShowClass,
+        this.settings.activeContentClass,
+        this.settings.showClass
+      )
       spoiler.titleBtn.setAttribute('aria-expanded', 'true')
       spoiler.content.setAttribute('aria-hidden', 'false')
     } else {
