@@ -5,12 +5,13 @@ function beforeModalOpen(modal) {
    bodyLock(300)
 }
 function afterModalOpen(modal) {
-   // console.log('After opening the callback:', modal)
+   console.log('After opening the callback:', modal)
 }
 function beforeModalClose(modal) {
-   // console.log('Before closing the callback:', modal)
+   console.log('Before closing the callback:', modal)
 }
-function afterModalClose(modal) {
+function afterModalClose(modal, context = {}) {
+   if (context.isSwapping) return
    bodyUnlock(300)
 }
 
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Behavior
       closeOnEsc: true,
+      closeOnBack: true,
       closeAllOnEsc: true,
       singleOpen: true,
       lockScroll: false,

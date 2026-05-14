@@ -16,27 +16,25 @@ const config = {
       critical: false,
    },
 
-   devNavigation: {
-      isShow: true,
-      position: 'left top',
-      color: "#ffffff",
-      background: "#292929",
-      transition: '0.3s',
-      delay: '0.2s'
-   },
-
    HTMLVariables: {
       // Variables
       IS_PRELOADER: false,
       IS_MAGIC_CURSOR: true,
       SITE_NAME: "My Site",
       API_URL: "https://jsonplaceholder.typicode.com/users",
-
       // Helpers
       CURRENT_YEAR: () => new Date().getFullYear(),
       RANDOM_ID: (suffix = '') => suffix + Math.random().toString(36).slice(2),
       JSON_STRINGIFY: (obj = {}) => JSON.stringify(obj),
       CLEAN_PHONE: (phone = '') => phone.replace(/(?!^)\+|[^\d+]/g, ''),
+   },
+
+   imgQuality: {
+      optimizeJpeg: true,
+      generateWebP: true,
+      webpOptions: { lossless: false, quality: 60 },
+      jpegOptions: { quality: 60, progressive: true, mozjpeg: true },
+      pngOptions: { compressionLevel: 6 },
    },
 
    templatePlugin: {
@@ -51,12 +49,13 @@ const config = {
       },
    },
 
-   imgQuality: {
-      optimizeJpeg: true,
-      generateWebP: true,
-      webpOptions: { lossless: false, quality: 60 },
-      jpegOptions: { quality: 60, progressive: true, mozjpeg: true },
-      pngOptions: { compressionLevel: 6 },
+   devNavigation: {
+      isShow: true,
+      position: 'left top',
+      color: "#ffffff",
+      background: "#292929",
+      transition: '0.3s',
+      delay: '0.2s'
    },
 
    aliases: {

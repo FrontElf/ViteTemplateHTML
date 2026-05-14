@@ -72,12 +72,12 @@ TF.menuInit()
 // ? ===============================================
 /* FEModals Popups */
 
-// import "./scripts/FEModals.js"
+import "./scripts/FEModals.js"
 
 // ? ===============================================
 /* FEMagicCursor */
 
-import './scripts/FEMagicCursor.js'
+// import './scripts/FEMagicCursor.js'
 
 // ? ===============================================
 
