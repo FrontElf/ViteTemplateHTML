@@ -1,0 +1,45 @@
+@use "@s/inc" as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 28px;
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+  transition:
+    transform var(--transition-main),
+    background-color var(--transition-main),
+    box-shadow var(--transition-main);
+
+  @media (min-width: 768px) {
+    width: auto;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(79, 70, 229, 0.24);
+  }
+
+  &--primary {
+    background-color: #6366f1;
+  }
+
+  &--link {
+    background-color: #4f46e5;
+  }
+
+  &__icon {
+    margin-left: 8px;
+    flex: 0 0 auto;
+  }
+}

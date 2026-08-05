@@ -1,21 +1,22 @@
 <!-- === Component local variables === -->
 <script define>
-   const title = 'Modern template for developing WEB interfaces based on <span data-cursor-text="VITE" class="text-indigo-500">VITE</span>'
-   const subtitle = 'Comfortable development of static pages using HTML components. Support for TailwindCSS. Image optimization, icon font and SVG sprite generation, font conversion to WOFF2.'
+   const title = 'Modern template for developing WEB interfaces based on <span data-cursor-text="VITE" class="preview-hero__highlight">VITE</span>'
+   const subtitle = 'Comfortable development of static pages using HTML components. Support for SCSS. Image optimization, icon font and SVG sprite generation, font conversion to WOFF2.'
    const buttonText = 'Documentation'
    const buttonUrl = 'https://vite-template-docs.frontelf.com/'
 </script>
 
+<link rel="stylesheet" href="@c/PreviewHero/preview-hero.scss">
 
 <!-- === Component template === -->
-<section class="bg-center min-h-screen flex items-center bg-gray-800">
-   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative text-center">
+<section class="preview-hero">
+   <div class="preview-hero__container">
 
-      <h1 class="max-w-3xl mx-auto text-center font-manrope font-bold text-3xl text-gray-100 mb-5 md:text-5xl leading-[50px]">
+      <h1 class="preview-hero__title">
          {{title || 'No title'}}
       </h1>
 
-      <p class="max-w-2xl mx-auto text-center text-base font-normal leading-7 text-gray-300 mb-9">
+      <p class="preview-hero__subtitle">
          {{subtitle}}
       </p>
       <Button btnAttrs="{'target': '_blank', 'data-test': 'value' }" variant="link" url="{{buttonUrl}}">

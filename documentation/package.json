@@ -1,15 +1,30 @@
 {
-  "name": "documentation",
+  "name": "vite-template-html-documentation",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
   "author": "FrontElf",
   "license": "MIT",
   "scripts": {
-    "start": "npx @tailwindcss/cli -i ./src/css/style.css -o ./dist/css/style.css --watch"
+    "d": "vite dev",
+    "b": "vite build",
+    "p": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.11",
-    "daisyui": "^5.0.50",
-    "tailwindcss": "^4.1.11"
+    "@davestewart/outliner": "^1.2.0",
+    "@tailwindcss/vite": "^4.1.10",
+    "acorn": "^8.15.0",
+    "chalk": "^5.4.1",
+    "cheerio": "^1.1.0",
+    "daisyui": "^5.2.2",
+    "fast-glob": "^3.3.3",
+    "postcss": "^8.5.6",
+    "postcss-pxtorem": "^6.1.0",
+    "postcss-sort-media-queries": "^5.2.0",
+    "posthtml-parser": "^0.12.1",
+    "posthtml-render": "^3.0.0",
+    "prettier": "^3.3.3",
+    "sass": "^1.89.2",
+    "vite": "^6.3.5",
+    "vite-plugin-qrcode": "^0.3.0"
   }
 }

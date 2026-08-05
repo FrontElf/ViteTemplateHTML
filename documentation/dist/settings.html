@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Налаштування проекту | ViteTemplateHTML Docs</title>
+    <script type="module" crossorigin src="./assets/js/main.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/css/main.css">
+  </head>
+
+  <body class="min-h-screen bg-base-100 text-base-content">
+    <header class="sticky top-0 z-40 border-b border-base-300 bg-base-100/95 backdrop-blur">
+      <div class="navbar mx-auto max-w-7xl px-4">
+        <div class="navbar-start">
+          <div class="dropdown">
+            <button tabindex="0" type="button" class="btn btn-ghost lg:hidden" aria-label="Open docs menu">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path>
+              </svg>
+            </button>
+            <ul tabindex="0" class="menu menu-sm dropdown-content z-50 mt-3 w-64 rounded-box bg-base-100 p-2 shadow">
+              <li>
+                <a href="index.html" class="">Головна</a>
+              </li>
+
+              <li>
+                <a href="tree.html" class="">Структура</a>
+              </li>
+
+              <li>
+                <a href="posthtml.html" class="">HTML-компоненти</a>
+              </li>
+
+              <li>
+                <a href="conditions.html" class="">Умови</a>
+              </li>
+
+              <li>
+                <a href="loop.html" class="">Цикли та JSON</a>
+              </li>
+
+              <li>
+                <a href="constants.html" class="">Змінні</a>
+              </li>
+
+              <li>
+                <a href="settings.html" class="active font-semibold">Налаштування</a>
+              </li>
+            </ul>
+          </div>
+          <a href="index.html" class="btn btn-ghost text-xl">FrontElf Docs</a>
+        </div>
+
+        <nav class="navbar-center hidden lg:flex" aria-label="Docs navigation">
+          <ul class="menu menu-horizontal px-1">
+            <li>
+              <a href="index.html" class="">Головна</a>
+            </li>
+
+            <li>
+              <a href="tree.html" class="">Структура</a>
+            </li>
+
+            <li>
+              <a href="posthtml.html" class="">HTML-компоненти</a>
+            </li>
+
+            <li>
+              <a href="conditions.html" class="">Умови</a>
+            </li>
+
+            <li>
+              <a href="loop.html" class="">Цикли та JSON</a>
+            </li>
+
+            <li>
+              <a href="constants.html" class="">Змінні</a>
+            </li>
+
+            <li>
+              <a href="settings.html" class="active font-semibold">Налаштування</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="navbar-end"></div>
+      </div>
+    </header>
+    <main class="docs-main">
+      <section class="hero border-b border-base-300 bg-base-200 py-16">
+        <div class="hero-content px-4 text-center">
+          <div class="max-w-3xl">
+            <p class="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-primary">ViteTemplateHTML</p>
+            <h1 class="text-4xl font-bold md:text-5xl">Налаштування проекту</h1>
+            <p class="mx-auto mt-5 max-w-2xl text-base opacity-75">Цей документ описує підключення та використання TailwindCSS, налаштування оптимізації зображень та стилів.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="mx-auto max-w-7xl px-4 py-10">
+        <div class="docs-content">
+          <section class="section py-10">
+            <div class="px-4 m-auto max-w-[1300px]">
+              <h2 class="text-2xl mb-6">Налаштування:</h2>
+              <h3 class="mb-4">Налаштування збірки здійснюються в файлі <span class="badge badge-md badge-neutral">template.config.js</span> в корені проекту.</h3>
+              <div class="mockup-code w-full mb-4">
+                <pre><code><span class="opacity-50">// template.config.js</span></code></pre>
+                <br />
+                <pre><code>export default {</code></pre>
+                <pre><code>   ViteTemplateHTML: true,</code></pre>
+                <pre><code>   isSessions: true,</code></pre>
+                <pre><code>   isQrcode: false,</code></pre>
+                <pre><code>   isMinify: true,</code></pre>
+                <pre><code><span class="opacity-50">   // Чи використовується PHPMailer, чи підіймати PHP сервер</span></code></pre>
+                <pre><code>   isPHPMailer: false,</code></pre>
+                <pre><code>   isInlineSprite: false,</code></pre>
+                <pre><code><span class="opacity-50">   // false | 'dev' | 'all'</span></code></pre>
+                <pre><code>   componentsTrace: 'dev',</code></pre>
+                <pre></pre>
+                <pre><code>   styles: {</code></pre>
+                <pre><code>      tailwind: true,</code></pre>
+                <pre><code>      pxToRem: true,</code></pre>
+                <pre><code>      sizeToRem: 16,</code></pre>
+                <pre><code>      sortMediaQuery: true,</code></pre>
+                <pre><code>      sortType: 'desktop-first',</code></pre>
+                <pre><code>      critical: false,</code></pre>
+                <pre><code>   },</code></pre>
+                <pre><code>   imgQuality: {</code></pre>
+                <pre><code><span class="opacity-50">      ...Налаштування оптимізації JPEG, PNG, WEBP</span></code></pre>
+                <pre><code>   },</code></pre>
+                <pre><code>   HTMLVariables: {</code></pre>
+                <pre><code><span class="opacity-50">      ...Глобальні HTML змінні</span></code></pre>
+                <pre><code>   },</code></pre>
+                <pre><code>   templatePlugin: {</code></pre>
+                <pre><code>      componentsDirectory: 'src/html/components',</code></pre>
+                <pre><code>      componentsWarning: true,</code></pre>
+                <pre><code>      componentsPath: true,</code></pre>
+                <pre><code>   },</code></pre>
+                <pre><code>   devNavigation: { isShow: true },</code></pre>
+                <pre><code>   PHPserver: {</code></pre>
+                <pre><code><span class="opacity-50">      ...Налаштування PHP сервера</span></code></pre>
+                <pre><code>   },</code></pre>
+                <pre><code>   aliases: {</code></pre>
+                <pre><code><span class="opacity-50">      ...Налаштування псевдонімів (аліасів)</span></code></pre>
+                <pre><code>   },</code></pre>
+                <pre><code>}</code></pre>
+                <br />
+              </div>
+            </div>
+          </section>
+
+          <section class="section py-10">
+            <div class="px-4 m-auto max-w-[1300px]">
+              <h2 class="text-2xl mb-6">Трасування компонентів:</h2>
+              <h3 class="mb-4">
+                Параметр <span class="badge badge-md badge-neutral">componentsTrace</span> додає HTML-коментарі навколо зрендерених компонентів, щоб у devtools було видно, з якого файлу прийшов фрагмент.
+              </h3>
+              <div class="mockup-code w-full mb-4">
+                <pre><code>componentsTrace: false <span class="opacity-50"> // вимкнено</span></code></pre>
+                <pre><code>componentsTrace: 'dev' <span class="opacity-50"> // тільки dev-режим</span></code></pre>
+                <pre><code>componentsTrace: 'all' <span class="opacity-50"> // dev і production build</span></code></pre>
+                <br />
+                <pre><code>&lt;!-- fe-component-start: Header | .../Header.html | depth:0 --&gt;</code></pre>
+                <pre><code>&lt;!-- fe-component-end: Header | .../Header.html | depth:0 --&gt;</code></pre>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

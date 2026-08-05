@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML-компоненти | ViteTemplateHTML Docs</title>
+    <script type="module" crossorigin src="./assets/js/main.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/css/main.css">
+  </head>
+
+  <body class="min-h-screen bg-base-100 text-base-content">
+    <header class="sticky top-0 z-40 border-b border-base-300 bg-base-100/95 backdrop-blur">
+      <div class="navbar mx-auto max-w-7xl px-4">
+        <div class="navbar-start">
+          <div class="dropdown">
+            <button tabindex="0" type="button" class="btn btn-ghost lg:hidden" aria-label="Open docs menu">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path>
+              </svg>
+            </button>
+            <ul tabindex="0" class="menu menu-sm dropdown-content z-50 mt-3 w-64 rounded-box bg-base-100 p-2 shadow">
+              <li>
+                <a href="index.html" class="">Головна</a>
+              </li>
+
+              <li>
+                <a href="tree.html" class="">Структура</a>
+              </li>
+
+              <li>
+                <a href="posthtml.html" class="active font-semibold">HTML-компоненти</a>
+              </li>
+
+              <li>
+                <a href="conditions.html" class="">Умови</a>
+              </li>
+
+              <li>
+                <a href="loop.html" class="">Цикли та JSON</a>
+              </li>
+
+              <li>
+                <a href="constants.html" class="">Змінні</a>
+              </li>
+
+              <li>
+                <a href="settings.html" class="">Налаштування</a>
+              </li>
+            </ul>
+          </div>
+          <a href="index.html" class="btn btn-ghost text-xl">FrontElf Docs</a>
+        </div>
+
+        <nav class="navbar-center hidden lg:flex" aria-label="Docs navigation">
+          <ul class="menu menu-horizontal px-1">
+            <li>
+              <a href="index.html" class="">Головна</a>
+            </li>
+
+            <li>
+              <a href="tree.html" class="">Структура</a>
+            </li>
+
+            <li>
+              <a href="posthtml.html" class="active font-semibold">HTML-компоненти</a>
+            </li>
+
+            <li>
+              <a href="conditions.html" class="">Умови</a>
+            </li>
+
+            <li>
+              <a href="loop.html" class="">Цикли та JSON</a>
+            </li>
+
+            <li>
+              <a href="constants.html" class="">Змінні</a>
+            </li>
+
+            <li>
+              <a href="settings.html" class="">Налаштування</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="navbar-end"></div>
+      </div>
+    </header>
+    <main class="docs-main">
+      <section class="hero border-b border-base-300 bg-base-200 py-16">
+        <div class="hero-content px-4 text-center">
+          <div class="max-w-3xl">
+            <p class="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-primary">ViteTemplateHTML</p>
+            <h1 class="text-4xl font-bold md:text-5xl">HTML-компоненти</h1>
+            <p class="mx-auto mt-5 max-w-2xl text-base opacity-75">Цей документ описує підключення компонентів, передачу параметрів, вивід контенту.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="mx-auto max-w-7xl px-4 py-10">
+        <div class="docs-content">
+          <section class="section py-10">
+            <div class="px-4 m-auto max-w-[1300px]">
+              <h2 class="text-2xl mb-6">Підключення компонента:</h2>
+              <h3 class="mb-4">Тег компонента є назвою html файлу компонента</h3>
+              <div class="mockup-code w-full mb-4">
+                <pre><code>src/html/components/Header/Header.html</code></pre>
+                <br />
+                <pre><code>&lt;Header/&gt;</code></pre>
+              </div>
+
+              <h3 class="mb-4">Просте підключення (без передачі контента або параметрів):</h3>
+              <div class="mockup-code w-full mb-4">
+                <pre><code>&lt;Header/&gt;</code></pre>
+              </div>
+
+              <h3 class="mb-4">Передавання пропсів (параметрів):</h3>
+              <div class="mockup-code w-full mb-4">
+                <pre><code>&lt;Header title="Заголовок" isLogo="true"/&gt;</code></pre>
+              </div>
+
+              <h3 class="mb-4">
+                Звичайні пропси доступні тільки в компоненті, у який їх передали. Якщо параметр треба прокинути в дочірні компоненти, використовуйте префікс <span class="badge badge-md badge-neutral">deep:</span>.
+              </h3>
+              <div class="mockup-code w-full mb-4">
+                <pre><code>&lt;Card label="Visible only inside Card" /&gt;</code></pre>
+                <pre><code>&lt;Card deep:label="Visible inside nested components" /&gt;</code></pre>
+              </div>
+
+              <h3 class="mb-4">Передавання контенту (будь що, текст, інші компоненти, html):</h3>
+              <h3 class="mb-4">Переданий контент буде доступний в компоненті в змінній <span class="badge badge-md badge-neutral">&#123;&#123;children&#125;&#125;</span></h3>
+              <div class="mockup-code w-full mb-4">
+                <pre><code>&lt;Button type="link" isActive="true"&gt;Button&lt;/Button&gt;</code></pre>
+                <br />
+                <pre><code>&lt;Button type="link" isActive="true"&gt;</code></pre>
+                <pre><code>   &lt;span&gt;Button text&lt;/span&gt;</code></pre>
+                <pre><code>   &lt;Icon name="arrow-right" /&gt;</code></pre>
+                <pre><code>&lt;/Button&gt;</code></pre>
+                <br />
+                <pre><code>&lt;Header className="header"&gt;</code></pre>
+                <pre><code>   &lt;NavMenu activeLink="1"/&gt;</code></pre>
+                <pre><code>&lt;/Header&gt;</code></pre>
+              </div>
+            </div>
+          </section>
+
+          <section class="section py-10">
+            <div class="px-4 m-auto max-w-[1300px]">
+              <h2 class="text-2xl mb-6">Named slots:</h2>
+              <h3 class="mb-4">
+                Контент без <span class="badge badge-md badge-neutral">&lt;template slot="..."&gt;</span> потрапляє в <span class="badge badge-md badge-neutral">&#123;&#123;children&#125;&#125;</span>. Іменовані блоки
+                передаються через <span class="badge badge-md badge-neutral">&lt;template slot="name"&gt;</span>, а в компоненті рендеряться через
+                <span class="badge badge-md badge-neutral">&lt;slot name="name"&gt;</span>.
+              </h3>
+
+              <div class="mockup-code w-full mb-4">
+                <pre><code><span class="opacity-50">// Виклик компонента</span></code></pre>
+                <pre><code>&lt;Card title="Named slots"&gt;</code></pre>
+                <pre><code>   &lt;template slot="actions"&gt;</code></pre>
+                <pre><code>      &lt;Button&gt;Save&lt;/Button&gt;</code></pre>
+                <pre><code>   &lt;/template&gt;</code></pre>
+                <pre><code></code></pre>
+                <pre><code>   &lt;p&gt;Default body content&lt;/p&gt;</code></pre>
+                <pre><code></code></pre>
+                <pre><code>   &lt;template slot="footer"&gt;</code></pre>
+                <pre><code>      Footer content</code></pre>
+                <pre><code>   &lt;/template&gt;</code></pre>
+                <pre><code>&lt;/Card&gt;</code></pre>
+                <br />
+                <pre><code><span class="opacity-50">// Card.html</span></code></pre>
+                <pre><code>&lt;article class="card"&gt;</code></pre>
+                <pre><code>   &lt;header&gt;</code></pre>
+                <pre><code>      &lt;h2&gt;&#123;&#123;title&#125;&#125;&lt;/h2&gt;</code></pre>
+                <pre><code>      &lt;slot name="actions"&gt;&lt;/slot&gt;</code></pre>
+                <pre><code>   &lt;/header&gt;</code></pre>
+                <pre><code>   &lt;div&gt;&#123;&#123;children&#125;&#125;&lt;/div&gt;</code></pre>
+                <pre><code>   &lt;footer&gt;</code></pre>
+                <pre><code>      &lt;slot name="footer"&gt;</code></pre>
+                <pre><code>         Default footer</code></pre>
+                <pre><code>      &lt;/slot&gt;</code></pre>
+                <pre><code>   &lt;/footer&gt;</code></pre>
+                <pre><code>&lt;/article&gt;</code></pre>
+              </div>
+              <p class="mb-4">
+                Об'єкт <span class="badge badge-md badge-neutral">slots</span> також доступний у виразах як <span class="badge badge-md badge-neutral">&#123;&#123;slots.footer&#125;&#125;</span>, але для звичайного
+                рендера з fallback зручніше використовувати тег <span class="badge badge-md badge-neutral">&lt;slot&gt;</span>.
+              </p>
+            </div>
+          </section>
+
+          <section class="section py-10">
+            <div class="px-4 m-auto max-w-[1300px]">
+              <h2 class="text-2xl mb-6">Компоненти з namespace:</h2>
+              <h3 class="mb-4">Компонент можна викликати за назвою файлу або через шлях від папки компонентів. Namespace корисний, коли в різних папках є компоненти з однаковим basename.</h3>
+
+              <div class="mockup-code w-full mb-4">
+                <pre><code>src/html/components/UI/Button/Button.html</code></pre>
+                <pre><code>src/html/components/Forms/Button/Button.html</code></pre>
+                <br />
+                <pre><code>&lt;UI.Button&gt;UI button&lt;/UI.Button&gt;</code></pre>
+                <pre><code>&lt;Forms.Button&gt;Form button&lt;/Forms.Button&gt;</code></pre>
+                <br />
+                <pre><code><span class="opacity-50">// Якщо basename унікальний, старий синтаксис теж працює:</span></code></pre>
+                <pre><code>&lt;Header /&gt;</code></pre>
+              </div>
+            </div>
+          </section>
+
+          <section class="section py-10">
+            <div class="px-4 m-auto max-w-[1300px]">
+              <h2 class="text-2xl mb-6">Icon component:</h2>
+              <h3 class="mb-4">
+                Компонент <span class="badge badge-md badge-neutral">&lt;Icon /&gt;</span> рендерить іконку з icon font. Значення <span class="badge badge-md badge-neutral">name</span> мапиться на CSS-клас
+                <span class="badge badge-md badge-neutral">_icon-name</span>.
+              </h3>
+
+              <div class="mockup-code w-full mb-4">
+                <pre><code><span class="opacity-50">// fonts-converter/icons/arrow-right.svg -> ._icon-arrow-right</span></code></pre>
+                <pre><code>&lt;Icon name="arrow-right" /&gt;</code></pre>
+                <pre><code>&lt;Icon name="phone" class="text-primary" /&gt;</code></pre>
+                <pre><code>&lt;UI.Icon name="phone" class="text-xl" label="Phone" /&gt;</code></pre>
+                <br />
+                <pre><code><span class="opacity-50">// Dynamic attrs також підтримуються</span></code></pre>
+                <pre><code>&lt;Icon name="arrow-right" iconAttrs="&#123; 'data-icon': 'arrow-right' &#125;" /&gt;</code></pre>
+              </div>
+
+              <p class="mb-4">
+                Якщо <span class="badge badge-md badge-neutral">label</span> не передано, іконка виводиться як декоративна з <span class="badge badge-md badge-neutral">aria-hidden="true"</span>. Для доступної іконки
+                передайте <span class="badge badge-md badge-neutral">label</span>.
+              </p>
+            </div>
+          </section>
+
+          <section class="section py-10">
+            <div class="px-4 m-auto max-w-[1300px]">
+              <h2 class="text-2xl mb-6">Використання параметрів що передаються через пропси:</h2>
+
+              <div class="mockup-code w-full mb-4">
+                <pre><code><span class="opacity-50">// src/html/components/Button/Button.html</span></code></pre>
+                <br />
+                <pre><code>&lt;button type="button" &#123;&#123;isActive != "true" ? "disabled" : ''&#125;&#125;&gt;</code></pre>
+                <pre><code>  &#123;&#123;children&#125;&#125;</code></pre>
+                <pre><code>&lt;/button&gt;</code></pre>
+                <br />
+                <pre><code>&lt;header class="&#123;&#123;className&#125;&#125;"&gt;</code></pre>
+                <pre><code>  &#123;&#123;children&#125;&#125;</code></pre>
+                <pre><code>&lt;/header&gt;</code></pre>
+              </div>
+            </div>
+          </section>
+
+          <section class="section py-10">
+            <div class="px-4 m-auto max-w-[1300px]">
+              <h2 class="text-2xl mb-6">Локальні змінні компонента:</h2>
+
+              <h3 class="mb-4">Блок <span class="badge badge-md badge-neutral">&lt;script define&gt;</span> створює змінні тільки для поточного компонента. Вкладені компоненти не бачать ці змінні автоматично.</h3>
+              <div class="mockup-code w-full mb-4">
+                <pre><code><span class="opacity-50">// ParentCard.html</span></code></pre>
+                <pre><code>&lt;script define&gt;</code></pre>
+                <pre><code>   const title = propsTitle || 'Default title'</code></pre>
+                <pre><code>&lt;/script&gt;</code></pre>
+                <pre><code></code></pre>
+                <pre><code>&lt;h2&gt;&#123;&#123;title&#125;&#125;&lt;/h2&gt;</code></pre>
+                <pre><code>&lt;ChildCard /&gt;</code></pre>
+              </div>
+
+              <h3 class="mb-4">Якщо дочірньому компоненту потрібне це значення, передайте його явно через prop або через <span class="badge badge-md badge-neutral">deep:</span>.</h3>
+              <div class="mockup-code w-full mb-4">
+                <pre><code>&lt;ChildCard title="&#123;&#123;title&#125;&#125;" /&gt;</code></pre>
+                <pre><code>&lt;ChildCard deep:title="&#123;&#123;title&#125;&#125;" /&gt;</code></pre>
+              </div>
+            </div>
+          </section>
+
+          <section class="section py-10">
+            <div class="px-4 m-auto max-w-[1300px]">
+              <h2 class="text-2xl mb-6">Безпечний доступ до пропсів та глобальні об'єкти:</h2>
+
+              <h3 class="mb-4">Безпечний доступ (Safe Access)</h3>
+              <p class="mb-4">
+                Якщо змінна не передана в компонент, вона повертає <span class="badge badge-md badge-neutral">undefined</span> замість помилки. Це дозволяє використовувати значення за замовчуванням через оператор
+                <code>||</code>.
+              </p>
+              <div class="mockup-code w-full mb-4">
+                <pre><code><span class="opacity-50">// Якщо title не передано, виведеться 'Default Title'</span></code></pre>
+                <pre><code>&lt;h1&gt;&#123;&#123; title || 'Default Title' &#125;&#125;&lt;/h1&gt;</code></pre>
+              </div>
+
+              <h3 class="mb-4">Глобальні об'єкти (Math, JSON, etc.)</h3>
+              <p class="mb-4">У виразах доступні стандартні глобальні об'єкти JavaScript.</p>
+              <div class="mockup-code w-full mb-4">
+                <pre><code><span class="opacity-50">// Використання Math</span></code></pre>
+                <pre><code>&lt;div class="width-&#123;&#123; Math.round(width) &#125;&#125;"&gt;&lt;/div&gt;</code></pre>
+                <br />
+                <pre><code><span class="opacity-50">// Використання JSON</span></code></pre>
+                <pre><code>&lt;div data-config="&#123;&#123; JSON.stringify(config) &#125;&#125;"&gt;&lt;/div&gt;</code></pre>
+              </div>
+
+              <h3 class="mb-4">Складні вирази</h3>
+              <p class="mb-4">
+                Інтерполяція <span class="badge badge-md badge-neutral">&#123;&#123;...&#125;&#125;</span> підтримує вкладені <code>{}</code>, <code>[]</code>, <code>()</code>, рядки, template literals і регулярні вирази
+                всередині JS-виразу.
+              </p>
+              <div class="mockup-code w-full mb-4">
+                <pre><code>&lt;title&gt;&#123;&#123;title ? `${title} | ${SITE_NAME}` : SITE_NAME&#125;&#125;&lt;/title&gt;</code></pre>
+                <pre><code>&lt;div data-config='&#123;&#123;JSON.stringify({ title, options: { theme: "dark" } })&#125;&#125;'&gt;&lt;/div&gt;</code></pre>
+                <pre><code>&lt;p&gt;&#123;&#123;/\d{2,4}/.test(code) ? 'Valid' : 'Invalid'&#125;&#125;&lt;/p&gt;</code></pre>
+              </div>
+            </div>
+          </section>
+
+          <section class="section py-10">
+            <div class="px-4 m-auto max-w-[1300px]">
+              <h2 class="text-2xl mb-6">Динамічні атрибути:</h2>
+              <h3 class="mb-4">Спеціальний пропс <span class="badge badge-md badge-neutral">attributes</span> дозволяє передати об'єкт атрибутів, які будуть розгорнуті на кореневому елементі компонента.</h3>
+
+              <div class="mockup-code w-full mb-4">
+                <pre><code>&lt;Button attributes="&#123;&#123; { id: 'btn-1', 'data-type': 'primary' } &#125;&#125;"&gt;Click&lt;/Button&gt;</code></pre>
+                <br />
+                <pre><code><span class="opacity-50">// Результат:</span></code></pre>
+                <pre><code>&lt;button id="btn-1" data-type="primary"&gt;Click&lt;/button&gt;</code></pre>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

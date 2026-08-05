@@ -1,0 +1,55 @@
+@use "@s/inc" as *;
+
+.preview-hero {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  align-items: center;
+  background-color: #1f2937;
+  background-position: center;
+  color: #f3f4f6;
+
+  &__container {
+    position: relative;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 16px;
+    text-align: center;
+
+    @media (min-width: 640px) {
+      padding: 0 24px;
+    }
+
+    @media (min-width: 1024px) {
+      padding: 0 32px;
+    }
+  }
+
+  &__title {
+    max-width: 768px;
+    margin: 0 auto 20px;
+    color: #f3f4f6;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.15;
+
+    @media (min-width: 768px) {
+      font-size: 48px;
+      line-height: 1.05;
+    }
+  }
+
+  &__highlight {
+    color: #6366f1;
+  }
+
+  &__subtitle {
+    max-width: 672px;
+    margin: 0 auto 36px;
+    color: #d1d5db;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.75;
+  }
+}

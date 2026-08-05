@@ -17,6 +17,7 @@
     "coffee": "node ./template_plugins/coffee.js"
   },
   "dependencies": {
+    "acorn": "^8.15.0",
     "@davestewart/outliner": "^1.2.0",
     "cheerio": "^1.1.0",
     "daisyui": "^5.2.2",

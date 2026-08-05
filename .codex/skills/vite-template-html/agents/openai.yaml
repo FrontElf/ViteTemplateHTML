@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vite Template HTML"
+  short_description: "Work with FrontElf Vite HTML components"
+  default_prompt: "Use $vite-template-html to modify this static site template with its HTML component syntax."

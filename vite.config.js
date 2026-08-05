@@ -10,6 +10,27 @@ const isProduction = process.env.NODE_ENV === 'production'
 const ignoredDirs = ['vendor', 'node_modules', 'template_plugins', 'dist', '.git', 'documentation', 'fonts-converter']
 const ignoredFiles = ['package.json', 'yarn.lock', 'snippets.json', 'README.md']
 
+function debouncedFullReloadPlugin() {
+  let reloadTimer = null
+
+  return {
+    name: 'custom-hmr',
+    enforce: 'post',
+    handleHotUpdate({ file, server }) {
+      if (!file.endsWith('.html') && !file.endsWith('.json')) return
+
+      if (reloadTimer) {
+        clearTimeout(reloadTimer)
+      }
+
+      reloadTimer = setTimeout(() => {
+        reloadTimer = null
+        server.ws.send({ type: 'full-reload', path: '*' })
+      }, 100)
+    },
+  }
+}
+
 export default defineConfig({
   root: rootDir,
   base: '',
@@ -18,6 +39,7 @@ export default defineConfig({
     // HTML Composer
     modules.htmlComposer({
       aliases: templateConfig.aliases || {},
+      componentsTrace: templateConfig.componentsTrace || false,
       HTMLVariables: {
         IS_DEV: !isProduction,
         IS_TAILWIND: templateConfig.styles.tailwind,
@@ -26,15 +48,7 @@ export default defineConfig({
       }
     }),
 
-    {
-      name: 'custom-hmr',
-      enforce: 'post',
-      handleHotUpdate({ file, server }) {
-        if (file.endsWith('.html') || file.endsWith('.json')) {
-          server.ws.send({ type: 'full-reload', path: '*' })
-        }
-      },
-    },
+    debouncedFullReloadPlugin(),
 
     // QR Code generator
     ...((templateConfig.isQrcode) ? [modules.qrcode()] : []),

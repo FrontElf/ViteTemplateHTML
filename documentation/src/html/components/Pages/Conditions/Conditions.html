@@ -1,0 +1,62 @@
+<Docs.DocsPage title="Умови та умовні вирази в HTML-компонентах" description="Цей документ описує використання в компонентах умов та умовних виразів в залежності від переданих параметрів.">
+<section class="section py-10 ">
+            <div class="px-4 m-auto max-w-[1300px]">
+               <h2 class="text-2xl mb-6">Використання умовного виразу:</h2>
+
+               <h3 class="mb-4">Використання тернарних операторів</h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;button type="button" &#123;&#123;isActive != "true" ? "disabled" : ''&#125;&#125;&gt;</code></pre>
+                  <pre><code>   &lt;Content/&gt;</code></pre>
+                  <pre><code>&lt;/button&gt;</code></pre>
+                  <br>
+                  <pre><code>&lt;header class="&#123;&#123;isActive ? 'active-class' : ''&#125;&#125;"&gt;</code></pre>
+                  <pre><code>   &lt;Content/&gt;</code></pre>
+                  <pre><code>&lt;/header&gt;</code></pre>
+               </div>
+
+               <h3 class="mb-4">Використання блоку <span class="badge badge-md badge-neutral">if / elseif / else</span></h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code><span class="opacity-50">// src/html/components/Button/Button.html</span></code></pre>
+                  <br>
+                  <pre><code>&lt;if condition="elementType == 'button'"&gt;</code></pre>
+                  <pre><code>   &lt;button type="button"&gt;</code></pre>
+                  <pre><code>      &lt;Content/&gt;</code></pre>
+                  <pre><code>   &lt;/button&gt;</code></pre>
+                  <pre><code>&lt;/if&gt;</code></pre>
+                  <pre><code>&lt;elseif condition="elementType == 'link'"&gt;</code></pre>
+                  <pre><code>   &lt;a href="&#123;&#123;url&#125;&#125;" target="_blank"&gt;</code></pre>
+                  <pre><code>      &lt;Content/&gt;</code></pre>
+                  <pre><code>   &lt;/a&gt;</code></pre>
+                  <pre><code>&lt;/elseif&gt;</code></pre>
+                  <pre><code>&lt;else&gt;</code></pre>
+                  <pre><code>   Не обовязковий блок, але можна використовувати</code></pre>
+                  <pre><code>&lt;/else&gt;</code></pre>
+                  <br>
+               </div>
+
+               <div class="mockup-code w-full mb-4">
+                  <pre><code><span class="opacity-50">// src/html/components/Hero/Hero.html</span></code></pre>
+                  <br>
+                  <pre><code>&lt;section class="hero"&gt;</code></pre>
+                  <pre><code>   &lt;if condition="titleText"&gt;</code></pre>
+                  <pre><code>      &lt;h1 class="hero__title"&gt;&#123;&#123;titleText&#125;&#125;&lt;/h1&gt;</code></pre>
+                  <pre><code>   &lt;/if&gt;</code></pre>
+                  <pre><code>   &lt;Content/&gt;</code></pre>
+                  <pre><code>&lt;/section&gt;</code></pre>
+               </div>
+               <h3 class="mb-4">Vue-style синтаксис (<span class="badge badge-md badge-neutral">v-if</span>)</h3>
+               <p class="mb-4">Альтернативний синтаксис, схожий на Vue.js. Працює як атрибут на будь-якому тегу.</p>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;div v-if="isActive"&gt;</code></pre>
+                  <pre><code>   Активний контент</code></pre>
+                  <pre><code>&lt;/div&gt;</code></pre>
+               </div>
+
+               <h3 class="mb-4">Умовні атрибути</h3>
+               <p class="mb-4">Якщо вираз повертає <span class="badge badge-md badge-neutral">false</span>, <span class="badge badge-md badge-neutral">null</span> або <span class="badge badge-md badge-neutral">undefined</span>, атрибут не буде виведений. Значення <span class="badge badge-md badge-neutral">true</span> виводить boolean-атрибут без значення.</p>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;button disabled="&#123;&#123;isDisabled&#125;&#125;"&gt;Save&lt;/button&gt;</code></pre>
+                  <pre><code>&lt;input required="&#123;&#123;isRequired&#125;&#125;" /&gt;</code></pre>
+               </div>
+         </div></section>
+</Docs.DocsPage>

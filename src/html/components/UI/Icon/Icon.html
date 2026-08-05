@@ -1,0 +1,11 @@
+<script define>
+   const rawName = String(name || icon || '').trim()
+   const iconName = rawName.replace(/^_?icon-/, '')
+   const iconClass = rawName.startsWith('_icon-') ? rawName : `_icon-${iconName}`
+   const extraClass = props.class || className || ''
+   const accessibilityAttrs = label
+      ? { role: 'img', 'aria-label': label }
+      : { 'aria-hidden': hidden === false ? 'false' : 'true' }
+</script>
+
+<i v-if="rawName" {{iconAttrs}} {{accessibilityAttrs}} class="{{iconClass}} {{extraClass}}"></i>

@@ -16,24 +16,12 @@
 
 
 :root {
---_icon-email: "\ea01";
---_icon-facebook: "\ea02";
---_icon-instagram: "\ea03";
---_icon-phone: "\ea04";
---_icon-region: "\ea05";
---_icon-star: "\ea06";
+--_icon-Group: "\f0000";
+--_icon-Vector: "\f0001";
 }
-._icon-email::before { content: var(--_icon-email); }
-._icon-facebook::before { content: var(--_icon-facebook); }
-._icon-instagram::before { content: var(--_icon-instagram); }
-._icon-phone::before { content: var(--_icon-phone); }
-._icon-region::before { content: var(--_icon-region); }
-._icon-star::before { content: var(--_icon-star); }
+._icon-Group::before { content: var(--_icon-Group); }
+._icon-Vector::before { content: var(--_icon-Vector); }
 
 
-$_icon-email: '\ea01';
-$_icon-facebook: '\ea02';
-$_icon-instagram: '\ea03';
-$_icon-phone: '\ea04';
-$_icon-region: '\ea05';
-$_icon-star: '\ea06';
+$_icon-Group: '\f0000';
+$_icon-Vector: '\f0001';

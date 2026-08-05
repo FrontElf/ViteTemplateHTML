@@ -6,9 +6,10 @@ const config = {
    isMinify: true,
    isPHPMailer: false,
    isInlineSprite: false,
+   componentsTrace: 'dev', // false | 'dev' | 'all'
 
    styles: {
-      tailwind: true,
+      tailwind: false,
       pxToRem: true,
       sizeToRem: 16,
       sortMediaQuery: true,

@@ -15,9 +15,18 @@ templating-review-result.md
 .claude
 node_modules
 dist
+!documentation/dist/
+!documentation/dist/**
 package-lock.json
 dist-ssr
 *.local
+
+# Documentation generated/runtime files
+documentation/node_modules/
+documentation/.vite/
+documentation/.cache/
+documentation/template_plugins/sessions/
+documentation/template_plugins/**/.DS_Store
 
 # Editor directories and files
 .idea

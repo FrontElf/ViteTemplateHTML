@@ -1,18 +1,18 @@
-<!-- <link rel="stylesheet" href="@ui/Button/button.scss"> -->
+<link rel="stylesheet" href="@ui/Button/button.scss">
 
 <script define>
-   const buttonSvg = `<svg class="ml-2" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+   const buttonSvg = `<svg class="button__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M7.5 15L11.0858 11.4142C11.7525 10.7475 12.0858 10.4142 12.0858 10C12.0858 9.58579 11.7525 9.25245 11.0858 8.58579L7.5 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
    </svg>`
 </script>
 
 <!-- === Component template === -->
-<button v-if="variant === 'button'" type="button" {{btnAttrs}} class="magnetic-item w-full md:w-auto inline-flex items-center justify-center py-3 px-7 text-base font-semibold text-center text-white rounded-full bg-indigo-500 shadow-xs">
+<button v-if="variant === 'button'" type="button" {{btnAttrs}} class="button button--primary magnetic-item">
    {{children}}
    {{buttonSvg}}
 </button>
 
-<a v-if="variant === 'link'" href="{{url}}" {{btnAttrs}} class="magnetic-item w-full md:w-auto inline-flex items-center justify-center py-3 px-7 text-base font-semibold text-center text-white rounded-full bg-indigo-600 shadow-xs">
+<a v-if="variant === 'link'" href="{{url}}" {{btnAttrs}} class="button button--link magnetic-item">
    {{children}}
    {{buttonSvg}}
 </a>

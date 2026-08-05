@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Локальні та глобальні змінні | ViteTemplateHTML Docs</title>
+    <script type="module" crossorigin src="./assets/js/main.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/css/main.css">
+  </head>
+
+  <body class="min-h-screen bg-base-100 text-base-content">
+    <header class="sticky top-0 z-40 border-b border-base-300 bg-base-100/95 backdrop-blur">
+      <div class="navbar mx-auto max-w-7xl px-4">
+        <div class="navbar-start">
+          <div class="dropdown">
+            <button tabindex="0" type="button" class="btn btn-ghost lg:hidden" aria-label="Open docs menu">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path>
+              </svg>
+            </button>
+            <ul tabindex="0" class="menu menu-sm dropdown-content z-50 mt-3 w-64 rounded-box bg-base-100 p-2 shadow">
+              <li>
+                <a href="index.html" class="">Головна</a>
+              </li>
+
+              <li>
+                <a href="tree.html" class="">Структура</a>
+              </li>
+
+              <li>
+                <a href="posthtml.html" class="">HTML-компоненти</a>
+              </li>
+
+              <li>
+                <a href="conditions.html" class="">Умови</a>
+              </li>
+
+              <li>
+                <a href="loop.html" class="">Цикли та JSON</a>
+              </li>
+
+              <li>
+                <a href="constants.html" class="active font-semibold">Змінні</a>
+              </li>
+
+              <li>
+                <a href="settings.html" class="">Налаштування</a>
+              </li>
+            </ul>
+          </div>
+          <a href="index.html" class="btn btn-ghost text-xl">FrontElf Docs</a>
+        </div>
+
+        <nav class="navbar-center hidden lg:flex" aria-label="Docs navigation">
+          <ul class="menu menu-horizontal px-1">
+            <li>
+              <a href="index.html" class="">Головна</a>
+            </li>
+
+            <li>
+              <a href="tree.html" class="">Структура</a>
+            </li>
+
+            <li>
+              <a href="posthtml.html" class="">HTML-компоненти</a>
+            </li>
+
+            <li>
+              <a href="conditions.html" class="">Умови</a>
+            </li>
+
+            <li>
+              <a href="loop.html" class="">Цикли та JSON</a>
+            </li>
+
+            <li>
+              <a href="constants.html" class="active font-semibold">Змінні</a>
+            </li>
+
+            <li>
+              <a href="settings.html" class="">Налаштування</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="navbar-end"></div>
+      </div>
+    </header>
+    <main class="docs-main">
+      <section class="hero border-b border-base-300 bg-base-200 py-16">
+        <div class="hero-content px-4 text-center">
+          <div class="max-w-3xl">
+            <p class="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-primary">ViteTemplateHTML</p>
+            <h1 class="text-4xl font-bold md:text-5xl">Локальні та глобальні змінні</h1>
+            <p class="mx-auto mt-5 max-w-2xl text-base opacity-75">Цей документ описує використання локальних змінних в HTML-компонентах та глобальних змінних в проекті.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="mx-auto max-w-7xl px-4 py-10">
+        <div class="docs-content">
+          <section class="section py-10">
+            <div class="px-4 m-auto max-w-[1300px]">
+              <h2 class="text-2xl mb-6">Глобальні змінні:</h2>
+              <h3 class="mb-4">
+                Глобальні змінні вказуються в файлі <span class="badge badge-md badge-neutral">template.config.js</span> в корені проекту, в обєкті <span class="badge badge-md badge-neutral">HTMLVariables: {}</span>:
+              </h3>
+              <h3 class="mb-4">
+                У поточній збірці глобальні HTML-змінні й helper-функції задаються в <span class="badge badge-md badge-neutral">HTMLVariables</span> і доступні в будь-якому компоненті як звичайні пропси.
+              </h3>
+              <div class="mockup-code w-full mb-4">
+                <pre><code><span class="opacity-50">// template.config.js</span></code></pre>
+                <br />
+                <pre><code>export default {</code></pre>
+                <pre><code>   ...</code></pre>
+                <pre><code>   HTMLVariables {</code></pre>
+                <pre><code>      SITE_NAME: 'My Site',</code></pre>
+                <pre><code>      API_URL: 'https://jsonplaceholder.typicode.com/users',</code></pre>
+                <pre><code>      CURRENT_YEAR: () =&gt; new Date().getFullYear(),</code></pre>
+                <pre><code>      CLEAN_PHONE: (phone = '') =&gt; phone.replace(/(?!^)\+|[^\d+]/g, ''),</code></pre>
+                <pre><code>   }</code></pre>
+                <pre><code>   ...</code></pre>
+                <pre><code>}</code></pre>
+                <br />
+                <pre><code><span class="opacity-50">// Використання в будь-якому місці проекту як звичайних пропсів</span></code></pre>
+                <br />
+                <pre><code>&lt;head&gt;</code></pre>
+                <pre><code>   &lt;title&gt;&#123;&#123;SITE_NAME&#125;&#125;&lt;/title&gt;</code></pre>
+                <pre><code>&lt;/head&gt;</code></pre>
+                <br />
+                <pre><code>&lt;each data="&#123;&#123;API_URL&#125;&#125;" loop="user, index in data"&gt;</code></pre>
+                <pre><code>   &lt;div class="user-card"&gt;</code></pre>
+                <pre><code>      &lt;h2&gt;&#123;&#123;user.name&#125;&#125;&lt;/h2&gt;</code></pre>
+                <pre><code>      &lt;p&gt;&#123;&#123;user.username&#125;&#125;&lt;/p&gt;</code></pre>
+                <pre><code>      &lt;p&gt;&#123;&#123;user.address.street&#125;&#125;&lt;/p&gt;</code></pre>
+                <pre><code>      &lt;p&gt;&#123;&#123;user.email&#125;&#125;&lt;/p&gt;</code></pre>
+                <pre><code>   &lt;/div&gt;</code></pre>
+                <pre><code>&lt;/each&gt;</code></pre>
+              </div>
+            </div>
+          </section>
+
+          <section class="section py-10">
+            <div class="px-4 m-auto max-w-[1300px]">
+              <h2 class="text-2xl mb-6">Локальні змінні:</h2>
+              <h3 class="mb-4">Локальні змінні вказуються в верхній частині файлу компонента в тегу<span class="badge badge-md badge-neutral">&lt;script define&gt;&lt;/script&gt;</span> як звичайні JS змінні.</h3>
+              <h3 class="mb-4">Також локальні змінні можна передавати пропсами в любий компонент що викликається в середині цього компонента.</h3>
+              <div class="mockup-code w-full mb-4">
+                <pre><code><span class="opacity-50">// template.config.js</span></code></pre>
+                <br />
+                <pre><code>&lt;script define&gt;</code></pre>
+                <pre><code>    const title = 'The Smartest Way to Do Laundry'</code></pre>
+                <pre><code>    const logo = '@i/logo.svg'</code></pre>
+                <pre><code>    const subTitle = 'DipDap picks up, cleans, and delivers your laundry &amp; dry cleaning.'</code></pre>
+                <pre><code>    const contacts = {</code></pre>
+                <pre><code>       phone: '(800) 555-1212',</code></pre>
+                <pre><code>       email: 'text@gmail.com',</code></pre>
+                <pre><code>    }</code></pre>
+                <pre><code>&lt;/script&gt;</code></pre>
+                <br />
+                <pre><code>&lt;div class="product-card"&gt;</code></pre>
+                <pre><code>    &lt;img src="&#123;&#123;logo&#125;&#125;" alt="&#123;&#123;title&#125;&#125;"/&gt;</code></pre>
+                <pre><code>    &lt;h2&gt;&#123;&#123;title&#125;&#125;&lt;/h2&gt;</code></pre>
+                <pre><code>    &lt;p&gt;&#123;&#123;subTitle&#125;&#125;&lt;/p&gt;</code></pre>
+                <pre><code>    &lt;ul&gt;</code></pre>
+                <pre><code>       &lt;li&gt;&#123;&#123;contacts.phone&#125;&#125;&lt;/li&gt;</code></pre>
+                <pre><code>       &lt;li&gt;&#123;&#123;contacts.email&#125;&#125;&lt;/li&gt;</code></pre>
+                <pre><code>    &lt;/ul&gt;</code></pre>
+                <pre><code>&lt;/div&gt;</code></pre>
+              </div>
+
+              <h3 class="mb-4">Destructuring у <span class="badge badge-md badge-neutral">&lt;script define&gt;</span></h3>
+              <p class="mb-4">Змінні зі звичайних декларацій, object destructuring, array destructuring і rest-патернів підхоплюються через AST-парсер.</p>
+              <div class="mockup-code w-full mb-4">
+                <pre><code>&lt;script define&gt;</code></pre>
+                <pre><code>   const { title, image: heroImage } = card</code></pre>
+                <pre><code>   const [firstItem, secondItem] = items</code></pre>
+                <pre><code>   const { className = 'card', ...rest } = props</code></pre>
+                <pre><code>&lt;/script&gt;</code></pre>
+                <pre><code>&lt;article class="&#123;&#123;className&#125;&#125;"&gt;&#123;&#123;title&#125;&#125;&lt;/article&gt;</code></pre>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

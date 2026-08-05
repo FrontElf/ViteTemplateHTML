@@ -1,0 +1,110 @@
+<Docs.DocsPage title="Цикли з масивами, Json файлами та API" description="Цей документ описує підключення компонентів в циклах, ввивід контенту з json файлу, API та масиву.">
+<section class="section py-10 ">
+            <div class="px-4 m-auto max-w-[1300px]">
+               <h2 class="text-2xl mb-6">Використання контенту з json:</h2>
+
+               <h3 class="mb-4">Файли json з данними розміщуються у папці <span class="badge badge-md badge-neutral">src/data/*.json</span>, в циклі вказується лише назва файлу.</h3>
+               <h3 class="mb-4">Данні елемента доступні в ключі який йде першим в <span class="badge badge-md badge-neutral">loop="ключ_елемента, index in data"</span>.</h3>
+               <h3 class="mb-4">Також доступні для використання параметри <span class="badge badge-md badge-neutral">index</span> та <span class="badge badge-md badge-neutral">length</span>.</h3>
+               <div class="mockup-code w-full mb-6">
+                  <pre><code><span class="opacity-50">// src/html/components/Products/Products.html</span></code></pre>
+                  <pre><code><span class="opacity-50">// src/data/products.json</span></code></pre>
+                  <br>
+                  <pre><code>&lt;each data="products.json" loop="product, index in data"&gt;</code></pre>
+                  <pre><code>   &lt;ProductCard product="&#123;&#123;product&#125;&#125;" index="&#123;&#123;index&#125;&#125;"/&gt;</code></pre>
+                  <pre><code>&lt;/each&gt;</code></pre>
+                  <br>
+                  <br>
+                  <pre><code><span class="opacity-50">або</span></code></pre>
+                  <br>
+                  <pre><code>&lt;each data="products.json" loop="product, index in data"&gt;</code></pre>
+                  <pre><code>   &lt;div class="product-card"&gt;</code></pre>
+                  <pre><code>      &lt;span&gt;&#123;&#123;index + 1&#125;&#125;:&lt;/span&gt;</code></pre>
+                  <pre><code>      &lt;img src="&#123;&#123;product.image&#125;&#125;" alt="&#123;&#123;product.title&#125;&#125;"/&gt;</code></pre>
+                  <pre><code>      &lt;h2&gt;&#123;&#123;product.title&#125;&#125;&lt;/h2&gt;</code></pre>
+                  <pre><code>      &lt;p&gt;&#123;&#123;product.info&#125;&#125;&lt;/p&gt;</code></pre>
+                  <pre><code>   &lt;/div&gt;</code></pre>
+                  <pre><code>&lt;/each&gt;</code></pre>
+               </div>
+
+               <h3 class="mb-4">Використання <span class="badge badge-md badge-neutral">index</span> та <span class="badge badge-md badge-neutral">length</span></h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;each data="products.json" loop="product, index, length in data"&gt;</code></pre>
+                  <pre><code>   &lt;if condition="index &lt; 10"</code></pre>
+                  <pre><code>      &lt;ProductCard/&gt;</code></pre>
+                  <pre><code>   &lt;/if&gt;</code></pre>
+                  <pre><code>   &lt;if condition="length &gt; 10"</code></pre>
+                  <pre><code>      &lt;Pagination/&gt;</code></pre>
+                  <pre><code>   &lt;/if&gt;</code></pre>
+                  <pre><code>&lt;/each&gt;</code></pre>
+               </div>
+            </div>
+         </section>
+
+<section class="section py-10 ">
+            <div class="px-4 m-auto max-w-[1300px]">
+               <h2 class="text-2xl mb-6">Використання контенту з API:</h2>
+
+               <h3 class="mb-4">Для виводу контенту з відповіді API замість назви файлу вказується URL API.</h3>
+               <h3 class="mb-4">Приклад з <span class="badge badge-md badge-neutral">https://jsonplaceholder.typicode.com/users</span></h3>
+               <div class="mockup-code w-full mb-6">
+                  <pre><code><span class="opacity-50">// https://jsonplaceholder.typicode.com/users</span></code></pre>
+                  <br>
+                  <pre><code>&lt;each data="https://jsonplaceholder.typicode.com/users" loop="user, index in data"&gt;</code></pre>
+                  <pre><code>   &lt;div class="user-card"&gt;</code></pre>
+                  <pre><code>      &lt;span&gt;&#123;&#123;index + 1&#125;&#125;:&lt;/span&gt;</code></pre>
+                  <pre><code>      &lt;h2&gt;&#123;&#123;user.name&#125;&#125;&lt;/h2&gt;</code></pre>
+                  <pre><code>      &lt;p&gt;&#123;&#123;user.username&#125;&#125;&lt;/p&gt;</code></pre>
+                  <pre><code>      &lt;p&gt;&#123;&#123;user.address.street&#125;&#125;&lt;/p&gt;</code></pre>
+                  <pre><code>      &lt;p&gt;&#123;&#123;user.email&#125;&#125;&lt;/p&gt;</code></pre>
+                  <pre><code>   &lt;/div&gt;</code></pre>
+                  <pre><code>&lt;/each&gt;</code></pre>
+               </div>
+            </div>
+         </section>
+
+<section class="section py-10 ">
+            <div class="px-4 m-auto max-w-[1300px]">
+               <h2 class="text-2xl mb-6">Простий цикл з масивом:</h2>
+
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;ul class="list"&gt;</code></pre>
+                  <pre><code>   &lt;each loop="item, index in ['apple', 'banana', 'orange']"&gt;</code></pre>
+                  <pre><code>      &lt;li&gt;&#123;&#123;index + 1&#125;&#125;: &#123;&#123;item&#125;&#125;&lt;/li&gt;</code></pre>
+                  <pre><code>   &lt;/each&gt;</code></pre>
+                  <pre><code>&lt;/ul&gt;</code></pre>
+               </div>
+            </div>
+         </section>
+
+<section class="section py-10 ">
+            <div class="px-4 m-auto max-w-[1300px]">
+               <h2 class="text-2xl mb-6">Vue-style синтаксис (<span class="badge badge-md badge-neutral">v-for</span>, <span class="badge badge-md badge-neutral">v-range</span>)</h2>
+
+               <h3 class="mb-4">Цикл <span class="badge badge-md badge-neutral">v-for</span></h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;div v-for="(item, index) in items"&gt;</code></pre>
+                  <pre><code>   &#123;&#123; index + 1 &#125;&#125;. &#123;&#123; item.name &#125;&#125;</code></pre>
+                  <pre><code>&lt;/div&gt;</code></pre>
+                  <br>
+                  <pre><code><span class="opacity-50">// З використанням параметра length</span></code></pre>
+                  <pre><code>&lt;div v-for="(item, index, length) in items"&gt;</code></pre>
+                  <pre><code>   &#123;&#123; index + 1 &#125;&#125; of &#123;&#123; length &#125;&#125;: &#123;&#123; item.name &#125;&#125;</code></pre>
+                  <pre><code>&lt;/div&gt;</code></pre>
+               </div>
+
+               <h3 class="mb-4">Діапазон <span class="badge badge-md badge-neutral">v-range</span></h3>
+               <div class="mockup-code w-full mb-4">
+                  <pre><code>&lt;ul&gt;</code></pre>
+                  <pre><code>   &lt;li v-range="1 to 5" v-as="i"&gt;</code></pre>
+                  <pre><code>      Item &#123;&#123; i &#125;&#125;</code></pre>
+                  <pre><code>   &lt;/li&gt;</code></pre>
+                  <pre><code>&lt;/ul&gt;</code></pre>
+                  <br>
+                  <pre><code><span class="opacity-50">// Підтримується зворотний напрямок, від'ємні значення та step</span></code></pre>
+                  <pre><code>&lt;span v-range="5 to 1" v-as="i"&gt;&#123;&#123;i&#125;&#125;&lt;/span&gt;</code></pre>
+                  <pre><code>&lt;span v-range="-3 to 3 step 2" v-as="i"&gt;&#123;&#123;i&#125;&#125;&lt;/span&gt;</code></pre>
+               </div>
+            </div>
+         </section>
+</Docs.DocsPage>

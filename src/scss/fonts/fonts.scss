@@ -1,3 +1,24 @@
+/**
+ * AlbertSans font face
+ */
+@font-face {
+   font-family: 'AlbertSans';
+   font-display: swap;
+   src: url("@f/AlbertSans-Regular.woff2") format("woff2");
+   font-weight: 400;
+   font-style: normal;
+}
+
+/**
+ * CormorantInfant font face
+ */
+@font-face {
+   font-family: 'CormorantInfant';
+   font-display: swap;
+   src: url("@f/CormorantInfant-Regular.woff2") format("woff2");
+   font-weight: 400;
+   font-style: normal;
+}
 
 /**
  * icons font face
@@ -9,4 +30,3 @@
    font-weight: 400;
    font-style: normal;
 }
-                    
