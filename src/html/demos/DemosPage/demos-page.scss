@@ -1,0 +1,55 @@
+@use "@s/inc" as *;
+
+.demos-page {
+  padding: 96px 0;
+  background: #f4f6fb;
+  color: #111827;
+
+  &__container {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 16px;
+
+    @media (min-width: 768px) {
+      padding: 0 32px;
+    }
+  }
+
+  &__intro {
+    max-width: 760px;
+    margin-bottom: 40px;
+  }
+
+  &__eyebrow {
+    margin-bottom: 12px;
+    color: #4f46e5;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0 0 16px;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.08;
+
+    @media (min-width: 768px) {
+      font-size: 56px;
+    }
+  }
+
+  &__lead {
+    margin: 0;
+    color: #4b5563;
+    font-size: 18px;
+    line-height: 1.65;
+  }
+
+  &__grid {
+    display: grid;
+    gap: 24px;
+  }
+}

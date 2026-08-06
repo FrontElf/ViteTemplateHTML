@@ -1,0 +1,41 @@
+<script define>
+   const activeVariant = variant || 'featured'
+   const highlightedVariant = 'featured'
+</script>
+
+<link rel="stylesheet" href="@c/Demos/SwitchCaseDemo/switch-case-demo.scss">
+
+<section class="switch-case-demo">
+   <div class="switch-case-demo__container">
+      <switch key="activeVariant">
+         <case value="simple">
+            <article class="switch-case-demo__panel switch-case-demo__panel--simple">
+               <h3 class="switch-case-demo__panel-title">Simple case</h3>
+               <p class="switch-case-demo__text">Rendered through &lt;case value="simple"&gt;.</p>
+            </article>
+         </case>
+
+         <case expression="highlightedVariant">
+            <article class="switch-case-demo__panel switch-case-demo__panel--featured">
+               <h3 class="switch-case-demo__panel-title">Expression case</h3>
+               <p class="switch-case-demo__text">Rendered through &lt;case expression="highlightedVariant"&gt;.</p>
+               <Button variant="button">Featured action</Button>
+            </article>
+         </case>
+
+         <case condition="activeVariant === 'compact'">
+            <article class="switch-case-demo__panel switch-case-demo__panel--compact">
+               <h3 class="switch-case-demo__panel-title">Condition case</h3>
+               <p class="switch-case-demo__text">Rendered through &lt;case condition="activeVariant === 'compact'"&gt;.</p>
+            </article>
+         </case>
+
+         <default>
+            <article class="switch-case-demo__panel">
+               <h3 class="switch-case-demo__panel-title">Default case</h3>
+               <p class="switch-case-demo__text">Rendered through &lt;default&gt;.</p>
+            </article>
+         </default>
+      </switch>
+   </div>
+</section>

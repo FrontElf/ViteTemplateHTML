@@ -1,0 +1,22 @@
+<script define>
+   const cards = [
+      { title: 'Acorn parsing', detail: 'Destructuring and multiple declarations are supported.' },
+      { title: 'Private locals', detail: '&lt;script define&gt; variables do not cascade into child components.' },
+   ]
+   const [{ title: firstTitle }] = cards
+</script>
+
+<DemoSection number="02" title="Script define locals">
+   <p class="demo-copy">First destructured title: <strong>{{firstTitle}}</strong></p>
+
+   <div class="demo-list">
+      <each loop="card, index in cards">
+         <div class="demo-list__item">
+            <strong>{{index + 1}}. {{card.title}}</strong>
+            <span>{{card.detail}}</span>
+         </div>
+      </each>
+   </div>
+
+   <LocalReader />
+</DemoSection>

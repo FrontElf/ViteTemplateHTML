@@ -44,14 +44,15 @@ The custom Vite plugin in `template_plugins/html-composer/htmlComposer.js` runs 
 3. Convert self-closing component tags, including namespaced tags with dots, into paired tags for known components.
 4. Process Vue-style directives.
 5. Process `<if>/<elseif>/<else>`.
-6. Process `<each>`.
-7. Include components.
-8. Process `{{ ... }}` expressions.
-9. Replace aliases.
-10. Run extra plugins.
-11. Move marked styles to head.
-12. Remove HTML comments.
-13. Format HTML in production.
+6. Process `<switch>/<case>/<default>`.
+7. Process `<each>`.
+8. Include components.
+9. Process `{{ ... }}` expressions.
+10. Replace aliases.
+11. Run extra plugins.
+12. Move marked styles to head.
+13. Remove HTML comments.
+14. Format HTML in production.
 
 This order matters. For example, `v-for` becomes `<each>`, and loop iterations process nested loops, conditions, components, and expressions with the current loop context. Production mode is intentionally stricter and rethrows template errors with context instead of silently returning raw HTML.
 
@@ -229,6 +230,24 @@ Attribute form is converted before condition processing:
 ```html
 <div v-if="isActive">Active content</div>
 ```
+
+Use `<switch>` when several branches compare against the same expression:
+
+```html
+<switch key="elementType">
+  <case value="button">
+    <button type="button">{{children}}</button>
+  </case>
+  <case value="link">
+    <a href="{{url}}">{{children}}</a>
+  </case>
+  <default>
+    <span>{{children}}</span>
+  </default>
+</switch>
+```
+
+`<switch key="...">` evaluates the key as a JavaScript expression. `<case value="...">` compares against a literal value and normalizes `true`, `false`, `null`, `undefined`, and numbers. Use `<case expression="...">` when the case value should be evaluated as JavaScript, or `<case condition="...">` for a custom boolean condition. Standalone `<case>` and `<default>` tags are skipped.
 
 The actual directive defaults in code are `v-if`, `v-for`, `v-range`, and `v-as`, while some docs may mention older `f-*` names. Check `htmlComposer.js` and `vueDirectives.js` if behavior seems inconsistent.
 

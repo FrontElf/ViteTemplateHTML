@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="/html/demos/DemoSection/demo-section.scss">
+
+<article class="demo-section">
+   <div class="demo-section__header">
+      <div>
+         <p class="demo-section__number">{{number || 'Demo'}}</p>
+         <h2 class="demo-section__title">{{title || 'Untitled demo'}}</h2>
+      </div>
+      <div class="demo-section__actions">
+         <slot name="actions"></slot>
+      </div>
+   </div>
+
+   <div class="demo-section__body">
+      {{children}}
+   </div>
+
+   <footer class="demo-section__footer">
+      <slot name="footer">
+         Rendered by DemoSection fallback footer.
+      </slot>
+   </footer>
+</article>

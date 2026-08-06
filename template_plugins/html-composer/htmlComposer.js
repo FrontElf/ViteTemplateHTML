@@ -5,6 +5,7 @@ import { render } from 'posthtml-render'
 import { replaceAliases } from './utils/aliases.js'
 import { fixSelfClosingComponents, includeComponents } from './utils/components.js'
 import { processConditions } from './utils/conditions.js'
+import { processSwitches } from './utils/switches.js'
 import { processExpressions } from './utils/expressions.js'
 import { processEach } from './utils/each.js'
 import { processVueDirectives } from './utils/vueDirectives.js'
@@ -20,6 +21,7 @@ export default function htmlComposer(options = {}) {
       aliases = {},
       context = {},
       conditions = {},
+      switches = {},
       expressions = {},
       components = {},
       HTMLVariables = {},
@@ -36,6 +38,7 @@ export default function htmlComposer(options = {}) {
       HTMLVariables: { isLogger: false, ...HTMLVariables },
       components: { isLogger: false, maxDepth: 10, isNotFound: true, ...components },
       conditions: { isLogger: false, if: 'if', else: 'else', elseif: 'elseif', ...conditions },
+      switches: { isLogger: false, switch: 'switch', case: 'case', default: 'default', ...switches },
       expressions: { isLogger: false, ...expressions },
       each: { isLogger: false, ...each },
       vueDirectives: { isLogger: false, if: 'v-if', for: 'v-for', range: 'v-range', as: 'v-as', ...vueDirectives },
@@ -141,6 +144,7 @@ export default function htmlComposer(options = {}) {
                let tree = parser(fixSelfClosingComponents(html, componentTags))
                tree = processVueDirectives(tree, fullContext, baseOptions)
                tree = processConditions(tree, fullContext, baseOptions)
+               tree = processSwitches(tree, fullContext, baseOptions)
                tree = await processEach(tree, fullContext, baseOptions, componentMap)
                tree = await includeComponents(tree, componentMap, fullContext, baseOptions)
                tree = processExpressions(tree, fullContext, baseOptions)

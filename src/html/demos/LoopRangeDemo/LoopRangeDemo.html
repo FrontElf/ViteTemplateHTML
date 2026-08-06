@@ -1,0 +1,21 @@
+<script define>
+   const badges = ['components', 'slots', 'switch']
+</script>
+
+<DemoSection number="06" title="Each, v-for and v-range">
+   <div class="demo-inline">
+      <each loop="badge, index in badges">
+         <span class="demo-pill">{{index + 1}}. {{badge}}</span>
+      </each>
+   </div>
+
+   <div class="demo-inline">
+      <span v-for="(user, index) in [{ name: 'Ada' }, { name: 'Linus' }]" class="demo-pill demo-pill--soft">
+         {{index + 1}} {{user.name}}
+      </span>
+   </div>
+
+   <div class="demo-inline">
+      <span v-range="-2 to 2" v-as="i" class="demo-pill demo-pill--range">{{i}}</span>
+   </div>
+</DemoSection>

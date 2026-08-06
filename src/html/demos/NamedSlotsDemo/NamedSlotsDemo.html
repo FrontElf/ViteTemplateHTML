@@ -1,0 +1,12 @@
+<DemoSection number="03" title="Named slots">
+   <template slot="actions">
+      <Button variant="button">Slot action</Button>
+   </template>
+
+   <p class="demo-copy">Default children render through <code>{{'{{children}}'}}</code>.</p>
+   <p class="demo-copy">Actions and footer are passed through named <code>&lt;template slot="..."&gt;</code> blocks.</p>
+
+   <template slot="footer">
+      Custom footer rendered through <code>&lt;slot name="footer"&gt;</code>.
+   </template>
+</DemoSection>

@@ -1,0 +1,18 @@
+<script define>
+   const localLabel = label || 'Local prop'
+</script>
+
+<DemoSection number="01" title="Props scope and deep props">
+   <p class="demo-copy">Normal props stay on the receiving component. Deep props continue into descendants.</p>
+
+   <div class="demo-inline">
+      <PropReader label="Only PropReader sees this" />
+      <PropReader deep:label="Nested reader sees this too">
+         <PropReaderChild />
+      </PropReader>
+   </div>
+
+   <template slot="footer">
+      Parent local label: {{localLabel}}.
+   </template>
+</DemoSection>

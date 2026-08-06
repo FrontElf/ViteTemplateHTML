@@ -1,0 +1,18 @@
+<script define>
+   const elementType = type || 'link'
+   const url = 'https://vite-template-docs.frontelf.com/'
+</script>
+
+<DemoSection number="05" title="Conditions and v-if">
+   <if condition="elementType === 'button'">
+      <Button variant="button">Button branch</Button>
+   </if>
+   <elseif condition="elementType === 'link'">
+      <Button variant="link" url="{{url}}" btnAttrs="{'target': '_blank'}">Link branch</Button>
+   </elseif>
+   <else>
+      <span class="demo-note">Fallback branch</span>
+   </else>
+
+   <p v-if="elementType === 'link'" class="demo-copy">This paragraph is rendered through <code>v-if</code>.</p>
+</DemoSection>

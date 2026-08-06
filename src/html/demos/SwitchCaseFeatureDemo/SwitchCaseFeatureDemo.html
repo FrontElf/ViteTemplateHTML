@@ -1,0 +1,24 @@
+<script define>
+   const activeVariant = variant || 'featured'
+   const highlightedVariant = 'featured'
+</script>
+
+<DemoSection number="04" title="Switch case">
+   <switch key="activeVariant">
+      <case value="simple">
+         <p class="demo-result demo-result--simple">Matched literal <code>value="simple"</code>.</p>
+      </case>
+
+      <case expression="highlightedVariant">
+         <p class="demo-result demo-result--featured">Matched JS expression <code>expression="highlightedVariant"</code>.</p>
+      </case>
+
+      <case condition="activeVariant === 'compact'">
+         <p class="demo-result demo-result--compact">Matched custom boolean condition.</p>
+      </case>
+
+      <default>
+         <p class="demo-result">Matched default branch.</p>
+      </default>
+   </switch>
+</DemoSection>

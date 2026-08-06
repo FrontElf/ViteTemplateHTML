@@ -1,6 +1,6 @@
 ---
 name: vite-template-html
-description: Work with the FrontElf ViteTemplateHTML static-site build system. Use when editing or creating pages, layouts, HTML components, SCSS/CSS, data-driven blocks, or build configuration in projects that use Vite plus the custom htmlComposer syntax: basename and namespaced component tags from src/html, {{ JavaScript expressions }}, <script define>, named slots with <template slot> and <slot name>, <if>/<elseif>/<else>, <each>, v-if/v-for/v-range, <Icon name> for generated icon fonts, component trace comments, aliases from template.config.js, generated fonts/icons, PHPMailer assets, or the template_plugins workflow.
+description: Work with the FrontElf ViteTemplateHTML static-site build system. Use when editing or creating pages, layouts, HTML components, SCSS/CSS, data-driven blocks, or build configuration in projects that use Vite plus the custom htmlComposer syntax: basename and namespaced component tags from src/html, {{ JavaScript expressions }}, <script define>, named slots with <template slot> and <slot name>, <if>/<elseif>/<else>, <switch>/<case>/<default>, <each>, v-if/v-for/v-range, <Icon name> for generated icon fonts, component trace comments, aliases from template.config.js, generated fonts/icons, PHPMailer assets, or the template_plugins workflow.
 ---
 
 # Vite Template HTML
@@ -34,6 +34,7 @@ Use `<script define>` at the top of a component for local constants that should 
 Prefer the established syntax for conditional rendering and loops:
 
 - Blocks: `<if condition="...">`, adjacent `<elseif condition="...">`, `<else>`.
+- Switch blocks: `<switch key="type">`, nested `<case value="button">`, `<case expression="dynamicValue">`, `<case condition="...">`, and `<default>`.
 - Attributes: `v-if="..."`, `v-for="(item, index, length) in items"`, `v-range="1 to 5" v-as="i"`.
 - Data files: put JSON under `src/data` and load with `<each data="file.json" loop="item, index in data">`.
 

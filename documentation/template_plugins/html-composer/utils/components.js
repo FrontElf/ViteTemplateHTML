@@ -3,6 +3,7 @@ import { parser } from 'posthtml-parser'
 import * as acorn from 'acorn'
 import { logger } from './logger.js'
 import { processConditions } from './conditions.js'
+import { processSwitches } from './switches.js'
 import { processExpressions, evalExpression } from './expressions.js'
 import { processEach } from './each.js'
 import { processVueDirectives } from './vueDirectives.js'
@@ -127,6 +128,7 @@ async function processProjectedContent(nodes, componentMap, context, baseOptions
    let processed = cloneAstNode(nodes || [])
    processed = processVueDirectives(processed, context, baseOptions)
    processed = processConditions(processed, context, baseOptions)
+   processed = processSwitches(processed, context, baseOptions)
    processed = await processEach(processed, context, baseOptions, componentMap)
    processed = await includeComponents(processed, componentMap, context, baseOptions, depth)
    return processExpressions(processed, context, baseOptions)
@@ -340,6 +342,7 @@ export async function includeComponents(tree, componentMap, context, baseOptions
 
          parsed = processVueDirectives(parsed, componentContext, componentOptions)
          parsed = processConditions(parsed, componentContext, componentOptions)
+         parsed = processSwitches(parsed, componentContext, componentOptions)
          parsed = await processEach(parsed, componentContext, {
             ...componentOptions,
             componentChildContext: childComponentContext,

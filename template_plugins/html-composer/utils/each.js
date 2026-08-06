@@ -2,6 +2,7 @@ import fs from 'fs/promises'
 import path from 'path'
 import { processExpressions, evalExpression, interpolateMustache } from './expressions.js'
 import { processConditions } from './conditions.js'
+import { processSwitches } from './switches.js'
 import { logger } from './logger.js'
 import { includeComponents } from './components.js'
 import { createContextError } from './errorContext.js'
@@ -80,6 +81,7 @@ async function processLoopIteration(items, node, context, baseOptions, component
       // Process nested loops with the current loop context first
       let processedContent = await processEach(iterationContent, loopProps, iterationOptions, componentMap)
       processedContent = processConditions(processedContent, loopProps, iterationOptions)
+      processedContent = processSwitches(processedContent, loopProps, iterationOptions)
       processedContent = await includeComponents(processedContent, componentMap, componentLoopProps, iterationOptions)
       processedContent = processExpressions(processedContent, loopProps, iterationOptions)
 
